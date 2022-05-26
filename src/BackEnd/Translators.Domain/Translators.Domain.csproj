@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Translators</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\Common\" />
+    <Folder Include="Contracts\Responses\" />
+    <Folder Include="Contracts\Requests\" />
+  </ItemGroup>
+
+</Project>
