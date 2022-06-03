@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Translators.Database\Translators.Database.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Mappers\" />
+  </ItemGroup>
+
 </Project>

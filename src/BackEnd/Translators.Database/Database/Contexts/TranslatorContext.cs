@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Translators.Database.Entities;
+using Translators.Models;
 
 namespace Translators.Database.Contexts
 {
@@ -17,6 +18,14 @@ namespace Translators.Database.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<LanguageEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+                x.HasIndex(x => x.Name);
+                x.HasIndex(x => x.Code);
+            });
+
             modelBuilder.Entity<LanguageValueEntity>(x =>
             {
                 x.HasKey(r => r.Id);
@@ -34,7 +43,8 @@ namespace Translators.Database.Contexts
 
                 x.HasOne(x => x.Name)
                  .WithMany(x => x.Categories)
-                 .HasForeignKey(x => x.NameId);
+                 .HasForeignKey(x => x.NameId)
+                 .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<BookEntity>(x =>
@@ -43,7 +53,8 @@ namespace Translators.Database.Contexts
 
                 x.HasOne(x => x.Name)
                  .WithMany(x => x.Books)
-                 .HasForeignKey(x => x.NameId);
+                 .HasForeignKey(x => x.NameId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
                 x.HasOne(x => x.Category)
                  .WithMany(x => x.Books)
@@ -56,17 +67,74 @@ namespace Translators.Database.Contexts
 
                 x.HasOne(x => x.Name)
                  .WithMany(x => x.Catalogs)
-                 .HasForeignKey(x => x.NameId);
+                 .HasForeignKey(x => x.NameId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
                 x.HasOne(x => x.Book)
                  .WithMany(x => x.Catalogs)
                  .HasForeignKey(x => x.BookId);
             });
+
+            modelBuilder.Entity<PageEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+                x.HasIndex(r => r.Number);
+
+                x.HasOne(x => x.Catalog)
+                 .WithMany(x => x.Pages)
+                 .HasForeignKey(x => x.CatalogId);
+            });
+
+            modelBuilder.Entity<ParagraphEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+                x.HasIndex(r => r.Number);
+
+                x.HasOne(x => x.Page)
+                 .WithMany(x => x.Paragraphs)
+                 .HasForeignKey(x => x.PageId);
+            });
+
+            modelBuilder.Entity<WordEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+                x.HasIndex(r => r.Index);
+
+                x.HasOne(x => x.Value)
+                 .WithMany(x => x.Words)
+                 .HasForeignKey(x => x.ValueId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.Paragraph)
+                 .WithMany(x => x.Words)
+                 .HasForeignKey(x => x.ParagraphId);
+            });
+
+            modelBuilder.Entity<WordLetterEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+                x.HasIndex(r => r.Value);
+
+                x.HasOne(x => x.Word)
+                 .WithMany(x => x.WordLetters)
+                 .HasForeignKey(x => x.WordId);
+            });
+
+            modelBuilder.Entity<WordRootEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+                x.HasIndex(r => r.Value);
+
+                x.HasOne(x => x.Word)
+                 .WithMany(x => x.WordRoots)
+                 .HasForeignKey(x => x.WordId);
+            });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer();
+            ConfigData.Load();
+            optionsBuilder.UseSqlServer(ConfigData.Current.ConnectionString);
             base.OnConfiguring(optionsBuilder);
         }
     }

@@ -1,0 +1,163 @@
+﻿{
+  "Projects": [
+    {
+      "Name": "Translators",
+      "GeneratePath": "D:\\Github\\WordProjectTranslators\\src\\BackEnd\\Translators.Logics\\Mappers",
+      "BuildPath": "D:\\Github\\WordProjectTranslators\\src\\BackEnd\\Translators.ServerApplication\\bin\\Debug\\net6.0",
+      "MapClasses": [
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "BookEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "BookContract",
+          "ToSkipProperties": [
+            "Category"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "LanguageValueEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "LanguageValueContract",
+          "ToSkipProperties": [
+            "Categories",
+            "Books",
+            "Catalogs",
+            "Words"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "CatalogEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "CatalogContract",
+          "ToSkipProperties": [
+            "Book"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "LanguageEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "LanguageContract",
+          "ToSkipProperties": [
+            "LanguageValues"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "PageEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "PageContract",
+          "ToSkipProperties": [
+            "Catalog"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "CategoryEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "CategoryContract",
+          "ToSkipProperties": [],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "ParagraphEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "ParagraphContract",
+          "ToSkipProperties": [
+            "Page"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "WordEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "WordContract",
+          "ToSkipProperties": [
+            "Paragraph"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "WordLetterEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "WordLetterContract",
+          "ToSkipProperties": [
+            "Word"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "WordRootEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "WordRootContract",
+          "ToSkipProperties": [
+            "Word"
+          ],
+          "CustomPropertiesMap": []
+        }
+      ],
+      "MapEnums": []
+    }
+  ]
+}

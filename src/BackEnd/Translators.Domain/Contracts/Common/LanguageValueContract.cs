@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Translators.Database.Entities
+namespace Translators.Contracts.Common
 {
-    public class LanguageValueEntity
+    public class LanguageValueContract
     {
         public long Id { get; set; }
         /// <summary>
@@ -16,11 +16,6 @@ namespace Translators.Database.Entities
         public string Value { get; set; }
 
         public long LanguageId { get; set; }
-        public LanguageEntity Language { get; set; }
-
-        public List<CategoryEntity> Categories { get; set; }
-        public List<BookEntity> Books { get; set; }
-        public List<CatalogEntity> Catalogs { get; set; }
-        public List<WordEntity> Words { get; set; }
+        public LanguageContract Language { get; set; }
     }
 }

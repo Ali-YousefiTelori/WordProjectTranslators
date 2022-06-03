@@ -1,10 +1,23 @@
-﻿namespace Translators.ServerApplication
+﻿using System.Diagnostics;
+using Translators.Models;
+
+namespace Translators.ServerApplication
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            try
+            {
+                await ConfigData.LoadAsync();
+                Console.WriteLine("Started.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            Console.ReadLine();
         }
     }
 }
