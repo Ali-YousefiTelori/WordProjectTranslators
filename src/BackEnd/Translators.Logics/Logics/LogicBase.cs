@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Translators.Contracts.Common;
 using Translators.Database.Contexts;
 
@@ -6,6 +7,7 @@ namespace Translators.Logics
 {
     public class LogicBase<TContext, TContract, TEntity>
         where TContext : TranslatorContext, new()
+        where TEntity : class
     {
         TEntity Map(TContract contract)
         {
@@ -37,6 +39,13 @@ namespace Translators.Logics
             return Map(entity);
         }
 
+        async Task<List<TContract>> GetAllFromDatabase()
+        {
+            TContext context = new TContext();
+            var entities =await  context.Set<TEntity>().ToListAsync();
+            return entities.Select(x => Map(x)).ToList();
+        }
+
         public async Task<MessageContract<TContract>> Add(TContract contract)
         {
             return await AddToDatabase(contract);
@@ -45,6 +54,11 @@ namespace Translators.Logics
         public async Task<MessageContract<TContract>> Update(TContract contract)
         {
             return await UpdateToDatabase(contract);
+        }
+
+        public async Task<MessageContract<List<TContract>>> GetAll()
+        {
+            return await GetAllFromDatabase();
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using SignalGo.Server.ServiceManager;
+using System.Diagnostics;
 using Translators.Models;
+using Translators.Services;
 
 namespace Translators.ServerApplication
 {
@@ -10,7 +12,10 @@ namespace Translators.ServerApplication
             try
             {
                 await ConfigData.LoadAsync();
-                Console.WriteLine("Started.");
+                ServerProvider serverProvider = new ServerProvider();
+                serverProvider.RegisterServerService<BookService>();
+                serverProvider.Start("http://localhost:9341");
+                Console.WriteLine("Started on http://localhost:9341.");
             }
             catch (Exception ex)
             {
