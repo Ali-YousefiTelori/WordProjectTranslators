@@ -11,8 +11,8 @@ using Translators.Database.Contexts;
 namespace Translators.Migrations
 {
     [DbContext(typeof(TranslatorContext))]
-    [Migration("20220603124504_initialize")]
-    partial class initialize
+    [Migration("20220607142201_Initialize")]
+    partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -59,6 +59,9 @@ namespace Translators.Migrations
 
                     b.Property<long>("NameId")
                         .HasColumnType("bigint");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

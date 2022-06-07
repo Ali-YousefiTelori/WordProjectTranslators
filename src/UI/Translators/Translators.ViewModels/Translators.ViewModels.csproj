@@ -19,8 +19,4 @@
     <PackageReference Include="SignalGo.Net.Client" Version="5.7.0.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
-
 </Project>

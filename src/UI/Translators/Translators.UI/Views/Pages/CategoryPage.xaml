@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Translators.UI.Views.Pages.CategoryPage"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+             Title="CategoryPage">
+    <ContentPage.Resources>
+        <viewmodels:CategoryViewModel x:Key="CategoryViewModel" />
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <Binding Source="{StaticResource CategoryViewModel}"/>
+    </ContentPage.BindingContext>
+    <Grid>
+        <FlexLayout BindableLayout.ItemsSource="{Binding Items}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="10" BackgroundColor="#01FFFFFF" WidthRequest="200" HeightRequest="200" Stroke="#C49B33" StrokeThickness="4" StrokeShape="RoundRectangle 40,0,0,40">
+                        <Label Text="{Binding Name}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource CategoryViewModel}}" CommandParameter="{Binding}" />
+                        </Border.GestureRecognizers>
+                    </Border>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </FlexLayout>
+        <ActivityIndicator IsRunning="{Binding IsLoading}"/>
+    </Grid>
+</ContentPage>

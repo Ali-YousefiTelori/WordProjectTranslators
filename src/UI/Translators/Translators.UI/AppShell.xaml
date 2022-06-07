@@ -3,12 +3,12 @@
     x:Class="Translators.UI.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Translators.UI"
+    xmlns:pages="clr-namespace:Translators.UI.Views.Pages"
     Shell.FlyoutBehavior="Disabled">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate pages:CategoryPage}"
+        Route="CategoryPage" />
 
 </Shell>

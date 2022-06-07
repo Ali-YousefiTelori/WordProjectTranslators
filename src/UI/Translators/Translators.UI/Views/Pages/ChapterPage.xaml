@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Translators.UI.Views.Pages.ChapterPage"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+             Title="ChapterPage">
+    <ContentPage.Resources>
+        <viewmodels:ChapterViewModel x:Key="ChapterViewModel" />
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <Binding Source="{StaticResource ChapterViewModel}"/>
+    </ContentPage.BindingContext>
+    <Grid>
+        <ListView ItemsSource="{Binding Items}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Border Margin="10" BackgroundColor="#01FFFFFF" WidthRequest="200" Stroke="#C49B33" StrokeThickness="4" StrokeShape="RoundRectangle 40,0,0,40">
+                            <HorizontalStackLayout HorizontalOptions="Center">
+                                <Label Text="{Binding Name.Value}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label Text=" -" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label Text="{Binding Number}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                            </HorizontalStackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ChapterViewModel}}" CommandParameter="{Binding}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ActivityIndicator IsRunning="{Binding IsLoading}"/>
+    </Grid>
+</ContentPage>

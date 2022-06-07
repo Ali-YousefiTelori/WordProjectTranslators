@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Linq.Expressions;
 using Translators.Contracts.Common;
 using Translators.Database.Contexts;
 
@@ -9,41 +10,32 @@ namespace Translators.Logics
         where TContext : TranslatorContext, new()
         where TEntity : class
     {
-        TEntity Map(TContract contract)
-        {
-            var json = JsonConvert.SerializeObject(contract);
-            return JsonConvert.DeserializeObject<TEntity>(json);
-        }
-
-        TContract Map(TEntity entity)
-        {
-            var json = JsonConvert.SerializeObject(entity);
-            return JsonConvert.DeserializeObject<TContract>(json);
-        }
-
         async Task<TContract> AddToDatabase(TContract contract)
         {
             TContext context = new TContext();
-            var entity = Map(contract);
+            var entity = contract.Map<TEntity>();
             await context.AddAsync(entity);
             await context.SaveChangesAsync();
-            return Map(entity);
+            return entity.Map<TContract>();
         }
 
         async Task<TContract> UpdateToDatabase(TContract contract)
         {
             TContext context = new TContext();
-            var entity = Map(contract);
+            var entity = contract.Map<TEntity>();
             context.Update(entity);
             await context.SaveChangesAsync();
-            return Map(entity);
+            return entity.Map<TContract>();
         }
 
-        async Task<List<TContract>> GetAllFromDatabase()
+        async Task<List<TContract>> GetAllFromDatabase(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery)
         {
             TContext context = new TContext();
-            var entities =await  context.Set<TEntity>().ToListAsync();
-            return entities.Select(x => Map(x)).ToList();
+            var query =  context.Set<TEntity>().AsQueryable();
+            if (getQuery != null)
+                query = getQuery(query);
+            var entities = await query.ToListAsync();
+            return entities.Select(x => x.Map<TContract>()).ToList();
         }
 
         public async Task<MessageContract<TContract>> Add(TContract contract)
@@ -56,9 +48,9 @@ namespace Translators.Logics
             return await UpdateToDatabase(contract);
         }
 
-        public async Task<MessageContract<List<TContract>>> GetAll()
+        public async Task<MessageContract<List<TContract>>> GetAll(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery = null)
         {
-            return await GetAllFromDatabase();
+            return await GetAllFromDatabase(getQuery);
         }
     }
 }

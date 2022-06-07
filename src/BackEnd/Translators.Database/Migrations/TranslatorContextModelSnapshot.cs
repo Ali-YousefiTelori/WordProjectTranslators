@@ -58,6 +58,9 @@ namespace Translators.Migrations
                     b.Property<long>("NameId")
                         .HasColumnType("bigint");
 
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");

@@ -21,5 +21,13 @@ namespace Translators.Helpers
                 return new TranslatorsServices.HttpServices.BookService(ServiceAddress, HttpClient);
             }
         }
+
+        public static IChapterServiceAsync ChapterServiceHttp
+        {
+            get
+            {
+                return new TranslatorsServices.HttpServices.ChapterService(ServiceAddress, HttpClient);
+            }
+        }
     }
 }
