@@ -95,6 +95,7 @@ namespace Translators.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Number = table.Column<int>(type: "int", nullable: false),
+                    StartPageNumber = table.Column<int>(type: "int", nullable: false),
                     NameId = table.Column<long>(type: "bigint", nullable: false),
                     BookId = table.Column<long>(type: "bigint", nullable: false)
                 },

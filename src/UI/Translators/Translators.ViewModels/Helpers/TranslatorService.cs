@@ -29,5 +29,13 @@ namespace Translators.Helpers
                 return new TranslatorsServices.HttpServices.ChapterService(ServiceAddress, HttpClient);
             }
         }
+
+        public static IPageService PageServiceHttp
+        {
+            get
+            {
+                return new TranslatorsServices.HttpServices.PageService(ServiceAddress, HttpClient);
+            }
+        }
     }
 }

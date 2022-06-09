@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System;
-
-namespace CompileTimeGoMapper
+﻿namespace CompileTimeGoMapper
 {
     public static class BookEntity_BookContractMapper
     {
@@ -79,6 +76,7 @@ namespace CompileTimeGoMapper
             {
                 Id = toMap.Id,
                 Number = toMap.Number,
+                StartPageNumber = toMap.StartPageNumber,
                 NameId = toMap.NameId,
                 Name = toMap.Name.Map(uniqueRecordId, language, parameters),
                 BookId = toMap.BookId,
@@ -95,6 +93,7 @@ namespace CompileTimeGoMapper
             {
                 Id = toMap.Id,
                 Number = toMap.Number,
+                StartPageNumber = toMap.StartPageNumber,
                 NameId = toMap.NameId,
                 Name = toMap.Name.Map(uniqueRecordId, language, parameters),
                 BookId = toMap.BookId,

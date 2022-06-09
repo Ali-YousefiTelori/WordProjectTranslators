@@ -14,6 +14,8 @@ namespace Translators.Database.Entities
         public long Id { get; set; }
 
         public int Number { get; set; }
+        public int StartPageNumber { get; set; }
+        
         public long NameId { get; set; }
         public LanguageValueEntity Name { get; set; }
 

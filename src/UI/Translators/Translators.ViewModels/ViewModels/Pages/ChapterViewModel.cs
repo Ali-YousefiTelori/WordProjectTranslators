@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Helpers;
+using Translators.Models;
 
 namespace Translators.ViewModels.Pages
 {
@@ -23,7 +24,7 @@ namespace Translators.ViewModels.Pages
 
         public async void Touched(CatalogContract catalog)
         {
-
+            await PageHelper.PushPage(catalog.StartPageNumber, PageType.Ayat);
         }
 
         public override async Task FetchData()

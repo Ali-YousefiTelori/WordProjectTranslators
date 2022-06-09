@@ -20,6 +20,14 @@ namespace Translators.UI.Helpers
             Navigation = navigation;
         }
 
+        public void RemovePages(Type type)
+        {
+            foreach (var page in Navigation.NavigationStack.Where(x => x != null && x.GetType() == type))
+            {
+                Navigation.RemovePage(page);
+            }
+        }
+
         public async Task PushPage(long id, PageType pageType)
         {
             switch (pageType)
@@ -32,7 +40,12 @@ namespace Translators.UI.Helpers
                         break;
                     }
                 case PageType.Ayat:
-                    break;
+                    {
+                        var page = new PagesPage();
+                        _ = (page.BindingContext as PageViewModel).Initialize(id);
+                        await Navigation.PushAsync(page);
+                        break;
+                    }
             }
         }
     }

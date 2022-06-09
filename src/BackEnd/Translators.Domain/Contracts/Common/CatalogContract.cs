@@ -15,6 +15,8 @@ namespace Translators.Contracts.Common
         public long Id { get; set; }
 
         public int Number { get; set; }
+        public int StartPageNumber { get; set; }
+
         public long NameId { get; set; }
         public LanguageValueContract Name { get; set; }
 

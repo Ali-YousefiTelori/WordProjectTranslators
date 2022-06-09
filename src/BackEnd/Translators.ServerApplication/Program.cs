@@ -14,6 +14,7 @@ namespace Translators.ServerApplication
                 ServerProvider serverProvider = new ServerProvider();
                 serverProvider.RegisterServerService<BookService>();
                 serverProvider.RegisterServerService<ChapterService>();
+                serverProvider.RegisterServerService<PageService>(); 
                 serverProvider.Start("http://localhost:9341");
                 Console.WriteLine("Started on http://localhost:9341.");
             }

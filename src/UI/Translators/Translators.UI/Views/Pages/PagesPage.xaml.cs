@@ -2,9 +2,9 @@ using Translators.UI.Helpers;
 
 namespace Translators.UI.Views.Pages;
 
-public partial class ChapterPage : ContentPage
+public partial class PagesPage : ContentPage
 {
-	public ChapterPage()
+	public PagesPage()
 	{
 		InitializeComponent();
     }

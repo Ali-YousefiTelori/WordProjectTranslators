@@ -13,6 +13,7 @@ namespace Translators.Patches
         public int juz { get; set; }
         public int manzil { get; set; }
         public int page { get; set; }
+        public int pageInSurah { get; set; } = 1;
         public int ruku { get; set; }
         public int hizbQuarter { get; set; }
         public object sajda { get; set; }
@@ -37,7 +38,7 @@ namespace Translators.Patches
             return new ParagraphContract()
             {
                 Number = numberInSurah,
-                AnotherValue = $"{number}_{juz}_{manzil}_{page}_{ruku}_{hizbQuarter}_{sajda}",
+                AnotherValue = $"{number}_{juz}_{manzil}_{page}_{pageInSurah}_{ruku}_{hizbQuarter}_{sajda}",
                 Words = mainWords
             };
         }
@@ -149,9 +150,23 @@ namespace Translators.Patches
 
         public CatalogContract GetCatalog(long languageId)
         {
+            var pageGroup = ayahs.GroupBy(x => x.page);
+            var minPageNumber = ayahs.GroupBy(x => x.page).Min(x => x.Key);
+            if (number > 1)
+            {
+                ayahs.First().text = ayahs.First().text.Replace("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ", "").Replace("بِّسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ ", "");
+            }
+            foreach (var group in pageGroup)
+            {
+                foreach (var ayah in group)
+                {
+                    ayah.pageInSurah = ayah.page - minPageNumber + 1;
+                }
+            }
             return new CatalogContract()
             {
                 Number = number,
+                StartPageNumber = minPageNumber,
                 Name = new LanguageValueContract()
                 {
                     IsMain = true,
