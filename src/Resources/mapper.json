@@ -23,18 +23,24 @@
         {
           "FromAssemblyName": "Translators.Database.dll",
           "FromNamespace": "Translators.Database.Entities",
-          "FromName": "LanguageValueEntity",
+          "FromName": "ValueEntity",
           "FromDirectCode": null,
           "ToDirectCode": null,
           "FromSkipProperties": [],
           "ToAssemblyName": "Translators.Domain.dll",
           "ToNamespace": "Translators.Contracts.Common",
-          "ToName": "LanguageValueContract",
+          "ToName": "ValueContract",
           "ToSkipProperties": [
-            "Categories",
-            "Books",
-            "Catalogs",
-            "Words"
+            "TranslatorNameId",
+            "TranslatorName",
+            "BookNameId",
+            "BookName",
+            "CategoryNameId",
+            "Category",
+            "CatalogNameId",
+            "Catalog",
+            "WordValueId",
+            "Word"
           ],
           "CustomPropertiesMap": []
         },
@@ -49,7 +55,8 @@
           "ToNamespace": "Translators.Contracts.Common",
           "ToName": "CatalogContract",
           "ToSkipProperties": [
-            "Book"
+            "Book",
+            "Paragraphs"
           ],
           "CustomPropertiesMap": []
         },
@@ -64,7 +71,7 @@
           "ToNamespace": "Translators.Contracts.Common",
           "ToName": "LanguageContract",
           "ToSkipProperties": [
-            "LanguageValues"
+            "Values"
           ],
           "CustomPropertiesMap": []
         },
@@ -79,7 +86,8 @@
           "ToNamespace": "Translators.Contracts.Common",
           "ToName": "PageContract",
           "ToSkipProperties": [
-            "Catalog"
+            "Catalog",
+            "CatalogNames"
           ],
           "CustomPropertiesMap": []
         },
@@ -107,7 +115,8 @@
           "ToNamespace": "Translators.Contracts.Common",
           "ToName": "ParagraphContract",
           "ToSkipProperties": [
-            "Page"
+            "Page",
+            "Catalog"
           ],
           "CustomPropertiesMap": []
         },
@@ -153,6 +162,21 @@
           "ToName": "WordRootContract",
           "ToSkipProperties": [
             "Word"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "TranslatorEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "TranslatorContract",
+          "ToSkipProperties": [
+            "Values"
           ],
           "CustomPropertiesMap": []
         }

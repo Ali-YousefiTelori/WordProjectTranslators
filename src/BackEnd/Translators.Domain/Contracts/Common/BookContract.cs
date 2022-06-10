@@ -13,8 +13,7 @@ namespace Translators.Contracts.Common
     {
         public long Id { get; set; }
 
-        public long NameId { get; set; }
-        public LanguageValueContract Name { get; set; }
+        public List<ValueContract> Names { get; set; }
 
         public long CategoryId { get; set; }
 

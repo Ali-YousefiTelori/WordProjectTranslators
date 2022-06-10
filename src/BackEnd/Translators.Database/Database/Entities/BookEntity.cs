@@ -13,8 +13,7 @@ namespace Translators.Database.Entities
     {
         public long Id { get; set; }
 
-        public long NameId { get; set; }
-        public LanguageValueEntity Name { get; set; }
+        public List<ValueEntity> Names { get; set; }
 
         public long CategoryId { get; set; }
         public CategoryEntity Category { get; set; }

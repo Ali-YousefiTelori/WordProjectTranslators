@@ -13,17 +13,17 @@ namespace Translators.Services
     {
         public async Task<MessageContract<List<CategoryContract>>> GetCategories()
         {
-            return await new LogicBase<TranslatorContext, CategoryContract, CategoryEntity>().GetAll(x => x.Include(q => q.Name));
+            return await new LogicBase<TranslatorContext, CategoryContract, CategoryEntity>().GetAll(x => x.Include(q => q.Names).ThenInclude(n=>n.Language).Include(q => q.Names).ThenInclude(n => n.Translator));
         }
 
         public async Task<MessageContract<List<BookContract>>> GetBooks()
         {
-            return await new LogicBase<TranslatorContext, BookContract, BookEntity>().GetAll(x => x.Include(q => q.Name));
+            return await new LogicBase<TranslatorContext, BookContract, BookEntity>().GetAll(x => x.Include(q => q.Names));
         }
 
         public async Task<MessageContract<List<BookContract>>> FilterBooks(long categoryId)
         {
-            return await new LogicBase<TranslatorContext, BookContract, BookEntity>().GetAll(x => x.Include(q => q.Name).Where(q => q.CategoryId == categoryId));
+            return await new LogicBase<TranslatorContext, BookContract, BookEntity>().GetAll(x => x.Include(q => q.Names).ThenInclude(n => n.Language).Include(q => q.Names).ThenInclude(n => n.Translator).Where(q => q.CategoryId == categoryId));
         }
     }
 }

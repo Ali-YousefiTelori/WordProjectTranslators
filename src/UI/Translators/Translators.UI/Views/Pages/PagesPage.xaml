@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Translators.UI.Views.Pages.PagesPage"
              xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+             xmlns:conv="clr-namespace:Translators.Converters;assembly=Translators.ViewModels"
              Title="Pages">
     <ContentPage.Resources>
         <viewmodels:PageViewModel x:Key="PageViewModel" />
@@ -10,16 +11,37 @@
     <ContentPage.BindingContext>
         <Binding Source="{StaticResource PageViewModel}"/>
     </ContentPage.BindingContext>
-    <Grid>
-        <ListView ItemsSource="{Binding Items}">
+    <Grid BackgroundColor="#01FFFFFF" FlowDirection="RightToLeft">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Text="{Binding CatalogName}" Grid.Column="1" VerticalOptions="Center"/>
+        </Grid>
+        <ListView ItemsSource="{Binding Items}" Grid.Row="1">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <Border Margin="10" BackgroundColor="#01FFFFFF">
-                            <VerticalStackLayout>
-                                <Label Text="{Binding MainValue}" />
-                                <Label Text="{Binding TranslatedValue}" />
-                            </VerticalStackLayout>
+                            <HorizontalStackLayout>
+                                <HorizontalStackLayout Margin="10,0,10,0" VerticalOptions="Center" HorizontalOptions="Center">
+                                    <!--<Label Text="۝"  VerticalOptions="Center" HorizontalOptions="Center" FontSize="20" Margin="10,0,10,0"/>-->
+                                    <Label Text="(" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                    <Label Text="{Binding Number}"  VerticalOptions="Center" HorizontalOptions="Center"/>
+                                    <Label Text=")"  VerticalOptions="Center" HorizontalOptions="Center"/>
+                                </HorizontalStackLayout>
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding MainValue}" />
+                                    <Label Text="{Binding TranslatedValue}" />
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource PageViewModel}}" CommandParameter="{Binding}" />
                             </Border.GestureRecognizers>
@@ -28,6 +50,19 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Text="{Binding CatalogStartPageNumber}" Grid.Column="1" VerticalOptions="Center"/>
+        </Grid>
         <ActivityIndicator IsRunning="{Binding IsLoading}"/>
+
+        <Grid.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Left" Command="{Binding SwipeLeftCommand}"/>
+            <SwipeGestureRecognizer Direction="Right" Command="{Binding SwipeRightCommand}"/>
+        </Grid.GestureRecognizers>
     </Grid>
 </ContentPage>

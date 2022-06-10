@@ -1,4 +1,7 @@
-﻿namespace CompileTimeGoMapper
+﻿using System.Linq;
+using System;
+
+namespace CompileTimeGoMapper
 {
     public static class BookEntity_BookContractMapper
     {
@@ -9,8 +12,7 @@
             var mapped = new global::Translators.Database.Entities.BookEntity()
             {
                 Id = toMap.Id,
-                NameId = toMap.NameId,
-                Name = toMap.Name.Map(uniqueRecordId, language, parameters),
+                Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 CategoryId = toMap.CategoryId,
                 Catalogs = toMap.Catalogs?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
@@ -24,8 +26,7 @@
             var mapped = new global::Translators.Contracts.Common.BookContract()
             {
                 Id = toMap.Id,
-                NameId = toMap.NameId,
-                Name = toMap.Name.Map(uniqueRecordId, language, parameters),
+                Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 CategoryId = toMap.CategoryId,
                 Catalogs = toMap.Catalogs?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
@@ -33,34 +34,38 @@
             return mapped;
         }
     }
-    public static class LanguageValueEntity_LanguageValueContractMapper
+    public static class ValueEntity_ValueContractMapper
     {
-        public static global::Translators.Database.Entities.LanguageValueEntity Map(this global::Translators.Contracts.Common.LanguageValueContract toMap, string uniqueRecordId, string language, object[] parameters)
+        public static global::Translators.Database.Entities.ValueEntity Map(this global::Translators.Contracts.Common.ValueContract toMap, string uniqueRecordId, string language, object[] parameters)
         {
             if (toMap == default)
                 return default;
-            var mapped = new global::Translators.Database.Entities.LanguageValueEntity()
+            var mapped = new global::Translators.Database.Entities.ValueEntity()
             {
                 Id = toMap.Id,
                 IsMain = toMap.IsMain,
                 Value = toMap.Value,
                 LanguageId = toMap.LanguageId,
                 Language = toMap.Language.Map(uniqueRecordId, language, parameters),
+                TranslatorId = toMap.TranslatorId,
+                Translator = toMap.Translator.Map(uniqueRecordId, language, parameters),
             };
 
             return mapped;
         }
-        public static global::Translators.Contracts.Common.LanguageValueContract Map(this global::Translators.Database.Entities.LanguageValueEntity toMap, string uniqueRecordId, string language, object[] parameters)
+        public static global::Translators.Contracts.Common.ValueContract Map(this global::Translators.Database.Entities.ValueEntity toMap, string uniqueRecordId, string language, object[] parameters)
         {
             if (toMap == default)
                 return default;
-            var mapped = new global::Translators.Contracts.Common.LanguageValueContract()
+            var mapped = new global::Translators.Contracts.Common.ValueContract()
             {
                 Id = toMap.Id,
                 IsMain = toMap.IsMain,
                 Value = toMap.Value,
                 LanguageId = toMap.LanguageId,
                 Language = toMap.Language.Map(uniqueRecordId, language, parameters),
+                TranslatorId = toMap.TranslatorId,
+                Translator = toMap.Translator.Map(uniqueRecordId, language, parameters),
             };
 
             return mapped;
@@ -77,8 +82,7 @@
                 Id = toMap.Id,
                 Number = toMap.Number,
                 StartPageNumber = toMap.StartPageNumber,
-                NameId = toMap.NameId,
-                Name = toMap.Name.Map(uniqueRecordId, language, parameters),
+                Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 BookId = toMap.BookId,
                 Pages = toMap.Pages?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
@@ -94,8 +98,7 @@
                 Id = toMap.Id,
                 Number = toMap.Number,
                 StartPageNumber = toMap.StartPageNumber,
-                NameId = toMap.NameId,
-                Name = toMap.Name.Map(uniqueRecordId, language, parameters),
+                Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 BookId = toMap.BookId,
                 Pages = toMap.Pages?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
@@ -172,8 +175,7 @@
             var mapped = new global::Translators.Database.Entities.CategoryEntity()
             {
                 Id = toMap.Id,
-                NameId = toMap.NameId,
-                Name = toMap.Name.Map(uniqueRecordId, language, parameters),
+                Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 Books = toMap.Books?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
@@ -186,8 +188,7 @@
             var mapped = new global::Translators.Contracts.Common.CategoryContract()
             {
                 Id = toMap.Id,
-                NameId = toMap.NameId,
-                Name = toMap.Name.Map(uniqueRecordId, language, parameters),
+                Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 Books = toMap.Books?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
@@ -206,6 +207,7 @@
                 Number = toMap.Number,
                 AnotherValue = toMap.AnotherValue,
                 PageId = toMap.PageId,
+                CatalogId = toMap.CatalogId,
                 Words = toMap.Words?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
@@ -221,6 +223,7 @@
                 Number = toMap.Number,
                 AnotherValue = toMap.AnotherValue,
                 PageId = toMap.PageId,
+                CatalogId = toMap.CatalogId,
                 Words = toMap.Words?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
@@ -237,8 +240,7 @@
             {
                 Id = toMap.Id,
                 Index = toMap.Index,
-                ValueId = toMap.ValueId,
-                Value = toMap.Value.Map(uniqueRecordId, language, parameters),
+                Values = toMap.Values?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 ParagraphId = toMap.ParagraphId,
                 WordLetters = toMap.WordLetters?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 WordRoots = toMap.WordRoots?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
@@ -254,8 +256,7 @@
             {
                 Id = toMap.Id,
                 Index = toMap.Index,
-                ValueId = toMap.ValueId,
-                Value = toMap.Value.Map(uniqueRecordId, language, parameters),
+                Values = toMap.Values?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 ParagraphId = toMap.ParagraphId,
                 WordLetters = toMap.WordLetters?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 WordRoots = toMap.WordRoots?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
@@ -317,6 +318,33 @@
                 Id = toMap.Id,
                 Value = toMap.Value,
                 WordId = toMap.WordId,
+            };
+
+            return mapped;
+        }
+    }
+    public static class TranslatorEntity_TranslatorContractMapper
+    {
+        public static global::Translators.Database.Entities.TranslatorEntity Map(this global::Translators.Contracts.Common.TranslatorContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Database.Entities.TranslatorEntity()
+            {
+                Id = toMap.Id,
+                Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.TranslatorContract Map(this global::Translators.Database.Entities.TranslatorEntity toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.TranslatorContract()
+            {
+                Id = toMap.Id,
+                Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;

@@ -13,7 +13,7 @@ namespace Translators.Services
     {
         public async Task<MessageContract<List<CatalogContract>>> FilterChapters(long bookId)
         {
-            return await new LogicBase<TranslatorContext, CatalogContract, CatalogEntity>().GetAll(x => x.Include(q => q.Name).Where(q => q.BookId == bookId));
+            return await new LogicBase<TranslatorContext, CatalogContract, CatalogEntity>().GetAll(x => x.Include(q => q.Names).ThenInclude(n => n.Language).Include(q => q.Names).ThenInclude(n => n.Translator).Where(q => q.BookId == bookId));
         }
     }
 }

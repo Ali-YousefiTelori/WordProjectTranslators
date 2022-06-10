@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Translators.Contracts.Common
+﻿namespace Translators.Contracts.Common
 {
     /// <summary>
     /// catalog of any books
@@ -17,8 +11,7 @@ namespace Translators.Contracts.Common
         public int Number { get; set; }
         public int StartPageNumber { get; set; }
 
-        public long NameId { get; set; }
-        public LanguageValueContract Name { get; set; }
+        public List<ValueContract> Names { get; set; }
 
         public long BookId { get; set; }
 
@@ -26,7 +19,7 @@ namespace Translators.Contracts.Common
 
         public override string ToString()
         {
-            return Name.Value;
+            return string.Join(",", Names.Select(x => x.Value));
         }
     }
 }

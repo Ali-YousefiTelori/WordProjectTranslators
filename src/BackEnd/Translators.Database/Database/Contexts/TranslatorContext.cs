@@ -13,7 +13,8 @@ namespace Translators.Database.Contexts
         public DbSet<ParagraphEntity> Paragraphs { get; set; }
         public DbSet<WordEntity> Words { get; set; }
         public DbSet<LanguageEntity> Languages { get; set; }
-        public DbSet<LanguageValueEntity> LanguageValues { get; set; }
+        public DbSet<ValueEntity> Values { get; set; }
+        public DbSet<TranslatorEntity> Translators { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,35 +27,49 @@ namespace Translators.Database.Contexts
                 x.HasIndex(x => x.Code);
             });
 
-            modelBuilder.Entity<LanguageValueEntity>(x =>
+            modelBuilder.Entity<ValueEntity>(x =>
             {
                 x.HasKey(r => r.Id);
                 x.HasIndex(x => x.Value);
                 x.HasIndex(x => x.IsMain);
 
                 x.HasOne(x => x.Language)
-                 .WithMany(x => x.LanguageValues)
+                 .WithMany(x => x.Values)
                  .HasForeignKey(x => x.LanguageId);
+
+                x.HasOne(x => x.Translator)
+                 .WithMany(x => x.Values)
+                 .HasForeignKey(x => x.TranslatorId);
+
+                x.HasOne(x => x.TranslatorName)
+                 .WithMany(x => x.Names)
+                 .HasForeignKey(x => x.TranslatorNameId);
+
+                x.HasOne(x => x.BookName)
+                 .WithMany(x => x.Names)
+                 .HasForeignKey(x => x.BookNameId);
+
+                x.HasOne(x => x.Category)
+                 .WithMany(x => x.Names)
+                 .HasForeignKey(x => x.CategoryNameId);
+
+                x.HasOne(x => x.Catalog)
+                 .WithMany(x => x.Names)
+                 .HasForeignKey(x => x.CatalogNameId);
+
+                x.HasOne(x => x.Word)
+                 .WithMany(x => x.Values)
+                 .HasForeignKey(x => x.WordValueId);
             });
 
             modelBuilder.Entity<CategoryEntity>(x =>
             {
                 x.HasKey(r => r.Id);
-
-                x.HasOne(x => x.Name)
-                 .WithMany(x => x.Categories)
-                 .HasForeignKey(x => x.NameId)
-                 .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<BookEntity>(x =>
             {
                 x.HasKey(r => r.Id);
-
-                x.HasOne(x => x.Name)
-                 .WithMany(x => x.Books)
-                 .HasForeignKey(x => x.NameId)
-                 .OnDelete(DeleteBehavior.Restrict);
 
                 x.HasOne(x => x.Category)
                  .WithMany(x => x.Books)
@@ -64,11 +79,6 @@ namespace Translators.Database.Contexts
             modelBuilder.Entity<CatalogEntity>(x =>
             {
                 x.HasKey(r => r.Id);
-
-                x.HasOne(x => x.Name)
-                 .WithMany(x => x.Catalogs)
-                 .HasForeignKey(x => x.NameId)
-                 .OnDelete(DeleteBehavior.Restrict);
 
                 x.HasOne(x => x.Book)
                  .WithMany(x => x.Catalogs)
@@ -93,17 +103,17 @@ namespace Translators.Database.Contexts
                 x.HasOne(x => x.Page)
                  .WithMany(x => x.Paragraphs)
                  .HasForeignKey(x => x.PageId);
+
+                x.HasOne(x => x.Catalog)
+                 .WithMany(x => x.Paragraphs)
+                 .HasForeignKey(x => x.CatalogId)
+                 .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<WordEntity>(x =>
             {
                 x.HasKey(r => r.Id);
                 x.HasIndex(r => r.Index);
-
-                x.HasOne(x => x.Value)
-                 .WithMany(x => x.Words)
-                 .HasForeignKey(x => x.ValueId)
-                 .OnDelete(DeleteBehavior.Restrict);
 
                 x.HasOne(x => x.Paragraph)
                  .WithMany(x => x.Words)

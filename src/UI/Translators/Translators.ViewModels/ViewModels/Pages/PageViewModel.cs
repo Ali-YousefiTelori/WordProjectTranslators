@@ -11,11 +11,35 @@ namespace Translators.ViewModels.Pages
     {
         public PageViewModel()
         {
-            //TouchedCommand = new Command<PageContract>(Touched);
+            SwipeLeftCommand = new Command(SwipeLeft);
+            SwipeRightCommand = new Command(SwipeRight);
         }
 
-        public long CatalogStartPageNumber { get; set; }
         public Command<PageContract> TouchedCommand { get; set; }
+        public Command SwipeLeftCommand { get; set; }
+        public Command SwipeRightCommand { get; set; }
+
+        string _CatalogName;
+        public string CatalogName
+        {
+            get => _CatalogName;
+            set
+            {
+                _CatalogName = value;
+                OnPropertyChanged(nameof(CatalogName));
+            }
+        }
+
+        private long _catalogStartPageNumber;
+        public long CatalogStartPageNumber
+        {
+            get => _catalogStartPageNumber;
+            set
+            {
+                _catalogStartPageNumber = value;
+                OnPropertyChanged(nameof(CatalogStartPageNumber));
+            }
+        }
 
         public async Task Initialize(long startPageNumber)
         {
@@ -25,11 +49,31 @@ namespace Translators.ViewModels.Pages
 
         public override async Task FetchData()
         {
-            var chapters = await TranslatorService.PageServiceHttp.GetPageAsync(CatalogStartPageNumber);
-            if (chapters.IsSuccess)
+            var pages = await TranslatorService.PageServiceHttp.GetPageAsync(CatalogStartPageNumber);
+            if (pages.IsSuccess)
             {
-                InitialData(chapters.Result.SelectMany(x => x.Paragraphs).Select(x => (ParagraphModel)x));
+                InitialData(pages.Result.Paragraphs.Select(x => (ParagraphModel)x));
+                CatalogName = pages.Result.CatalogNames.FirstOrDefault()?.Value;
             }
+        }
+
+        private async void SwipeLeft()
+        {
+            if (IsLoading)
+                return;
+            if (CatalogStartPageNumber > 1)
+            {
+                CatalogStartPageNumber--;
+                await LoadData();
+            }
+        }
+
+        private async void SwipeRight()
+        {
+            if (IsLoading)
+                return;
+            CatalogStartPageNumber++;
+            await LoadData();
         }
     }
 }

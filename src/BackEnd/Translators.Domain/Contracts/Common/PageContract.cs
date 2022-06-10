@@ -14,6 +14,7 @@ namespace Translators.Contracts.Common
         public long Id { get; set; }
         public long Number { get; set; }
 
+        public List<ValueContract> CatalogNames { get; set; }
         public long CatalogId { get; set; }
 
         public List<ParagraphContract> Paragraphs { get; set; }

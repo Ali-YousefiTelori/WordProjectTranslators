@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Translators.Contracts.Common
+﻿namespace Translators.Contracts.Common
 {
     /// <summary>
     /// word of paragraph
@@ -14,8 +8,7 @@ namespace Translators.Contracts.Common
         public long Id { get; set; }
         public int Index { get; set; }
 
-        public long ValueId { get; set; }
-        public LanguageValueContract Value { get; set; }
+        public List<ValueContract> Values { get; set; }
 
         public long ParagraphId { get; set; }
 
@@ -24,7 +17,7 @@ namespace Translators.Contracts.Common
 
         public override string ToString()
         {
-            return Value.Value;
+            return string.Join(",", Values.Select(x => x.Value));
         }
     }
 }

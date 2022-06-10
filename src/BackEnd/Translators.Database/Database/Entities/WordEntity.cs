@@ -14,8 +14,7 @@ namespace Translators.Database.Entities
         public long Id { get; set; }
         public int Index { get; set; }
 
-        public long ValueId { get; set; }
-        public LanguageValueEntity Value { get; set; }
+        public List<ValueEntity> Values { get; set; }
 
         public long ParagraphId { get; set; }
         public ParagraphEntity Paragraph { get; set; }

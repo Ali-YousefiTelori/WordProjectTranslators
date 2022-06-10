@@ -10,6 +10,14 @@ namespace Translators.Logics
         where TContext : TranslatorContext, new()
         where TEntity : class
     {
+        async Task<TEntity> AddToDatabase(TEntity entity)
+        {
+            TContext context = new TContext();
+            await context.AddAsync(entity);
+            await context.SaveChangesAsync();
+            return entity;
+        }
+
         async Task<TContract> AddToDatabase(TContract contract)
         {
             TContext context = new TContext();
@@ -38,6 +46,21 @@ namespace Translators.Logics
             return entities.Select(x => x.Map<TContract>()).ToList();
         }
 
+        async Task<TContract> FindFromDatabase(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery)
+        {
+            TContext context = new TContext();
+            var query = context.Set<TEntity>().AsQueryable();
+            if (getQuery != null)
+                query = getQuery(query);
+            var entity = await query.FirstOrDefaultAsync();
+            return entity.Map<TContract>();
+        }
+
+        public async Task<MessageContract<TEntity>> Add(TEntity entity)
+        {
+            return await AddToDatabase(entity);
+        }
+
         public async Task<MessageContract<TContract>> Add(TContract contract)
         {
             return await AddToDatabase(contract);
@@ -51,6 +74,11 @@ namespace Translators.Logics
         public async Task<MessageContract<List<TContract>>> GetAll(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery = null)
         {
             return await GetAllFromDatabase(getQuery);
+        }
+
+        public async Task<MessageContract<TContract>> Find(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery = null)
+        {
+            return await FindFromDatabase(getQuery);
         }
     }
 }

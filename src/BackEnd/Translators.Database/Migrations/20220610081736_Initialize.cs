@@ -9,6 +9,18 @@ namespace Translators.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Languages",
                 columns: table => new
                 {
@@ -23,43 +35,15 @@ namespace Translators.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LanguageValues",
+                name: "Translators",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IsMain = table.Column<bool>(type: "bit", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    LanguageId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LanguageValues", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_LanguageValues_Languages_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Languages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NameId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Categories_LanguageValues_NameId",
-                        column: x => x.NameId,
-                        principalTable: "LanguageValues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                    table.PrimaryKey("PK_Translators", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,7 +52,6 @@ namespace Translators.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NameId = table.Column<long>(type: "bigint", nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -80,12 +63,6 @@ namespace Translators.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Books_LanguageValues_NameId",
-                        column: x => x.NameId,
-                        principalTable: "LanguageValues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,7 +73,6 @@ namespace Translators.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Number = table.Column<int>(type: "int", nullable: false),
                     StartPageNumber = table.Column<int>(type: "int", nullable: false),
-                    NameId = table.Column<long>(type: "bigint", nullable: false),
                     BookId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -108,12 +84,6 @@ namespace Translators.Migrations
                         principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Catalogs_LanguageValues_NameId",
-                        column: x => x.NameId,
-                        principalTable: "LanguageValues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -144,11 +114,18 @@ namespace Translators.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Number = table.Column<long>(type: "bigint", nullable: false),
                     AnotherValue = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PageId = table.Column<long>(type: "bigint", nullable: false)
+                    PageId = table.Column<long>(type: "bigint", nullable: false),
+                    CatalogId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Paragraphs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Paragraphs_Catalogs_CatalogId",
+                        column: x => x.CatalogId,
+                        principalTable: "Catalogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Paragraphs_Pages_PageId",
                         column: x => x.PageId,
@@ -164,24 +141,74 @@ namespace Translators.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Index = table.Column<int>(type: "int", nullable: false),
-                    ValueId = table.Column<long>(type: "bigint", nullable: false),
                     ParagraphId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Words", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Words_LanguageValues_ValueId",
-                        column: x => x.ValueId,
-                        principalTable: "LanguageValues",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Words_Paragraphs_ParagraphId",
                         column: x => x.ParagraphId,
                         principalTable: "Paragraphs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Values",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsMain = table.Column<bool>(type: "bit", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LanguageId = table.Column<long>(type: "bigint", nullable: false),
+                    TranslatorId = table.Column<long>(type: "bigint", nullable: true),
+                    TranslatorNameId = table.Column<long>(type: "bigint", nullable: true),
+                    BookNameId = table.Column<long>(type: "bigint", nullable: true),
+                    CategoryNameId = table.Column<long>(type: "bigint", nullable: true),
+                    CatalogNameId = table.Column<long>(type: "bigint", nullable: true),
+                    WordValueId = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Values", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Values_Books_BookNameId",
+                        column: x => x.BookNameId,
+                        principalTable: "Books",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Values_Catalogs_CatalogNameId",
+                        column: x => x.CatalogNameId,
+                        principalTable: "Catalogs",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Values_Categories_CategoryNameId",
+                        column: x => x.CategoryNameId,
+                        principalTable: "Categories",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Values_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Values_Translators_TranslatorId",
+                        column: x => x.TranslatorId,
+                        principalTable: "Translators",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Values_Translators_TranslatorNameId",
+                        column: x => x.TranslatorNameId,
+                        principalTable: "Translators",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Values_Words_WordValueId",
+                        column: x => x.WordValueId,
+                        principalTable: "Words",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -230,24 +257,9 @@ namespace Translators.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_NameId",
-                table: "Books",
-                column: "NameId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Catalogs_BookId",
                 table: "Catalogs",
                 column: "BookId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Catalogs_NameId",
-                table: "Catalogs",
-                column: "NameId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Categories_NameId",
-                table: "Categories",
-                column: "NameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Languages_Code",
@@ -260,21 +272,6 @@ namespace Translators.Migrations
                 column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LanguageValues_IsMain",
-                table: "LanguageValues",
-                column: "IsMain");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LanguageValues_LanguageId",
-                table: "LanguageValues",
-                column: "LanguageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LanguageValues_Value",
-                table: "LanguageValues",
-                column: "Value");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Pages_CatalogId",
                 table: "Pages",
                 column: "CatalogId");
@@ -285,6 +282,11 @@ namespace Translators.Migrations
                 column: "Number");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Paragraphs_CatalogId",
+                table: "Paragraphs",
+                column: "CatalogId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Paragraphs_Number",
                 table: "Paragraphs",
                 column: "Number");
@@ -293,6 +295,51 @@ namespace Translators.Migrations
                 name: "IX_Paragraphs_PageId",
                 table: "Paragraphs",
                 column: "PageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Values_BookNameId",
+                table: "Values",
+                column: "BookNameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Values_CatalogNameId",
+                table: "Values",
+                column: "CatalogNameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Values_CategoryNameId",
+                table: "Values",
+                column: "CategoryNameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Values_IsMain",
+                table: "Values",
+                column: "IsMain");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Values_LanguageId",
+                table: "Values",
+                column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Values_TranslatorId",
+                table: "Values",
+                column: "TranslatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Values_TranslatorNameId",
+                table: "Values",
+                column: "TranslatorNameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Values_Value",
+                table: "Values",
+                column: "Value");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Values_WordValueId",
+                table: "Values",
+                column: "WordValueId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WordLetterEntity_Value",
@@ -323,20 +370,24 @@ namespace Translators.Migrations
                 name: "IX_Words_ParagraphId",
                 table: "Words",
                 column: "ParagraphId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Words_ValueId",
-                table: "Words",
-                column: "ValueId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Values");
+
+            migrationBuilder.DropTable(
                 name: "WordLetterEntity");
 
             migrationBuilder.DropTable(
                 name: "WordRootEntity");
+
+            migrationBuilder.DropTable(
+                name: "Languages");
+
+            migrationBuilder.DropTable(
+                name: "Translators");
 
             migrationBuilder.DropTable(
                 name: "Words");
@@ -355,12 +406,6 @@ namespace Translators.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "LanguageValues");
-
-            migrationBuilder.DropTable(
-                name: "Languages");
         }
     }
 }

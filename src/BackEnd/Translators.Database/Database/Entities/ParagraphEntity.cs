@@ -18,6 +18,9 @@ namespace Translators.Database.Entities
         public long PageId { get; set; }
         public PageEntity Page { get; set; }
 
+        public long CatalogId { get; set; }
+        public CatalogEntity Catalog { get; set; }
+
         public List<WordEntity> Words { get; set; }
     }
 }

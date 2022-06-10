@@ -1,4 +1,5 @@
-﻿using Translators.Contracts.Common;
+﻿using System.Linq;
+using Translators.Contracts.Common;
 
 namespace Translators.Models
 {
@@ -20,7 +21,7 @@ namespace Translators.Models
             return new CategoryModel()
             {
                 Id = category.Id,
-                Name = category.Name.Value,
+                Name = category.Names.First(x => x.IsMain).Value,
                 Type = ServiceType.Category
             };
         }
@@ -30,7 +31,7 @@ namespace Translators.Models
             return new CategoryModel()
             {
                 Id = book.Id,
-                Name = book.Name.Value,
+                Name = book.Names.First(x => x.IsMain).Value,
                 Type = ServiceType.Book
             };
         }

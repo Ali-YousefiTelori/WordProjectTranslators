@@ -1,4 +1,4 @@
-﻿using Translators.Contracts.Common;
+﻿using Translators.Database.Entities;
 
 namespace Translators.Patches
 {
@@ -18,57 +18,64 @@ namespace Translators.Patches
         public int hizbQuarter { get; set; }
         public object sajda { get; set; }
 
-        public static long SearchLanguageId;
-        public ParagraphContract GetParagraph(long languageId)
+        public static LanguageEntity SearchLanguage = new LanguageEntity() { Code = "search", Name = "Search Language" };
+        public ParagraphEntity GetParagraph(LanguageEntity language, CatalogEntity catalog)
         {
             int index = 0;
             var mainWords = UnSpaceArabic(text).Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x =>
             {
-                var word = GetWord(index, languageId, x);
+                var word = GetWord(index, language, x);
                 index++;
                 return word;
-            }).Where(x => !string.IsNullOrEmpty(x.Value.Value.Trim())).ToList();
+            }).Where(x => x.Values.All(v => !string.IsNullOrEmpty(v.Value.Trim()))).ToList();
             index = 0;
             mainWords.AddRange(UnSpaceArabic(text).Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x =>
             {
                 var word = GetSimpleWord(index, x);
                 index++;
                 return word;
-            }).Where(x => !string.IsNullOrEmpty(x.Value.Value.Trim())));
-            return new ParagraphContract()
+            }).Where(x => x.Values.All(v => !string.IsNullOrEmpty(v.Value.Trim()))));
+            return new ParagraphEntity()
             {
                 Number = numberInSurah,
                 AnotherValue = $"{number}_{juz}_{manzil}_{page}_{pageInSurah}_{ruku}_{hizbQuarter}_{sajda}",
-                Words = mainWords
+                Words = mainWords,
+                Catalog = catalog
             };
         }
 
-        WordContract GetWord(int index, long languageId, string value)
+        WordEntity GetWord(int index, LanguageEntity language, string value)
         {
-            return new WordContract()
+            return new WordEntity()
             {
                 Index = index,
-                Value = new LanguageValueContract()
+                Values = new List<ValueEntity>()
                 {
-                    LanguageId = languageId,
-                    IsMain = true,
-                    Value = SpaceArabic(Clean(value))
+                    new ValueEntity()
+                    {
+                        Language = language,
+                        IsMain = true,
+                        Value = SpaceArabic(Clean(value))
+                    }
                 }
             };
         }
 
         static string SearchChars = "اآبتثجچحخدذرزسشصضطظعغفقکلمنوهیكڪىيٱءإئۀةؤأ";
-        WordContract GetSimpleWord(int index, string value)
+        WordEntity GetSimpleWord(int index, string value)
         {
-            var word = new WordContract()
+            var word = new WordEntity()
             {
                 Index = index,
-                Value = new LanguageValueContract()
+                Values = new List<ValueEntity>()
                 {
-                    LanguageId = SearchLanguageId,
-                    IsMain = false,
-                    Value = new string(Clean(value).Where(x => SearchChars.Contains(x)).ToArray())
-                    .Replace("ٱ", "ا").Replace("آ", "ا").Replace("إ", "ا").Replace("أ", "ا").Replace("ء", "").Replace("ؤ", "و").Replace("ة", "ه").Replace("ۀ", "ه").Replace('ك', 'ک').Replace('ڪ', 'ک').Replace('ئ', 'ی').Replace('ي', 'ی').Replace('ى', 'ی')
+                    new ValueEntity()
+                    {
+                        Language = SearchLanguage,
+                        IsMain = false,
+                        Value = new string(Clean(value).Where(x => SearchChars.Contains(x)).ToArray())
+                        .Replace("ٱ", "ا").Replace("آ", "ا").Replace("إ", "ا").Replace("أ", "ا").Replace("ء", "").Replace("ؤ", "و").Replace("ة", "ه").Replace("ۀ", "ه").Replace('ك', 'ک').Replace('ڪ', 'ک').Replace('ئ', 'ی').Replace('ي', 'ی').Replace('ى', 'ی')
+                    }
                 }
             };
             return word;
@@ -112,27 +119,33 @@ namespace Translators.Patches
         public string status { get; set; }
         public Data data { get; set; }
 
-        public CategoryContract GetBook(long languageId)
+        public CategoryEntity GetBook(LanguageEntity language)
         {
-            return new CategoryContract()
+            return new CategoryEntity()
             {
-                Name = new LanguageValueContract()
+                Names = new List<ValueEntity>()
                 {
-                    IsMain = true,
-                    LanguageId = languageId,
-                    Value = "القرآن"
-                },
-                Books = new List<BookContract>()
-                {
-                    new BookContract()
+                    new ValueEntity()
                     {
-                        Name = new LanguageValueContract
+                        IsMain = true,
+                        Language = language,
+                        Value = "القرآن"
+                    }
+                },
+                Books = new List<BookEntity>()
+                {
+                    new BookEntity()
+                    {
+                        Names = new List<ValueEntity>()
                         {
-                            IsMain = true,
-                            Value = "القرآن الكريم",
-                            LanguageId = languageId
+                            new ValueEntity
+                            {
+                                IsMain = true,
+                                Value = "القرآن الكريم",
+                                Language = language
+                            }
                         },
-                        Catalogs = data.surahs.Select(x=> x.GetCatalog(languageId)).ToList()
+                        Catalogs = data.surahs.Select(x=> x.GetCatalog(language)).ToList()
                     }
                 }
             };
@@ -148,7 +161,7 @@ namespace Translators.Patches
         public string revelationType { get; set; }
         public List<Ayah> ayahs { get; set; }
 
-        public CatalogContract GetCatalog(long languageId)
+        public CatalogEntity GetCatalog(LanguageEntity language)
         {
             var pageGroup = ayahs.GroupBy(x => x.page);
             var minPageNumber = ayahs.GroupBy(x => x.page).Min(x => x.Key);
@@ -163,22 +176,26 @@ namespace Translators.Patches
                     ayah.pageInSurah = ayah.page - minPageNumber + 1;
                 }
             }
-            return new CatalogContract()
+            var catalog = new CatalogEntity()
             {
                 Number = number,
                 StartPageNumber = minPageNumber,
-                Name = new LanguageValueContract()
+                Names = new List<ValueEntity>()
                 {
-                    IsMain = true,
-                    LanguageId = languageId,
-                    Value = name,
-                },
-                Pages = ayahs.GroupBy(x => x.page).Select(x => new PageContract()
-                {
-                    Number = x.Key,
-                    Paragraphs = x.Select(i => i.GetParagraph(languageId)).ToList()
-                }).ToList()
+                    new ValueEntity()
+                    {
+                        IsMain = true,
+                        Language = language,
+                        Value = name,
+                    }
+                }
             };
+            catalog.Pages = ayahs.GroupBy(x => x.page).Select(x => new PageEntity()
+            {
+                Number = x.Key,
+                Paragraphs = x.Select(i => i.GetParagraph(language, catalog)).ToList()
+            }).ToList();
+            return catalog;
         }
     }
 }

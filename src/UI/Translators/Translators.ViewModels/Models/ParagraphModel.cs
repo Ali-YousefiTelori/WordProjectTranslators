@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Translators.Contracts.Common;
 
 namespace Translators.Models
 {
     public class ParagraphModel
     {
+        public long Number { get; set; }
         public string MainValue { get; set; }
         public string TranslatedValue { get; set; }
 
@@ -16,8 +13,9 @@ namespace Translators.Models
         {
             return new ParagraphModel()
             {
-                MainValue = string.Join(" ", paragraphContract.Words.Where(x => x.Value.IsMain).OrderBy(x => x.Index).Select(x => x.Value.Value)),
-                TranslatedValue = string.Join(" ", paragraphContract.Words.Where(x => !x.Value.IsMain && x.Value.Language.Code != "").OrderBy(x => x.Index).Select(x => x.Value.Value)),
+                Number = paragraphContract.Number,
+                MainValue = string.Join(" ", paragraphContract.Words.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => x.IsMain).Select(x => x.Value)),
+                TranslatedValue = string.Join(" ", paragraphContract.Words.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && x.Language.Code == "fa-ir").Select(x => x.Value)),
             };
         }
     }
