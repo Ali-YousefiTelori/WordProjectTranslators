@@ -12,6 +12,7 @@ namespace Translators.Database.Entities
     public class BookEntity
     {
         public long Id { get; set; }
+        public bool IsHidden { get; set; }
 
         public List<ValueEntity> Names { get; set; }
 

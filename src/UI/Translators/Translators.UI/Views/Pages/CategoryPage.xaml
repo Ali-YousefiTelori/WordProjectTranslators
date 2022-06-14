@@ -3,26 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Translators.UI.Views.Pages.CategoryPage"
              xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+             xmlns:conv="clr-namespace:Translators.Converters;assembly=Translators.ViewModels"
              Title="CategoryPage">
     <ContentPage.Resources>
         <viewmodels:CategoryViewModel x:Key="CategoryViewModel" />
+        <conv:LanguageValueConverter LanguageCode="fa-ir" x:Key="LanguageValueConverter"/>
     </ContentPage.Resources>
     <ContentPage.BindingContext>
         <Binding Source="{StaticResource CategoryViewModel}"/>
     </ContentPage.BindingContext>
-    <Grid>
-        <FlexLayout BindableLayout.ItemsSource="{Binding Items}">
-            <BindableLayout.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="10" BackgroundColor="#01FFFFFF" WidthRequest="200" HeightRequest="200" Stroke="#C49B33" StrokeThickness="4" StrokeShape="RoundRectangle 40,0,0,40">
-                        <Label Text="{Binding Name}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource CategoryViewModel}}" CommandParameter="{Binding}" />
-                        </Border.GestureRecognizers>
-                    </Border>
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </FlexLayout>
-        <ActivityIndicator IsRunning="{Binding IsLoading}"/>
-    </Grid>
+    <ScrollView HorizontalScrollBarVisibility="Never">
+        <Grid>
+            <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Items}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="10" BackgroundColor="#01FFFFFF" WidthRequest="200" HeightRequest="200" Stroke="#C49B33" StrokeThickness="4" StrokeShape="RoundRectangle 40,0,0,40">
+                            <Label Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource CategoryViewModel}}" CommandParameter="{Binding}" />
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+            <ActivityIndicator IsRunning="{Binding IsLoading}"/>
+        </Grid>
+    </ScrollView>
 </ContentPage>

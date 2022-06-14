@@ -28,7 +28,7 @@ namespace Translators.UI.Helpers
             }
         }
 
-        public async Task PushPage(long id, PageType pageType)
+        public async Task PushPage(long id, long rootId, PageType pageType)
         {
             switch (pageType)
             {
@@ -42,7 +42,7 @@ namespace Translators.UI.Helpers
                 case PageType.Ayat:
                     {
                         var page = new PagesPage();
-                        _ = (page.BindingContext as PageViewModel).Initialize(id);
+                        _ = (page.BindingContext as PageViewModel).Initialize(id, rootId);
                         await Navigation.PushAsync(page);
                         break;
                     }

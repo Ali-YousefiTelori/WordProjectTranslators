@@ -13,9 +13,9 @@ namespace Translators.Helpers
             Current = navigation;
         }
 
-        public static async Task PushPage(long id, PageType pageType)
+        public static async Task PushPage(long id, long rootId, PageType pageType)
         {
-            await Current.PushPage(id, pageType);
+            await Current.PushPage(id, rootId, pageType);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
+using Translators.Converters;
 using Translators.Helpers;
 using Translators.Models;
 
@@ -30,6 +31,8 @@ namespace Translators.ViewModels.Pages
             }
         }
 
+        public long BookId { get; set; }
+
         private long _catalogStartPageNumber;
         public long CatalogStartPageNumber
         {
@@ -41,19 +44,20 @@ namespace Translators.ViewModels.Pages
             }
         }
 
-        public async Task Initialize(long startPageNumber)
+        public async Task Initialize(long startPageNumber, long bookId)
         {
+            BookId = bookId;
             CatalogStartPageNumber = startPageNumber;
             await LoadData();
         }
 
         public override async Task FetchData()
         {
-            var pages = await TranslatorService.PageServiceHttp.GetPageAsync(CatalogStartPageNumber);
+            var pages = await TranslatorService.PageServiceHttp.GetPageAsync(CatalogStartPageNumber, BookId);
             if (pages.IsSuccess)
             {
-                InitialData(pages.Result.Paragraphs.Select(x => (ParagraphModel)x));
-                CatalogName = pages.Result.CatalogNames.FirstOrDefault()?.Value;
+                InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(x => (ParagraphModel)x)));
+                CatalogName = LanguageValueConverter.GetValue(pages.Result.Last().CatalogNames, false, "fa-ir");
             }
         }
 

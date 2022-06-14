@@ -10,6 +10,14 @@ namespace Translators.Logics
         where TContext : TranslatorContext, new()
         where TEntity : class
     {
+        async Task<List<TEntity>> AddRangeToDatabase(List<TEntity> entities)
+        {
+            TContext context = new TContext();
+            await context.AddRangeAsync(entities);
+            await context.SaveChangesAsync();
+            return entities;
+        }
+
         async Task<TEntity> AddToDatabase(TEntity entity)
         {
             TContext context = new TContext();
@@ -54,6 +62,11 @@ namespace Translators.Logics
                 query = getQuery(query);
             var entity = await query.FirstOrDefaultAsync();
             return entity.Map<TContract>();
+        }
+
+        public async Task<MessageContract<List<TEntity>>> AddRange(List<TEntity> entities)
+        {
+            return await AddRangeToDatabase(entities);
         }
 
         public async Task<MessageContract<TEntity>> Add(TEntity entity)

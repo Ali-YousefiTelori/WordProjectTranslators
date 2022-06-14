@@ -30,18 +30,24 @@
                 <DataTemplate>
                     <ViewCell>
                         <Border Margin="10" BackgroundColor="#01FFFFFF">
-                            <HorizontalStackLayout>
-                                <HorizontalStackLayout Margin="10,0,10,0" VerticalOptions="Center" HorizontalOptions="Center">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Label Text="{Binding MainValue}" />
+                                <Label LineBreakMode="WordWrap" Grid.Row="1" Text="{Binding TranslatedValue}" />
+                                <HorizontalStackLayout Grid.RowSpan="2" Grid.Column="1" Margin="10,0,10,0" VerticalOptions="Center" HorizontalOptions="Center">
                                     <!--<Label Text="۝"  VerticalOptions="Center" HorizontalOptions="Center" FontSize="20" Margin="10,0,10,0"/>-->
                                     <Label Text="(" VerticalOptions="Center" HorizontalOptions="Center"/>
                                     <Label Text="{Binding Number}"  VerticalOptions="Center" HorizontalOptions="Center"/>
                                     <Label Text=")"  VerticalOptions="Center" HorizontalOptions="Center"/>
                                 </HorizontalStackLayout>
-                                <VerticalStackLayout>
-                                    <Label Text="{Binding MainValue}" />
-                                    <Label Text="{Binding TranslatedValue}" />
-                                </VerticalStackLayout>
-                            </HorizontalStackLayout>
+                            </Grid>
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource PageViewModel}}" CommandParameter="{Binding}" />
                             </Border.GestureRecognizers>

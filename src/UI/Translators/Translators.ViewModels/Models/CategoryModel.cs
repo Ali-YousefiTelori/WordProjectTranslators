@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Translators.Contracts.Common;
 
 namespace Translators.Models
@@ -13,7 +14,7 @@ namespace Translators.Models
     public class CategoryModel
     {
         public long Id { get; set; }
-        public string Name { get; set; }
+        public List<ValueContract> Names { get; set; }
         public ServiceType Type { get; set; }
 
         public static implicit operator CategoryModel(CategoryContract category)
@@ -21,7 +22,7 @@ namespace Translators.Models
             return new CategoryModel()
             {
                 Id = category.Id,
-                Name = category.Names.First(x => x.IsMain).Value,
+                Names = category.Names,
                 Type = ServiceType.Category
             };
         }
@@ -31,7 +32,7 @@ namespace Translators.Models
             return new CategoryModel()
             {
                 Id = book.Id,
-                Name = book.Names.First(x => x.IsMain).Value,
+                Names = book.Names,
                 Type = ServiceType.Book
             };
         }

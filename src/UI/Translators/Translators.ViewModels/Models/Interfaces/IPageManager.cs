@@ -8,6 +8,6 @@ namespace Translators.Models.Interfaces
 {
     public interface IPageManager
     {
-        Task PushPage(long id, PageType pageType);
+        Task PushPage(long id, long rootId, PageType pageType);
     }
 }

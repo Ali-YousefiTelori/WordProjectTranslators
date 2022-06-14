@@ -17,84 +17,6 @@ namespace Translators.Patches
         public int ruku { get; set; }
         public int hizbQuarter { get; set; }
         public object sajda { get; set; }
-
-        public static LanguageEntity SearchLanguage = new LanguageEntity() { Code = "search", Name = "Search Language" };
-        public ParagraphEntity GetParagraph(LanguageEntity language, CatalogEntity catalog)
-        {
-            int index = 0;
-            var mainWords = UnSpaceArabic(text).Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x =>
-            {
-                var word = GetWord(index, language, x);
-                index++;
-                return word;
-            }).Where(x => x.Values.All(v => !string.IsNullOrEmpty(v.Value.Trim()))).ToList();
-            index = 0;
-            mainWords.AddRange(UnSpaceArabic(text).Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x =>
-            {
-                var word = GetSimpleWord(index, x);
-                index++;
-                return word;
-            }).Where(x => x.Values.All(v => !string.IsNullOrEmpty(v.Value.Trim()))));
-            return new ParagraphEntity()
-            {
-                Number = numberInSurah,
-                AnotherValue = $"{number}_{juz}_{manzil}_{page}_{pageInSurah}_{ruku}_{hizbQuarter}_{sajda}",
-                Words = mainWords,
-                Catalog = catalog
-            };
-        }
-
-        WordEntity GetWord(int index, LanguageEntity language, string value)
-        {
-            return new WordEntity()
-            {
-                Index = index,
-                Values = new List<ValueEntity>()
-                {
-                    new ValueEntity()
-                    {
-                        Language = language,
-                        IsMain = true,
-                        Value = SpaceArabic(Clean(value))
-                    }
-                }
-            };
-        }
-
-        static string SearchChars = "اآبتثجچحخدذرزسشصضطظعغفقکلمنوهیكڪىيٱءإئۀةؤأ";
-        WordEntity GetSimpleWord(int index, string value)
-        {
-            var word = new WordEntity()
-            {
-                Index = index,
-                Values = new List<ValueEntity>()
-                {
-                    new ValueEntity()
-                    {
-                        Language = SearchLanguage,
-                        IsMain = false,
-                        Value = new string(Clean(value).Where(x => SearchChars.Contains(x)).ToArray())
-                        .Replace("ٱ", "ا").Replace("آ", "ا").Replace("إ", "ا").Replace("أ", "ا").Replace("ء", "").Replace("ؤ", "و").Replace("ة", "ه").Replace("ۀ", "ه").Replace('ك', 'ک').Replace('ڪ', 'ک').Replace('ئ', 'ی').Replace('ي', 'ی').Replace('ى', 'ی')
-                    }
-                }
-            };
-            return word;
-        }
-
-        string UnSpaceArabic(string text)
-        {
-            return text.Replace(" ۛ", "ۛ").Replace(" ۖ", "ۖ").Replace(" ۗ", "ۗ").Replace(" ۚ", "ۚ").Replace(" ۙ", "ۙ").Replace(" ۘ", "").Replace(" ۜ", "");
-        }
-
-        string SpaceArabic(string text)
-        {
-            return text.Replace("ۛ", " ۛ").Replace("ۖ", " ۖ").Replace("ۗ", " ۗ").Replace("ۚ", " ۚ").Replace("ۙ", " ۙ").Replace("ۘ", "").Replace("ۜ", " ۜ");
-        }
-
-        string Clean(string text)
-        {
-            return text.Replace("۞", "").Replace("۩", "");
-        }
     }
 
     public class Data
@@ -193,7 +115,13 @@ namespace Translators.Patches
             catalog.Pages = ayahs.GroupBy(x => x.page).Select(x => new PageEntity()
             {
                 Number = x.Key,
-                Paragraphs = x.Select(i => i.GetParagraph(language, catalog)).ToList()
+                Paragraphs = x.Select(i =>
+                {
+                    var result = TextHelper.GetParagraph(i.text, language, catalog, true);
+                    result.Number = i.numberInSurah;
+                    result.AnotherValue = $"{i.number}_{i.juz}_{i.manzil}_{i.page}_{i.pageInSurah}_{i.ruku}_{i.hizbQuarter}_{i.sajda}";
+                    return result;
+                }).ToList()
             }).ToList();
             return catalog;
         }

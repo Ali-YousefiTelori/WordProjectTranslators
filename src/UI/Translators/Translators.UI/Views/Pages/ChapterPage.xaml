@@ -7,7 +7,7 @@
              Title="ChapterPage">
     <ContentPage.Resources>
         <viewmodels:ChapterViewModel x:Key="ChapterViewModel" />
-        <conv:LanguageValueConverter IsMain="True" x:Key="LanguageValueConverter"/>
+        <conv:LanguageValueConverter LanguageCode="fa-ir" x:Key="LanguageValueConverter"/>
     </ContentPage.Resources>
     <ContentPage.BindingContext>
         <Binding Source="{StaticResource ChapterViewModel}"/>

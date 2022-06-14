@@ -1,6 +1,4 @@
 ﻿using Microsoft.Maui.Controls;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Translators.Helpers;
@@ -24,7 +22,7 @@ namespace Translators.ViewModels.Pages
                 ServiceType = ServiceType.Book;
             else if (category.Type == ServiceType.Book)
             {
-                await PageHelper.PushPage(category.Id, PageType.Sura);
+                await PageHelper.PushPage(category.Id, 0, PageType.Sura);
                 return;
             }
             SelectedCategoryId = category.Id;

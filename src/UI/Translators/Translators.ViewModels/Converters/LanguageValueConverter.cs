@@ -15,9 +15,21 @@ namespace Translators.Converters
         {
             if (value is List<ValueContract> values)
             {
-                return values.FirstOrDefault(x => x.IsMain == IsMain || x.Language?.Code == LanguageCode).Value;
+                return GetValue(values, IsMain, LanguageCode);
             }
             return $"Value {value?.GetType().Name} not found!";
+        }
+
+        public static string GetValue(List<ValueContract> values, bool isMain, string languageCode)
+        {
+            if (values != null)
+            {
+                var find = values.FirstOrDefault(x => x.IsMain == isMain || x.Language?.Code == languageCode);
+                if (find == null)
+                    return values.FirstOrDefault()?.Value;
+                return find.Value;
+            }
+            return $"Value not found!";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
