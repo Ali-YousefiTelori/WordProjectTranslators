@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Translators.Contracts.Common;
 using Translators.Database.Contexts;
 using Translators.Database.Entities;
 using Translators.Logics;
@@ -14,12 +13,19 @@ namespace Translators.Patches
             try
             {
                 await ConfigData.LoadAsync();
-                List<CategoryEntity> books = new List<CategoryEntity>();
-                books.Add(await LoadQuran());
-                books.Add(await LoadOldTestament());
-                books.Add(await LoadNewTestament());
-                LogicBase<TranslatorContext, CategoryContract, CategoryEntity> logic = new LogicBase<TranslatorContext, CategoryContract, CategoryEntity>();
-                var result = await logic.AddRange(books);
+                //List<CategoryEntity> books = new List<CategoryEntity>();
+                var quran = await LoadQuran();
+                //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(quran);
+                var enjil = await LoadNewTestament();
+                //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(enjil);
+                var torat = await LoadOldTestament();
+                //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(torat);
+                await Save(new List<CategoryEntity>()
+                {
+                     quran,
+                     enjil,
+                     torat
+                });
                 Console.WriteLine("Started.");
             }
             catch (Exception ex)
@@ -28,6 +34,179 @@ namespace Translators.Patches
             }
 
             Console.ReadLine();
+        }
+
+        static async Task Save(List<CategoryEntity> categories)
+        {
+            Console.WriteLine($"Save categories {categories.Count}");
+            using TranslatorContext translatorContext = new TranslatorContext();
+            var categoryIndex = 0;
+            foreach (var category in categories)
+            {
+                categoryIndex++;
+                var books = category.Books;
+                category.Books = null;
+                translatorContext.Entry(category).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                await translatorContext.SaveChangesAsync();
+                foreach (var item in category.Names)
+                {
+                    item.CategoryNameId = category.Id;
+                }
+                await SaveValues(category.Names);
+
+                foreach (var book in books)
+                {
+                    book.CategoryId = category.Id;
+                }
+                await SaveBooks(books, categoryIndex);
+            }
+            Console.WriteLine($"Save Ends...");
+
+            await translatorContext.SaveChangesAsync();
+        }
+
+        static async Task SaveBooks(List<BookEntity> books, int categoryIndex)
+        {
+            using TranslatorContext translatorContext = new TranslatorContext();
+            Console.WriteLine($"Save books {books.Count}");
+            int bookIndex = 0;
+            foreach (var book in books)
+            {
+                bookIndex++;
+                var catalogs = book.Catalogs;
+                book.Catalogs = null;
+                book.Category = null;
+                translatorContext.Entry(book).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                await translatorContext.SaveChangesAsync();
+                foreach (var item in book.Names)
+                {
+                    item.BookNameId = book.Id;
+                }
+                await SaveValues(book.Names);
+                foreach (var catalog in catalogs)
+                {
+                    catalog.BookId = book.Id;
+                }
+                await SaveCatalog(catalogs, bookIndex, categoryIndex);
+            }
+        }
+
+        static async Task SaveCatalog(List<CatalogEntity> catalogs, int bookIndex, int categoryIndex)
+        {
+            using TranslatorContext translatorContext = new TranslatorContext();
+            Console.WriteLine($"Save catalogs {catalogs.Count} book {bookIndex} category {categoryIndex}");
+            var suraIndex = 0;
+            foreach (var catalog in catalogs)
+            {
+                suraIndex++;
+                var paragraphs = catalog.Paragraphs;
+                catalog.Paragraphs = null;
+                var pages = catalog.Pages;
+                catalog.Pages = null;
+                translatorContext.Entry(catalog).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                await translatorContext.SaveChangesAsync();
+                foreach (var item in catalog.Names)
+                {
+                    item.CatalogNameId = catalog.Id;
+                }
+                await SaveValues(catalog.Names);
+                if (paragraphs != null)
+                {
+                    foreach (var paragraph in paragraphs)
+                    {
+                        paragraph.CatalogId = catalog.Id;
+                    }
+                }
+                foreach (var page in pages)
+                {
+                    page.CatalogId = catalog.Id;
+                }
+                await SavePages(pages, paragraphs == null, suraIndex, bookIndex, categoryIndex);
+                if (paragraphs != null)
+                    await SaveParagraph(paragraphs);
+            }
+        }
+
+        static async Task SavePages(List<PageEntity> pages, bool saveParagraphs, int suraIndex, int bookIndex, int categoryIndex)
+        {
+            using TranslatorContext translatorContext = new TranslatorContext();
+            Console.WriteLine($"Save pages {pages.Count} sura {suraIndex} book {bookIndex} category {categoryIndex}");
+            foreach (var page in pages)
+            {
+                var paragraphs = page.Paragraphs;
+                page.Paragraphs = null;
+                translatorContext.Entry(page).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                await translatorContext.SaveChangesAsync();
+                foreach (var paragraph in paragraphs)
+                {
+                    paragraph.PageId = page.Id;
+                    paragraph.CatalogId = page.CatalogId;
+                }
+                if (saveParagraphs)
+                    await SaveParagraph(paragraphs);
+            }
+        }
+
+        static async Task SaveParagraph(List<ParagraphEntity> paragraphs)
+        {
+            using TranslatorContext translatorContext = new TranslatorContext();
+            Console.WriteLine($"Save paragraphs {paragraphs.Count}");
+            foreach (var paragraph in paragraphs)
+            {
+                translatorContext.Entry(paragraph).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                await translatorContext.SaveChangesAsync();
+                foreach (var word in paragraph.Words)
+                {
+                    word.ParagraphId = paragraph.Id;
+                }
+                await SaveWords(paragraph.Words);
+            }
+        }
+
+        static async Task SaveWords(List<WordEntity> words)
+        {
+            using TranslatorContext translatorContext = new TranslatorContext();
+            foreach (var word in words)
+            {
+                translatorContext.Entry(word).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                await translatorContext.SaveChangesAsync();
+                foreach (var value in word.Values)
+                {
+                    value.WordValueId = word.Id;
+                }
+                await SaveValues(word.Values);
+            }
+
+            await translatorContext.SaveChangesAsync();
+        }
+
+        static async Task SaveValues(List<ValueEntity> values)
+        {
+            using TranslatorContext translatorContext = new TranslatorContext();
+            foreach (var value in values)
+            {
+                translatorContext.Entry(value).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                if (value.Language.Id == 0)
+                {
+                    translatorContext.Entry(value.Language).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                }
+                if ((value.Translator?.Id).GetValueOrDefault(-1) == 0)
+                {
+                    translatorContext.Entry(value.Translator).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                    foreach (var name in value.Translator.Names)
+                    {
+                        if (name.Id == 0)
+                        {
+                            translatorContext.Entry(name).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                            if (name.Language.Id == 0)
+                                translatorContext.Entry(name.Language).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                        }
+                    }
+                }
+                await translatorContext.SaveChangesAsync();
+            }
+
+            await translatorContext.SaveChangesAsync();
         }
 
         static async Task<CategoryEntity> LoadQuran()
@@ -58,7 +237,7 @@ namespace Translators.Patches
             var dataPersian = JsonConvert.DeserializeObject<BibleCloadRoot>(jsonPersian);
             var bookHebrew = dataHebrew.MainBook.GetBook(HebrewLanguage, true);
             var bookPersian = dataPersian.MainBook.GetBook(PersianLanguage, false);
-            var catalog =  Merge(bookHebrew, bookPersian);
+            var catalog = Merge(bookHebrew, bookPersian);
             foreach (var item in catalog.Books.Skip(4))
             {
                 item.IsHidden = true;
@@ -105,7 +284,7 @@ namespace Translators.Patches
         {
             Code = "fa-ir",
             Name = "فارسی"
-        }; 
+        };
 
         static LanguageEntity HebrewLanguage = new LanguageEntity()
         {

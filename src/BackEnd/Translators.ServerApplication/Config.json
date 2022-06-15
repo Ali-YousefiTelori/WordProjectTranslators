@@ -1,3 +1,3 @@
 {
-  "ConnectionString": "Server=localhost;Database=Translators;User ID=test;Password=test1234"
+  "ConnectionString": "Server=localhost;Database=NoorPodTranslators;User ID=test;Password=test1234"
 }

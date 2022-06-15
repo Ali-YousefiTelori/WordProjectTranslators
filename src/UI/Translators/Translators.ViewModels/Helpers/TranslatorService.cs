@@ -11,7 +11,7 @@ namespace Translators.Helpers
 
         }
 
-        static string ServiceAddress { get; set; } = "http://localhost:9341";
+        static string ServiceAddress { get; set; } = "http://api.noorpod.ir";//"http://localhost:9341";
         static HttpClient HttpClient { get; set; } = new HttpClient() { Encoding = Encoding.UTF8 };
 
         public static IBookServiceAsync BookServiceHttp
