@@ -5,7 +5,13 @@
         None = 0,
         Category = 1,
         Book = 2,
-        Sura = 3,
-        Ayat = 4
+        /// <summary>
+        /// sura
+        /// </summary>
+        Chapter = 3,
+        /// <summary>
+        /// Ayat
+        /// </summary>
+        Pages = 4
     }
 }

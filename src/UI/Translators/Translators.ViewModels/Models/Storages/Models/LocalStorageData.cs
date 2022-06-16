@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Translators.Models.Storages
+namespace Translators.Models.Storages.Models
 {
     internal class LocalStorageData
     {

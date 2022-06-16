@@ -1,4 +1,5 @@
-﻿using Translators.UI.Helpers;
+﻿using Translators.Models.Storages;
+using Translators.UI.Helpers;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,6 +12,7 @@ namespace Translators.UI.Views.Pages
         {
             InitializeComponent();
             NavigationManager.Initialize(Navigation);
+            _ = ApplicationPagesData.Current.BaseInitialize();
         }
     }
 }

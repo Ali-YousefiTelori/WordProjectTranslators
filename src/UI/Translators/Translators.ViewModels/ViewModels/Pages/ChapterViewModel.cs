@@ -25,7 +25,7 @@ namespace Translators.ViewModels.Pages
 
         public async Task Touched(CatalogContract catalog)
         {
-            await PageHelper.PushPage(catalog.StartPageNumber, catalog.BookId, PageType.Ayat);
+            await PageHelper.PushPage(catalog.StartPageNumber, catalog.BookId, PageType.Pages);
         }
 
         public override async Task FetchData(bool isForce)

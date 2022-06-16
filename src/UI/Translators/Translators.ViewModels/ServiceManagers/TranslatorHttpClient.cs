@@ -34,7 +34,7 @@ namespace Translators.ServiceManagers
             if (messageContract.IsSuccess)
             {
                 var key = GetKey(url, parameterInfoes);
-                await ApplicationStorage.Add(key, value);
+                await ApplicationBookData.Add(key, value);
             }
         }
     }
@@ -43,7 +43,7 @@ namespace Translators.ServiceManagers
     {
         public override async Task<HttpClientResponse> PostAsync(string url, ParameterInfo[] parameterInfoes, BaseStreamInfo streamInfo = null)
         {
-            if (ApplicationStorage.TryGet(GetKey(url, parameterInfoes), out var value))
+            if (ApplicationBookData.TryGet(GetKey(url, parameterInfoes), out var value))
                 return new HttpClientResponse()
                 {
                     Data = new HttpClientDataResponse(value),

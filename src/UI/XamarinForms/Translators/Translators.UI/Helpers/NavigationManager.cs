@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Translators.Models;
 using Translators.Models.Interfaces;
+using Translators.Models.Storages;
 using Translators.UI.Views.Pages;
 using Translators.ViewModels.Pages;
 using Xamarin.Forms;
@@ -35,20 +36,23 @@ namespace Translators.UI.Helpers
                 case PageType.Book:
                     {
                         var page = new BookPage();
+                        ApplicationPagesData.Current.AddPageValue(pageType, id, 0);
                         _ = (page.BindingContext as BookViewModel).Initialize(id);
                         await Navigation.PushAsync(page);
                         break;
                     }
-                case PageType.Sura:
+                case PageType.Chapter:
                     {
                         var page = new ChapterPage();
+                        ApplicationPagesData.Current.AddPageValue(pageType, id, 0);
                         _ = (page.BindingContext as ChapterViewModel).Initialize(id);
                         await Navigation.PushAsync(page);
                         break;
                     }
-                case PageType.Ayat:
+                case PageType.Pages:
                     {
                         var page = new PagesPage();
+                        ApplicationPagesData.Current.AddPageValue(pageType, id, rootId);
                         _ = (page.BindingContext as PageViewModel).Initialize(id, rootId);
                         await Navigation.PushAsync(page);
                         break;

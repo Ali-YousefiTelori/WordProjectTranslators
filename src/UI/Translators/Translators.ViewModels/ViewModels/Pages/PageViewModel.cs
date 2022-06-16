@@ -5,6 +5,7 @@ using Translators.Converters;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
+using Translators.Models.Storages;
 using Translators.ServiceManagers;
 
 namespace Translators.ViewModels.Pages
@@ -59,6 +60,7 @@ namespace Translators.ViewModels.Pages
             {
                 InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => (ParagraphModel)i)));
                 CatalogName = LanguageValueBaseConverter.GetValue(pages.Result.Last().CatalogNames, false, "fa-ir");
+                ApplicationPagesData.Current.AddPageValue(PageType.Pages, CatalogStartPageNumber, BookId);
             }
         }
 
