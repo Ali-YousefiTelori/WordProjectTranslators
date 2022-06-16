@@ -1,10 +1,10 @@
-﻿using Microsoft.Maui.Controls;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Converters;
 using Translators.Helpers;
 using Translators.Models;
+using Translators.Models.Interfaces;
 
 namespace Translators.ViewModels.Pages
 {
@@ -12,13 +12,13 @@ namespace Translators.ViewModels.Pages
     {
         public PageViewModel()
         {
-            SwipeLeftCommand = new Command(SwipeLeft);
-            SwipeRightCommand = new Command(SwipeRight);
+            SwipeLeftCommand = CommandHelper.Create(SwipeLeft);
+            SwipeRightCommand = CommandHelper.Create(SwipeRight);
         }
 
-        public Command<PageContract> TouchedCommand { get; set; }
-        public Command SwipeLeftCommand { get; set; }
-        public Command SwipeRightCommand { get; set; }
+        public ICommand<PageContract> TouchedCommand { get; set; }
+        public ICommand SwipeLeftCommand { get; set; }
+        public ICommand SwipeRightCommand { get; set; }
 
         string _CatalogName;
         public string CatalogName
@@ -56,12 +56,12 @@ namespace Translators.ViewModels.Pages
             var pages = await TranslatorService.PageServiceHttp.GetPageAsync(CatalogStartPageNumber, BookId);
             if (pages.IsSuccess)
             {
-                InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(x => (ParagraphModel)x)));
-                CatalogName = LanguageValueConverter.GetValue(pages.Result.Last().CatalogNames, false, "fa-ir");
+                InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => (ParagraphModel)i)));
+                CatalogName = LanguageValueBaseConverter.GetValue(pages.Result.Last().CatalogNames, false, "fa-ir");
             }
         }
 
-        private async void SwipeLeft()
+        private async Task SwipeLeft()
         {
             if (IsLoading)
                 return;
@@ -72,7 +72,7 @@ namespace Translators.ViewModels.Pages
             }
         }
 
-        private async void SwipeRight()
+        private async Task SwipeRight()
         {
             if (IsLoading)
                 return;

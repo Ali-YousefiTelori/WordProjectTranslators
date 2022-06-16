@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Translators.UI.Views.Pages.CategoryPage"
              xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
-             xmlns:conv="clr-namespace:Translators.Converters;assembly=Translators.ViewModels"
+             xmlns:conv="clr-namespace:Translators.UI.Converters"
              Title="CategoryPage">
     <ContentPage.Resources>
         <viewmodels:CategoryViewModel x:Key="CategoryViewModel" />

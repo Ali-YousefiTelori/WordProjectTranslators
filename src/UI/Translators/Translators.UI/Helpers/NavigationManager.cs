@@ -8,11 +8,6 @@ namespace Translators.UI.Helpers
 {
     public class NavigationManager : IPageManager
     {
-        static NavigationManager()
-        {
-            PageHelper.Initialize(Current);
-        }
-
         public static NavigationManager Current { get; set; } = new NavigationManager();
         static INavigation Navigation { get; set; }
         public static void Initialize(INavigation navigation)

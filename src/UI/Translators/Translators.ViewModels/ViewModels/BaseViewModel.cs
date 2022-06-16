@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Translators.Helpers;
+using Translators.Models.Interfaces;
 
 namespace Translators.ViewModels
 {
@@ -8,7 +10,10 @@ namespace Translators.ViewModels
     {
         public BaseViewModel()
         {
+            RefreshCommand = CommandHelper.Create(LoadData);
         }
+
+        public ICommand RefreshCommand { get; set; }
 
         bool _IsLoading;
 

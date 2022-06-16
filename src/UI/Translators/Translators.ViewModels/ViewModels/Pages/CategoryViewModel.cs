@@ -1,8 +1,8 @@
-﻿using Microsoft.Maui.Controls;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Translators.Helpers;
 using Translators.Models;
+using Translators.Models.Interfaces;
 
 namespace Translators.ViewModels.Pages
 {
@@ -10,33 +10,21 @@ namespace Translators.ViewModels.Pages
     {
         public CategoryViewModel()
         {
-            TouchedCommand = new Command<CategoryModel>(Touched);
+            TouchedCommand = CommandHelper.Create<CategoryModel>(Touched);
             _ = LoadData();
         }
 
-        public Command<CategoryModel> TouchedCommand { get; set; }
+        public ICommand<CategoryModel> TouchedCommand { get; set; }
 
-        public async void Touched(CategoryModel category)
+        public async Task Touched(CategoryModel category)
         {
-            if (category.Type == ServiceType.Category)
-                ServiceType = ServiceType.Book;
-            else if (category.Type == ServiceType.Book)
-            {
-                await PageHelper.PushPage(category.Id, 0, PageType.Sura);
-                return;
-            }
-            SelectedCategoryId = category.Id;
-            await LoadData();
+            await PageHelper.PushPage(category.Id, 0, PageType.Book);
         }
 
-        ServiceType ServiceType { get; set; } = ServiceType.Category;
         public long SelectedCategoryId { get; set; }
         public override async Task FetchData()
         {
-            if (ServiceType == ServiceType.Category)
-                await FetchCategory();
-            else if (ServiceType == ServiceType.Book)
-                await FetchBook(SelectedCategoryId);
+            await FetchCategory();
         }
 
         public async Task FetchCategory()
@@ -45,15 +33,6 @@ namespace Translators.ViewModels.Pages
             if (categories.IsSuccess)
             {
                 InitialData(categories.Result.Select(x => (CategoryModel)x));
-            }
-        }
-
-        public async Task FetchBook(long categoryId)
-        {
-            var books = await TranslatorService.BookServiceHttp.FilterBooksAsync(categoryId);
-            if (books.IsSuccess)
-            {
-                InitialData(books.Result.Select(x => (CategoryModel)x));
             }
         }
     }

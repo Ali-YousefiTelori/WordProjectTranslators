@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,7 +6,7 @@ using Translators.Contracts.Common;
 
 namespace Translators.Converters
 {
-    public class LanguageValueConverter : IValueConverter
+    public class LanguageValueBaseConverter
     {
         public bool IsMain { get; set; }
         public string LanguageCode { get; set; }

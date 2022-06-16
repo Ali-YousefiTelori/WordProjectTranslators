@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Translators.UI.Views.Pages.PagesPage"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+             Title="Pages">
+    <ContentPage.Resources>
+        <viewmodels:PageViewModel x:Key="PageViewModel" />
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <Binding Source="{StaticResource PageViewModel}"/>
+    </ContentPage.BindingContext>
+    <Grid BackgroundColor="#01FFFFFF" FlowDirection="RightToLeft">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Text="{Binding CatalogName}" Grid.Column="1" VerticalOptions="Center"/>
+        </Grid>
+        <ListView ItemsSource="{Binding Items}" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading}" IsPullToRefreshEnabled="True" HasUnevenRows="True" Grid.Row="1">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="Previous Page" Command="{Binding SwipeLeftCommand,Source={StaticResource PageViewModel}}" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Execute">
+                                    <SwipeItem Text="Next Page" Command="{Binding SwipeRightCommand,Source={StaticResource PageViewModel}}" />
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding MainValue}" />
+                                <Label Grid.Row="1" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" Margin="10,0,10,20" />
+                                <StackLayout Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
+                                    <Label Text=")" />
+                                    <Label Text="{Binding Number}"/>
+                                    <Label Text="("  />
+                                </StackLayout>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource PageViewModel}}" CommandParameter="{Binding}" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </SwipeView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Text="{Binding CatalogStartPageNumber}" Grid.Column="1" VerticalOptions="Center"/>
+        </Grid>
+        <Grid.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Left" Command="{Binding SwipeLeftCommand}"/>
+            <SwipeGestureRecognizer Direction="Right" Command="{Binding SwipeRightCommand}"/>
+        </Grid.GestureRecognizers>
+    </Grid>
+</ContentPage>

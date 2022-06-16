@@ -1,8 +1,8 @@
-﻿using Microsoft.Maui.Controls;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Helpers;
 using Translators.Models;
+using Translators.Models.Interfaces;
 
 namespace Translators.ViewModels.Pages
 {
@@ -10,11 +10,11 @@ namespace Translators.ViewModels.Pages
     {
         public ChapterViewModel()
         {
-            TouchedCommand = new Command<CatalogContract>(Touched);
+            TouchedCommand = CommandHelper.Create<CatalogContract>(Touched);
         }
 
         long BookId = 0;
-        public Command<CatalogContract> TouchedCommand { get; set; }
+        public ICommand<CatalogContract> TouchedCommand { get; set; }
 
         public async Task Initialize(long id)
         {
@@ -22,7 +22,7 @@ namespace Translators.ViewModels.Pages
             await LoadData();
         }
 
-        public async void Touched(CatalogContract catalog)
+        public async Task Touched(CatalogContract catalog)
         {
             await PageHelper.PushPage(catalog.StartPageNumber, catalog.BookId, PageType.Ayat);
         }
