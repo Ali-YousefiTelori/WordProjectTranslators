@@ -20,13 +20,13 @@ namespace Translators.Models.Storages
             if (value?.Pages?.Count(x => x.PageType == PageType.Pages) > 0)
             {
                 var book = value.Pages.FirstOrDefault(x => x.PageType == PageType.Book);
-                await PageHelper.PushPage(book.Id, book.ParentId, PageType.Book);
+                await PageHelper.PushPage(book.Id, book.ParentId,null, PageType.Book);
 
                 var chapter = value.Pages.FirstOrDefault(x => x.PageType == PageType.Chapter);
-                await PageHelper.PushPage(chapter.Id, chapter.ParentId, PageType.Chapter);
+                await PageHelper.PushPage(chapter.Id, chapter.ParentId, null, PageType.Chapter);
 
                 var page = value.Pages.FirstOrDefault(x => x.PageType == PageType.Pages);
-                await PageHelper.PushPage(page.Id, page.ParentId, PageType.Pages);
+                await PageHelper.PushPage(page.Id, page.ParentId, null, PageType.Pages);
             }
         }
 

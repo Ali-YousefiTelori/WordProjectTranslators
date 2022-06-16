@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Translators.Contracts.Common;
 using Translators.Models;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
@@ -21,6 +20,11 @@ namespace Translators.UI.Helpers
             Navigation = navigation;
         }
 
+        public static Page GetCurrentPage()
+        {
+            return Navigation.NavigationStack.LastOrDefault();
+        }
+
         public void RemovePages(Type type)
         {
             foreach (var page in Navigation.NavigationStack.Where(x => x != null && x.GetType() == type))
@@ -29,7 +33,7 @@ namespace Translators.UI.Helpers
             }
         }
 
-        public async Task PushPage(long id, long rootId, PageType pageType)
+        public async Task<object> PushPage(long id, long rootId, object data, PageType pageType)
         {
             switch (pageType)
             {
@@ -45,7 +49,7 @@ namespace Translators.UI.Helpers
                     {
                         var page = new ChapterPage();
                         ApplicationPagesData.Current.AddPageValue(pageType, id, 0);
-                        _ = (page.BindingContext as ChapterViewModel).Initialize(id);
+                        await (page.BindingContext as ChapterViewModel).Initialize(id);
                         await Navigation.PushAsync(page);
                         break;
                     }
@@ -58,6 +62,7 @@ namespace Translators.UI.Helpers
                         break;
                     }
             }
+            return null;
         }
     }
 }

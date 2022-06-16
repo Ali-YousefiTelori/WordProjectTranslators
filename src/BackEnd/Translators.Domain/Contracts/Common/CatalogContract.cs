@@ -16,6 +16,7 @@
         public long BookId { get; set; }
 
         public List<PageContract> Pages { get; set; }
+        public List<ValueContract> BookNames { get; set; }
 
         public override string ToString()
         {

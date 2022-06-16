@@ -16,5 +16,15 @@ namespace Translators.Services
         {
             return await new LogicBase<TranslatorContext, CatalogContract, CatalogEntity>().GetAll(x => x.Include(q => q.Names).ThenInclude(n => n.Language).Include(q => q.Names).ThenInclude(n => n.Translator).Where(q => q.BookId == bookId));
         }
+
+        public async Task<MessageContract<CatalogContract>> GetChapters([NumberValidation] long chapterId)
+        {
+            var chapterResult =  await new LogicBase<TranslatorContext, CatalogContract, CatalogEntity>().Find(x => x.Include(q => q.Names).ThenInclude(n => n.Language).Include(q => q.Names).ThenInclude(n => n.Translator).Where(q => q.Id == chapterId));
+            if (!chapterResult.IsSuccess)
+                return chapterResult;
+            var bookResult = await new LogicBase<TranslatorContext, BookContract, BookEntity>().Find(x => x.Include(q => q.Names).ThenInclude(n => n.Language).Include(q => q.Names).ThenInclude(n => n.Translator).Where(q => q.Id == chapterResult.Result.BookId));
+            chapterResult.Result.BookNames = bookResult.Result.Names;
+            return chapterResult;
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace Translators.ViewModels.Pages
 
         public async Task Touched(CategoryModel category)
         {
-            await PageHelper.PushPage(category.Id, 0, PageType.Chapter);
+            await PageHelper.PushPage(category.Id, 0, null, PageType.Chapter);
         }
 
         public async Task Initialize(long id)

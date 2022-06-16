@@ -12,9 +12,9 @@ namespace Translators.Helpers
             Current = navigation;
         }
 
-        public static async Task PushPage(long id, long rootId, PageType pageType)
+        public static async Task<object> PushPage(long id, long rootId, object data, PageType pageType)
         {
-            await Current.PushPage(id, rootId, pageType);
+            return await Current.PushPage(id, rootId, data, pageType);
         }
     }
 }
