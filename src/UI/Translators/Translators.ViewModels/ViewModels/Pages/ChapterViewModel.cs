@@ -3,6 +3,7 @@ using Translators.Contracts.Common;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
+using Translators.ServiceManagers;
 
 namespace Translators.ViewModels.Pages
 {
@@ -27,9 +28,9 @@ namespace Translators.ViewModels.Pages
             await PageHelper.PushPage(catalog.StartPageNumber, catalog.BookId, PageType.Ayat);
         }
 
-        public override async Task FetchData()
+        public override async Task FetchData(bool isForce)
         {
-            var chapters = await TranslatorService.ChapterServiceHttp.FilterChaptersAsync(BookId);
+            var chapters = await TranslatorService.GetChapterServiceHttp(isForce).FilterChaptersAsync(BookId);
             if (chapters.IsSuccess)
             {
                 InitialData(chapters.Result);

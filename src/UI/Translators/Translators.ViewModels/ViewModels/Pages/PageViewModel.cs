@@ -5,6 +5,7 @@ using Translators.Converters;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
+using Translators.ServiceManagers;
 
 namespace Translators.ViewModels.Pages
 {
@@ -51,9 +52,9 @@ namespace Translators.ViewModels.Pages
             await LoadData();
         }
 
-        public override async Task FetchData()
+        public override async Task FetchData(bool isForce)
         {
-            var pages = await TranslatorService.PageServiceHttp.GetPageAsync(CatalogStartPageNumber, BookId);
+            var pages = await TranslatorService.GetPageServiceHttp(isForce).GetPageAsync(CatalogStartPageNumber, BookId);
             if (pages.IsSuccess)
             {
                 InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => (ParagraphModel)i)));

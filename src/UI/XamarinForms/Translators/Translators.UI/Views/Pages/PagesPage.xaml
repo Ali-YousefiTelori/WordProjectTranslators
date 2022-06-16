@@ -24,7 +24,7 @@
             </Grid.ColumnDefinitions>
             <Label Text="{Binding CatalogName}" Grid.Column="1" VerticalOptions="Center"/>
         </Grid>
-        <ListView ItemsSource="{Binding Items}" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading}" IsPullToRefreshEnabled="True" HasUnevenRows="True" Grid.Row="1">
+        <ListView ItemsSource="{Binding Items}" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading,Mode=OneWay}" IsPullToRefreshEnabled="True" HasUnevenRows="True" Grid.Row="1">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -50,7 +50,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="30"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Text="{Binding MainValue}" />
+                                <Label Text="{Binding MainValue}"  Margin="10,0,10,0"/>
                                 <Label Grid.Row="1" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" Margin="10,0,10,20" />
                                 <StackLayout Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
                                     <Label Text=")" />

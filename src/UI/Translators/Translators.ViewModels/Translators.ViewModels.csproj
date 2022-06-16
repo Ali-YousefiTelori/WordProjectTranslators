@@ -6,6 +6,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="SignalGo.Net.Client" Version="5.7.0.3" />
+    <ProjectReference Include="..\..\..\..\..\SignalGo-full-net\SignalGo.Client\SignalGo.Client.csproj" />
   </ItemGroup>
 </Project>

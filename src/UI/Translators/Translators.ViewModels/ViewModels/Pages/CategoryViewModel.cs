@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
+using Translators.ServiceManagers;
 
 namespace Translators.ViewModels.Pages
 {
@@ -22,14 +23,14 @@ namespace Translators.ViewModels.Pages
         }
 
         public long SelectedCategoryId { get; set; }
-        public override async Task FetchData()
+        public override async Task FetchData(bool isForce)
         {
-            await FetchCategory();
+            await FetchCategory(isForce);
         }
 
-        public async Task FetchCategory()
+        public async Task FetchCategory(bool isForce)
         {
-            var categories = await TranslatorService.BookServiceHttp.GetCategoriesAsync();
+            var categories = await TranslatorService.GetBookServiceHttp(isForce).GetCategoriesAsync();
             if (categories.IsSuccess)
             {
                 InitialData(categories.Result.Select(x => (CategoryModel)x));

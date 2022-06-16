@@ -4,6 +4,7 @@ using Translators.Contracts.Common;
 using Translators.Database.Contexts;
 using Translators.Database.Entities;
 using Translators.Logics;
+using Translators.Validations;
 
 namespace Translators.Services
 {
@@ -11,7 +12,7 @@ namespace Translators.Services
     [ServiceContract("Page", ServiceType.ServerService, InstanceType.SingleInstance)]
     public class PageService
     {
-        public async Task<MessageContract<List<PageContract>>> GetPage(long pageNumber, long bookId)
+        public async Task<MessageContract<List<PageContract>>> GetPage([NumberValidation] long pageNumber, [NumberValidation] long bookId)
         {
             var result = await new LogicBase<TranslatorContext, PageContract, PageEntity>().GetAll(x =>
                          x.Include(q => q.Paragraphs).ThenInclude(p => p.Words).ThenInclude(w => w.Values).ThenInclude(n => n.Language)

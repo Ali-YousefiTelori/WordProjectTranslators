@@ -12,7 +12,7 @@
         <Binding Source="{StaticResource BookViewModel}"/>
     </ContentPage.BindingContext>
     <ContentPage.Content>
-        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading, Mode=TwoWay}">
+        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading, Mode=OneWay}">
             <CollectionView
                 ItemsSource="{Binding Items}"
                 SelectionMode="Single">

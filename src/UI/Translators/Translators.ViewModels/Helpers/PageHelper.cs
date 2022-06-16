@@ -7,7 +7,6 @@ namespace Translators.Helpers
     public class PageHelper
     {
         public static IPageManager Current { get; set; }
-
         public static void Initialize(IPageManager navigation)
         {
             Current = navigation;

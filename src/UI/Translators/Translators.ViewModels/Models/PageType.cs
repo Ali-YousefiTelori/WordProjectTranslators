@@ -3,8 +3,9 @@
     public enum PageType : byte
     {
         None = 0,
-        Book = 1,
-        Sura = 2,
-        Ayat = 3
+        Category = 1,
+        Book = 2,
+        Sura = 3,
+        Ayat = 4
     }
 }

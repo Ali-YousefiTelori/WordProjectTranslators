@@ -152,6 +152,14 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\SignalGo-full-net\SignalGo.Client\SignalGo.Client.csproj">
+      <Project>{da4f99a9-69e4-48f1-8850-5298f7762ab9}</Project>
+      <Name>SignalGo.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\SignalGo-full-net\SignalGo.Shared\SignalGo.Shared.csproj">
+      <Project>{7f4319f4-8bc4-4613-b118-2b2fe6601cf4}</Project>
+      <Name>SignalGo.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj">
       <Project>{e7db95c7-edf8-4f9b-b5bd-4d13efeb98fc}</Project>
       <Name>Translators.ViewModels</Name>

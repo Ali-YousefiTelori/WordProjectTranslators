@@ -10,7 +10,7 @@ namespace Translators.ViewModels
     {
         public BaseViewModel()
         {
-            RefreshCommand = CommandHelper.Create(LoadData);
+            RefreshCommand = CommandHelper.Create(()=> LoadData(true));
         }
 
         public ICommand RefreshCommand { get; set; }
@@ -27,6 +27,7 @@ namespace Translators.ViewModels
             }
         }
 
+        bool isFirstTime = true;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -39,12 +40,19 @@ namespace Translators.ViewModels
             }
         }
 
-        public async Task LoadData()
+        public async Task LoadData(bool isForce = false)
         {
+            if (IsLoading)
+                return;
+            if (isFirstTime)
+            {
+                isForce = false;
+                isFirstTime = false;
+            }
             try
             {
                 IsLoading = true;
-                await FetchData();
+                await FetchData(isForce);
             }
             catch(Exception ex)
             {
@@ -56,7 +64,7 @@ namespace Translators.ViewModels
             }
         }
 
-        public virtual Task FetchData()
+        public virtual Task FetchData(bool isForce = false)
         {
             return Task.CompletedTask;
         }
