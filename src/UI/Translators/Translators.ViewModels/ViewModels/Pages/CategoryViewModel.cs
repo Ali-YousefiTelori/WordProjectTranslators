@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Translators.Helpers;
 using Translators.Models;
@@ -19,6 +20,7 @@ namespace Translators.ViewModels.Pages
 
         public async Task Touched(CategoryModel category)
         {
+            SelectedName = category.Names.GetPersianValue();
             await PageHelper.PushPage(category.Id, 0, null, PageType.Book);
         }
 

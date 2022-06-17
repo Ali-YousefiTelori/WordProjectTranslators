@@ -17,10 +17,15 @@ namespace Translators.Models.Storages
 
         public override async Task Load(PageData value)
         {
+            await LoadStaticPageData(value);
+        }
+
+        public static async Task LoadStaticPageData(PageData value)
+        {
             if (value?.Pages?.Count(x => x.PageType == PageType.Pages) > 0)
             {
                 var book = value.Pages.FirstOrDefault(x => x.PageType == PageType.Book);
-                await PageHelper.PushPage(book.Id, book.ParentId,null, PageType.Book);
+                await PageHelper.PushPage(book.Id, book.ParentId, null, PageType.Book);
 
                 var chapter = value.Pages.FirstOrDefault(x => x.PageType == PageType.Chapter);
                 await PageHelper.PushPage(chapter.Id, chapter.ParentId, null, PageType.Chapter);
@@ -47,6 +52,8 @@ namespace Translators.Models.Storages
             Value.Pages.Add(newValue);
             if (pageType == PageType.Pages)
                 _ = SaveFile();
+
+            ApplicationReadingData.Current.AddPageValue(pageType, pageNumber, bookId);
         }
     }
 }

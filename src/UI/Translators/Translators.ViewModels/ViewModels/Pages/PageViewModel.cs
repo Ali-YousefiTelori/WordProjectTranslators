@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
@@ -19,11 +20,13 @@ namespace Translators.ViewModels.Pages
             SwipeLeftCommand = CommandHelper.Create(SwipeLeft);
             SwipeRightCommand = CommandHelper.Create(SwipeRight);
             TouchedCommand = CommandHelper.Create<ParagraphModel>(Touch);
+            RemoveReadingCommand = CommandHelper.Create(RemoveReading);
         }
 
         public ICommand<ParagraphModel> TouchedCommand { get; set; }
         public ICommand SwipeLeftCommand { get; set; }
         public ICommand SwipeRightCommand { get; set; }
+        public ICommand RemoveReadingCommand { get; set; }
 
         string _CatalogName;
         public string CatalogName
@@ -33,6 +36,17 @@ namespace Translators.ViewModels.Pages
             {
                 _CatalogName = value;
                 OnPropertyChanged(nameof(CatalogName));
+            }
+        }
+
+        const string EmptyReading = "بدون خوانش";
+        public string ReadingName
+        {
+            get
+            {
+                if (ApplicationReadingData.CurrentReadingData == null)
+                    return EmptyReading;
+                return ApplicationReadingData.CurrentReadingData.Name;
             }
         }
 
@@ -63,7 +77,9 @@ namespace Translators.ViewModels.Pages
             if (pages.IsSuccess)
             {
                 InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => ParagraphModel.Map(i))));
-                CatalogName = LanguageValueBaseConverter.GetValue(pages.Result.Last().CatalogNames, false, "fa-ir");
+                CatalogName = $"{GetSelectedTitleByType(typeof(BookViewModel))} / ";
+                CatalogName += string.Join(" - ", pages.Result.Select(x => x.CatalogNames.GetPersianValue()).Distinct());
+                ApplicationReadingData.SetTitle(CatalogName);
                 ApplicationPagesData.Current.AddPageValue(PageType.Pages, CatalogStartPageNumber, BookId);
             }
         }
@@ -127,6 +143,35 @@ namespace Translators.ViewModels.Pages
                     }
                 default:
                     break;
+            }
+        }
+
+        private async Task RemoveReading()
+        {
+            if (ApplicationReadingData.Current.Value.Items.Count == 0)
+                await AlertHelper.Alert("خوانش", "در حال حاضر خوانشی وجود ندارد، به بخش خوانش ها مراجعه کنید.");
+            else
+            {
+                var items = ApplicationReadingData.Current.Value.Items.Select(x => x.Name).Concat(new string[] { EmptyReading }).ToArray();
+                var selected = await AlertHelper.Current.Display("خوانش", "انصراف", items);
+                if (selected == EmptyReading)
+                {
+                    ApplicationReadingData.CurrentReadingData = null;
+                }
+                else
+                {
+                    var find = ApplicationReadingData.Current.Value.Items.FirstOrDefault(x => x.Name == selected);
+                    if (find != null)
+                    {
+                        ApplicationReadingData.CurrentReadingData = find;
+                        if (find.Pages.Any(x => x.PageType == Models.PageType.Pages))
+                        {
+                            await PageHelper.Clean();
+                            await ApplicationPagesData.LoadStaticPageData(find);
+                        }
+                    }
+                }
+                OnPropertyChanged(nameof(ReadingName));
             }
         }
     }

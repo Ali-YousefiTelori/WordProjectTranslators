@@ -1,19 +1,24 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Translators.Helpers;
+using Translators.Models;
 using Translators.Models.Interfaces;
 
 namespace Translators.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : BaseModel
     {
+        public static ConcurrentDictionary<Type, BaseViewModel> Pages { get; set; } = new ConcurrentDictionary<Type, BaseViewModel>();
         public BaseViewModel()
         {
-            RefreshCommand = CommandHelper.Create(()=> LoadData(true));
+            RefreshCommand = CommandHelper.Create(() => LoadData(true));
+            Pages.AddOrUpdate(this.GetType(), this, (t, vm) => this);
         }
 
         public ICommand RefreshCommand { get; set; }
+        public string SelectedName { get; set; }
 
         bool _IsLoading;
 
@@ -29,17 +34,6 @@ namespace Translators.ViewModels
 
         bool isFirstTime = true;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
-        public void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
         public async Task LoadData(bool isForce = false)
         {
             if (IsLoading)
@@ -54,7 +48,7 @@ namespace Translators.ViewModels
                 IsLoading = true;
                 await FetchData(isForce);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -74,6 +68,24 @@ namespace Translators.ViewModels
             return text.Replace("ٱ", "ا").Replace("آ", "ا").Replace("إ", "ا").Replace("أ", "ا").Replace("ء", "").Replace("ؤ", "و").Replace("ة", "ه").Replace("ۀ", "ه").Replace('ك', 'ک').Replace('ڪ', 'ک').Replace('ئ', 'ی').Replace('ي', 'ی').Replace('ى', 'ی')
                 .Replace("۰", "0").Replace("۱", "1").Replace("۲", "2").Replace("۳", "3").Replace("۴", "4").Replace("۵", "5").Replace("۶", "6").Replace("۷", "7").Replace("۸", "8").Replace("۹", "9")
                 .Replace("٠", "0").Replace("١", "1").Replace("٢", "2").Replace("٣", "3").Replace("٤", "4").Replace("٥", "5").Replace("٦", "6").Replace("٧", "7").Replace("٨", "8").Replace("٩", "9");
+        }
+
+        public static string GetSelectedTitleByType(Type type)
+        {
+            if (Pages.TryGetValue(type, out var vm))
+                return vm.SelectedName;
+            return default;
+        }
+
+        public static void OnSelectedTitleByType(Type type, long id, long parentId)
+        {
+            if (Pages.TryGetValue(type, out var vm))
+                vm.OnSelected(id, parentId);
+        }
+
+        public virtual void OnSelected(long id, long parentId)
+        {
+
         }
     }
 }

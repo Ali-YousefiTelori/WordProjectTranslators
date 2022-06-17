@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Translators.Contracts.Common;
 using Translators.Models;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
@@ -22,7 +21,21 @@ namespace Translators.UI.Helpers
 
         public static Page GetCurrentPage()
         {
-            return Navigation.NavigationStack.LastOrDefault();
+            return App.Current.MainPage;//Navigation.NavigationStack.LastOrDefault();
+        }
+
+        public static async Task CleanPages()
+        {
+            foreach (var item in Navigation.NavigationStack.Where(x => x != null).ToArray())
+            {
+                try
+                {
+                    await item.Navigation.PopAsync();
+                }
+                catch (Exception ex)
+                {
+                }
+            }
         }
 
         public void RemovePages(Type type)
@@ -49,6 +62,7 @@ namespace Translators.UI.Helpers
                     {
                         var page = new ChapterPage();
                         ApplicationPagesData.Current.AddPageValue(pageType, id, 0);
+                        BookViewModel.OnSelectedTitleByType(typeof(BookViewModel), id, 0);
                         await (page.BindingContext as ChapterViewModel).Initialize(id);
                         await Navigation.PushAsync(page);
                         break;
@@ -63,6 +77,11 @@ namespace Translators.UI.Helpers
                     }
             }
             return null;
+        }
+
+        public async Task Clean()
+        {
+            await CleanPages();
         }
     }
 }

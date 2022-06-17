@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Helpers;
@@ -28,6 +29,7 @@ namespace Translators.ViewModels.Pages
 
         public async Task Touched(CatalogContract catalog)
         {
+            SelectedName = catalog.Names.GetPersianValue();
             await PageHelper.PushPage(catalog.StartPageNumber, catalog.BookId, catalog, PageType.Pages);
         }
 

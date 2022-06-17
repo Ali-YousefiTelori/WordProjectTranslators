@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Translators.Helpers;
 using Translators.Models;
@@ -21,10 +22,19 @@ namespace Translators.ViewModels.Pages
             await PageHelper.PushPage(category.Id, 0, null, PageType.Chapter);
         }
 
+        public override void OnSelected(long id, long parentId)
+        {
+            var category = Items.FirstOrDefault(x => x.Id == id);
+            if (category != null)
+                SelectedName = category.Names.GetPersianValue();
+        }
+
         public async Task Initialize(long id)
         {
             SelectedCategoryId = id;
             await LoadData();
+            if (string.IsNullOrEmpty(SelectedName))
+                OnSelected(SelectedCategoryId, 0);
         }
 
         public long SelectedCategoryId { get; set; }

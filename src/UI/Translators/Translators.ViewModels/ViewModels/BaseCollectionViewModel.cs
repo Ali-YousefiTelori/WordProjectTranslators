@@ -20,6 +20,17 @@ namespace Translators.ViewModels
             }
         }
 
+        string _Title;
+        public string Title
+        {
+            get => _Title;
+            set
+            {
+                _Title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+
         public List<T> OfflineItems { get; set; }
 
         public ObservableCollection<T> Items { get; set; } = new ObservableCollection<T>();

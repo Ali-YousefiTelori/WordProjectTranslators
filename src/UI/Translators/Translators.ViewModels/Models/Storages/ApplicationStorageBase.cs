@@ -25,8 +25,12 @@ namespace Translators.Models.Storages
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
         }
 
+        bool IsInitialized = false;
         public async Task BaseInitialize()
         {
+            if (IsInitialized)
+                return;
+            IsInitialized = true;
             try
             {
                 await LoadFile(FilePath);
@@ -56,7 +60,7 @@ namespace Translators.Models.Storages
 
         public virtual async Task Load(T value)
         {
-
+            Value = value;
         }
 
         SemaphoreSlim SemaphoreSlim { get; set; } = new SemaphoreSlim(1);

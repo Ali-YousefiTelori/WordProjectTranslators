@@ -16,5 +16,10 @@ namespace Translators.Helpers
         {
             return await Current.PushPage(id, rootId, data, pageType);
         }
+
+        public static async Task Clean()
+        {
+            await Current.Clean();
+        }
     }
 }
