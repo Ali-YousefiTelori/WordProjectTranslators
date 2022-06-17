@@ -42,5 +42,24 @@ namespace Translators.ViewModels.Pages
                 InitialData(books.Result.Select(x => (CategoryModel)x));
             }
         }
+
+        public override void Search()
+        {
+            var searchText = FixArabicForSearch(SearchText);
+            Filter(x => x.Names.Any(n => FixArabicForSearch(n.Value).Contains(searchText)), x =>
+            {
+                var index = x.Names.Where(n => FixArabicForSearch(n.Value).Contains(searchText)).Select(i =>
+                {
+                    var value = FixArabicForSearch(i.Value);
+                    if (value.StartsWith(searchText + " ") || value.StartsWith(searchText + "-") || value.StartsWith(searchText + " -"))
+                        return 1;
+                    else if (value.StartsWith(searchText))
+                        return 10;
+                    else
+                        return 15;
+                }).OrderBy(o => o).FirstOrDefault();
+                return index;
+            });
+        }
     }
 }

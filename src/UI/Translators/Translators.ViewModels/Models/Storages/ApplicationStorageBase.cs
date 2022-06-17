@@ -29,7 +29,7 @@ namespace Translators.Models.Storages
         {
             try
             {
-                LoadFile(FilePath);
+                await LoadFile(FilePath);
             }
             finally
             {

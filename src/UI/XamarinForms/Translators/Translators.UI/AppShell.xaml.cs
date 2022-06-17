@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Translators.UI.ViewModels;
-using Translators.UI.Views;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Translators.UI
 {
@@ -11,8 +7,6 @@ namespace Translators.UI
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-            Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
         }
 
     }

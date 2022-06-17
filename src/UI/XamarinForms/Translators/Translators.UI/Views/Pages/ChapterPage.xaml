@@ -11,18 +11,23 @@
     <ContentPage.BindingContext>
         <Binding Source="{StaticResource ChapterViewModel}"/>
     </ContentPage.BindingContext>
-    <ContentPage.Content>
-        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading, Mode=OneWay}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <SearchBar Text="{Binding SearchText}" />
+        <RefreshView Grid.Row="1" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading, Mode=OneWay}">
             <CollectionView
                 ItemsSource="{Binding Items}"
                 SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Margin="10" BackgroundColor="#01FFFFFF" WidthRequest="200" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
+                        <Frame Margin="10" BackgroundColor="White" WidthRequest="200" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
                             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                                <Label Text="{Binding Names, Converter={StaticResource LanguageValueConverter}}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                                <Label Text=" -" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                                <Label Text="{Binding Number}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label TextColor="Black" Text="{Binding Names, Converter={StaticResource LanguageValueConverter}}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label TextColor="Black" Text=" -" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label TextColor="Black" Text="{Binding Number}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
                             </StackLayout>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ChapterViewModel}}" CommandParameter="{Binding}" />
@@ -32,5 +37,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
-    </ContentPage.Content>
+    </Grid>
 </ContentPage>

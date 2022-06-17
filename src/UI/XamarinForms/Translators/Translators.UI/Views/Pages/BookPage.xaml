@@ -11,15 +11,20 @@
     <ContentPage.BindingContext>
         <Binding Source="{StaticResource BookViewModel}"/>
     </ContentPage.BindingContext>
-    <ContentPage.Content>
-        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading, Mode=OneWay}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <SearchBar Text="{Binding SearchText}" />
+        <RefreshView Grid.Row="1" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading, Mode=OneWay}">
             <CollectionView
                 ItemsSource="{Binding Items}"
                 SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Margin="20" BackgroundColor="#01FFFFFF" WidthRequest="100" HeightRequest="100" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
-                            <Label Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                        <Frame Margin="20" BackgroundColor="White" WidthRequest="100" HeightRequest="100" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
+                            <Label TextColor="Black" Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource BookViewModel}}" CommandParameter="{Binding}" />
                             </Frame.GestureRecognizers>
@@ -28,5 +33,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </RefreshView>
-    </ContentPage.Content>
+    </Grid>
 </ContentPage>
