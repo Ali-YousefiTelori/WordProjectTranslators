@@ -43,17 +43,20 @@ namespace Translators.Models.Storages
                 ParentId = bookId,
                 PageType = pageType
             };
-            var find = Value.Pages.FirstOrDefault(x => x.GetKey() == newValue.GetKey());
-            if (find != null)
+            lock(Value)
             {
-                Value.Pages.Remove(find);
+                var find = Value.Pages.FirstOrDefault(x => x.GetKey() == newValue.GetKey());
+                if (find != null)
+                {
+                    Value.Pages.Remove(find);
+                }
+
+                Value.Pages.Add(newValue);
+                if (pageType == PageType.Pages)
+                    _ = SaveFile();
+
+                ApplicationReadingData.Current.AddPageValue(pageType, pageNumber, bookId);
             }
-
-            Value.Pages.Add(newValue);
-            if (pageType == PageType.Pages)
-                _ = SaveFile();
-
-            ApplicationReadingData.Current.AddPageValue(pageType, pageNumber, bookId);
         }
     }
 }

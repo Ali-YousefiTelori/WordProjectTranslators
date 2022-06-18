@@ -26,7 +26,7 @@ namespace Translators.UI.Helpers
 
         public static async Task CleanPages()
         {
-            foreach (var item in Navigation.NavigationStack.Where(x => x != null).ToArray())
+            foreach (var item in Navigation.NavigationStack.Where(x => x != null).Reverse().ToArray())
             {
                 try
                 {

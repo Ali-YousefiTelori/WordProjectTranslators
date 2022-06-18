@@ -30,7 +30,9 @@ namespace Translators.ViewModels.Pages
                 case ReadingRightClickType.Lunch:
                     {
                         ApplicationReadingData.CurrentReadingData = pageData;
-                        if (pageData.Pages.Any(x => x.PageType == Models.PageType.Pages))
+                        if (string.IsNullOrEmpty(pageData.Title))
+                            await PageHelper.Clean();
+                        else if (pageData.Pages.Any(x => x.PageType == Models.PageType.Pages))
                         {
                             await PageHelper.Clean();
                             await ApplicationPagesData.LoadStaticPageData(pageData);

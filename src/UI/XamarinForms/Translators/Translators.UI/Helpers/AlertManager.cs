@@ -33,9 +33,9 @@ namespace Translators.UI.Helpers
             return await NavigationManager.GetCurrentPage().DisplayActionSheet(title, cancel, null, items);
         }
 
-        public Task Alert(string title, string message)
+        public async Task Alert(string title, string message)
         {
-            throw new NotImplementedException();
+            await NavigationManager.GetCurrentPage().DisplayAlert(title, message, "باشه");
         }
     }
 }

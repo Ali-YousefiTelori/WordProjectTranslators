@@ -38,7 +38,7 @@ namespace Translators.ViewModels.Pages
             var chapters = await TranslatorService.GetChapterServiceHttp(isForce).FilterChaptersAsync(BookId);
             if (chapters.IsSuccess)
             {
-                InitialData(chapters.Result);
+                InitialData(chapters.Result.OrderBy(x => x.Number));
             }
         }
 
