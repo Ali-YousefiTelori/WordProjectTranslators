@@ -40,6 +40,8 @@ namespace Translators.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("IsHidden");
+
                     b.ToTable("Books");
                 });
 
@@ -63,6 +65,10 @@ namespace Translators.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
+
+                    b.HasIndex("Number");
+
+                    b.HasIndex("StartPageNumber");
 
                     b.ToTable("Catalogs");
                 });
@@ -192,6 +198,9 @@ namespace Translators.Migrations
 
                     b.Property<long>("LanguageId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("SearchValue")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long?>("TranslatorId")
                         .HasColumnType("bigint");

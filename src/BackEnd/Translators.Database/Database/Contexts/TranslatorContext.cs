@@ -70,6 +70,7 @@ namespace Translators.Database.Contexts
             modelBuilder.Entity<BookEntity>(x =>
             {
                 x.HasKey(r => r.Id);
+                x.HasIndex(r => r.IsHidden);
 
                 x.HasOne(x => x.Category)
                  .WithMany(x => x.Books)
@@ -79,6 +80,8 @@ namespace Translators.Database.Contexts
             modelBuilder.Entity<CatalogEntity>(x =>
             {
                 x.HasKey(r => r.Id);
+                x.HasIndex(r => r.Number);
+                x.HasIndex(r => r.StartPageNumber);
 
                 x.HasOne(x => x.Book)
                  .WithMany(x => x.Catalogs)

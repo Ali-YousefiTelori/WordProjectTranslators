@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using Translators.Database.Contexts;
 using Translators.Database.Entities;
-using Translators.Logics;
 using Translators.Models;
 
 namespace Translators.Patches
@@ -13,12 +13,14 @@ namespace Translators.Patches
             try
             {
                 await ConfigData.LoadAsync();
+                var translatedBible = await LoadBibleCloadRoot(@"D:\Github\WordProjectTranslators\src\Resources\fa_new\index.htm", PersianLanguage, false);
+                var mainBible = await LoadBibleCloadRoot(@"D:\Github\WordProjectTranslators\src\Resources\he_new\index.htm", HebrewLanguage, true);
                 //List<CategoryEntity> books = new List<CategoryEntity>();
                 var quran = await LoadQuran();
                 //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(quran);
-                var enjil = await LoadNewTestament();
+                var enjil = Merge(mainBible.Old, translatedBible.Old);//await LoadNewTestament();
                 //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(enjil);
-                var torat = await LoadOldTestament();
+                var torat = Merge(mainBible.New, translatedBible.New);// await LoadOldTestament();
                 //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(torat);
                 await Save(new List<CategoryEntity>()
                 {
@@ -260,9 +262,16 @@ namespace Translators.Patches
                     catalog.Names.AddRange(catalog2.Names);
                     for (int q = 0; q < catalog.Paragraphs.Count; q++)
                     {
-                        var paragraphs = catalog.Paragraphs[q];
-                        var paragraphs2 = catalog2.Paragraphs[q];
-                        paragraphs.Words.AddRange(paragraphs2.Words);
+                        try
+                        {
+                            var paragraphs = catalog.Paragraphs[q];
+                            var paragraphs2 = catalog2.Paragraphs[q];
+                            paragraphs.Words.AddRange(paragraphs2.Words);
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
                     }
                 }
             }
@@ -318,7 +327,7 @@ namespace Translators.Patches
                 {
                     var ayat = translatorCatalog.Ayat[0].Ayat[(int)paragraph.Number - 1];
                     int index = 1;
-                    paragraph.Words.AddRange(ayat.Ayeha.LanguageText.TeXt.Replace("‌", " ").Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(s =>
+                    paragraph.Words.AddRange(ayat.Ayeha.LanguageText.TeXt.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(s =>
                     {
                         var word = new WordEntity()
                         {
@@ -330,7 +339,8 @@ namespace Translators.Patches
                                       IsMain = false,
                                       Language = PersianLanguage,
                                       Translator = MakaremTranslator,
-                                      Value = s
+                                      Value = s,
+                                      SearchValue = TextHelper.FixArabicForSearch(new string(TextHelper.Clean(s).Where(x => TextHelper.SearchChars.Contains(x)).ToArray()))
                                  }
                             }
                         };
@@ -339,6 +349,140 @@ namespace Translators.Patches
                     }));
                 }
             }
+        }
+
+        static async Task<(CategoryEntity Old, CategoryEntity New)> LoadBibleCloadRoot(string fileName, LanguageEntity language, bool isMain)
+        {
+            var text = await File.ReadAllTextAsync(fileName, System.Text.Encoding.UTF8);
+            var splitBooks = text.Split("h4center");
+            var oldBible = ExtractBooks(splitBooks[1]);
+            var oldBilbleChapters = await ExtractChapters(fileName, oldBible);
+
+            var bookOld = GetBook("عهد عتیق", oldBilbleChapters, language, isMain);
+
+            var newBible = ExtractBooks(splitBooks[2]);
+            var newBibleChapters = await ExtractChapters(fileName, newBible);
+            var bookNew = GetBook("عهد جدید", newBibleChapters, language, isMain);
+
+            return (bookOld, bookNew);
+        }
+
+        static List<(string Name, string Path)> ExtractBooks(string data)
+        {
+            List<(string Name, string Path)> result = new List<(string Name, string Path)>();
+            Regex regex = new Regex(@"<li>(.*?)</li>");
+            var matchs = regex.Matches(data);
+            foreach (var item in matchs)
+            {
+                var path = Regex.Match(item.ToString(), @"href=""(.*?)"">").Groups[1].Value;
+                var name = Regex.Match(item.ToString(), @"<bdo dir=""rtl"">(.*?)<").Groups[1].Value;
+                result.Add((name.Trim(), path.Trim()));
+            }
+
+            return result;
+        }
+
+        static async Task<Dictionary<string, Dictionary<(string Name, int Number), List<(int Number, string text)>>>> ExtractChapters(string fileName, List<(string Name, string Path)> books)
+        {
+            Dictionary<string, Dictionary<(string Name, int Number), List<(int Number, string text)>>> result = new Dictionary<string, Dictionary<(string Name, int Number), List<(int Number, string text)>>>();
+            foreach (var book in books)
+            {
+                Dictionary<(string Name, int Number), List<(int Number, string text)>> chapters = new Dictionary<(string Name, int Number), List<(int Number, string text)>>(0);
+
+                result.Add(book.Name, chapters);
+                var dirPath = Path.Combine(Path.GetDirectoryName(fileName), Path.GetDirectoryName(book.Path));
+
+                foreach (var chapterFileName in Directory.GetFiles(dirPath))
+                {
+                    var chapterNumber = Path.GetFileNameWithoutExtension(chapterFileName);
+                    var fileData = await File.ReadAllTextAsync(chapterFileName, System.Text.Encoding.UTF8);
+                    var matchs = Regex.Matches(fileData, @"verse.*");
+                    var nameMatch = Regex.Match(fileData, @"<bdo dir=""rtl"">(.*?)</h3>").Groups[1].Value.Replace("</bdo>", "").Replace("&nbsp;", "").Replace("  ", " ").Trim();
+                    List<(int Number, string text)> verses = new List<(int Number, string text)>();
+                    chapters.Add((nameMatch, int.Parse(chapterNumber)), verses);
+
+                    foreach (var item in matchs)
+                    {
+                        var id = Regex.Match(item.ToString(), @"id=""(.*?)"">").Groups[1].Value;
+                        var text = Regex.Match(item.ToString(), @"span>(.*)").Groups[1].Value;
+                        if (text.Contains("</p>"))
+                            text = text.Split("</p>").FirstOrDefault().Trim();
+                        text = TextHelper.RemoveNumbers(text.Trim().Replace("span>", "").Replace("<br />", "").Replace("</a>", "").Replace("&nbsp;", "")).Trim();
+                        if ("0123456789abcdefghijklmnopqrstuvwxyz".Any(c => text.Any(x => x.ToString().Equals(c.ToString(), StringComparison.OrdinalIgnoreCase))))
+                        {
+                            //در نسخه ی fa_new\66 شما نیاز دارید در ایه ی 20 ,16,19,18, 14 یک اینتر بزنید
+                            //throw new Exception("Unspected char detected!");
+                        }
+                        verses.Add((int.Parse(id), text));
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static CategoryEntity GetBook(string bookName, Dictionary<string, Dictionary<(string Name, int Number), List<(int Number, string text)>>> bookBase, LanguageEntity language, bool isMain)
+        {
+            int pageNumbers = 0;
+            return new CategoryEntity()
+            {
+                Names = new List<ValueEntity>()
+                {
+                    new ValueEntity()
+                    {
+                        IsMain = isMain,
+                        Language = language,
+                        Value = bookName
+                    }
+                },
+                Books = bookBase.Select(x => new BookEntity()
+                {
+                    Catalogs = x.Value.OrderBy(s => s.Key).Select(s =>
+                    {
+                        var catalogNumber = s.Key.Number;
+                        pageNumbers++;
+                        var result = new CatalogEntity()
+                        {
+                            Names = new List<ValueEntity>()
+                            {
+                                new ValueEntity()
+                                {
+                                    IsMain = isMain,
+                                    Language = language,
+                                    Value = s.Key.Name
+                                }
+                            },
+                            Number = catalogNumber,
+                            Paragraphs = new List<ParagraphEntity>(),
+                            StartPageNumber = pageNumbers
+                        };
+                        foreach (var item in s.Value.OrderBy(a => a.Number))
+                        {
+                            var p = TextHelper.GetParagraph(item.text, language, result, isMain);
+                            p.Number = item.Number;
+                            result.Paragraphs.Add(p);
+                        }
+                        result.Pages = new List<PageEntity>()
+                        {
+                            new PageEntity()
+                            {
+                                 Paragraphs = result.Paragraphs,
+                                 Number = pageNumbers
+                            }
+                        };
+                        return result;
+                    }).ToList(),
+                    Names = new List<ValueEntity>()
+                    {
+                        new ValueEntity()
+                        {
+                            IsMain = isMain,
+                            Language = language,
+                            Value = x.Key
+                        }
+                    },
+                }).ToList()
+            };
         }
     }
 }

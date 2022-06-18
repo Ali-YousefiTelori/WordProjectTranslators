@@ -22,7 +22,6 @@ namespace Translators.Patches
 
     public class BibleCloadKetab
     {
-        public string Number { get; set; }
         public string Name { get; set; }
         public BibleCloadSureha Sureha { get; set; }
     }
@@ -36,8 +35,6 @@ namespace Translators.Patches
     public class BibleCloadMainBook
     {
         public string Name { get; set; }
-        public string ID { get; set; }
-        public string LanguageID { get; set; }
         public BibleCloadBooks Books { get; set; }
 
         public CategoryEntity GetBook(LanguageEntity language, bool isMain)

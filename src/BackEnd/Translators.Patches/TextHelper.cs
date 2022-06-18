@@ -25,7 +25,7 @@ namespace Translators.Patches
 
         public static string FixArabicForSearch(string text)
         {
-            return text.Replace("ٱ", "ا").Replace("آ", "ا").Replace("إ", "ا").Replace("أ", "ا").Replace("ء", "").Replace("ؤ", "و").Replace("ة", "ه").Replace("ۀ", "ه").Replace('ك', 'ک').Replace('ڪ', 'ک').Replace('ئ', 'ی').Replace('ي', 'ی').Replace('ى', 'ی');
+            return text.Replace("ٱ", "ا").Replace("آ", "ا").Replace("إ", "ا").Replace("أ", "ا").Replace("ء", "").Replace("ؤ", "و").Replace("ة", "ه").Replace("ۀ", "ه").Replace('ك', 'ک').Replace('ڪ', 'ک').Replace('ئ', 'ی').Replace('ي', 'ی').Replace('ى', 'ی').Replace("‌", "");
         }
 
         /// <summary>
@@ -67,7 +67,6 @@ namespace Translators.Patches
             return int.Parse(text);
         }
 
-        public static LanguageEntity SearchLanguage = new LanguageEntity() { Code = "search", Name = "Search Language" };
         public static ParagraphEntity GetParagraph(string text, LanguageEntity language, CatalogEntity catalog, bool isMain)
         {
             int index = 0;
@@ -77,13 +76,7 @@ namespace Translators.Patches
                 index++;
                 return word;
             }).Where(x => x.Values.All(v => !string.IsNullOrEmpty(v.Value.Trim()))).ToList();
-            index = 0;
-            mainWords.AddRange(UnSpaceArabic(text).Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x =>
-            {
-                var word = GetSimpleWord(index, x);
-                index++;
-                return word;
-            }).Where(x => x.Values.All(v => !string.IsNullOrEmpty(v.Value.Trim()))));
+            
             return new ParagraphEntity()
             {
                 Words = mainWords,
@@ -102,28 +95,12 @@ namespace Translators.Patches
                     {
                         Language = language,
                         IsMain = isMain,
-                        Value = SpaceArabic(Clean(value))
+                        Value = SpaceArabic(Clean(value)),
+                        SearchValue = FixArabicForSearch(new string(Clean(value).Where(x => SearchChars.Contains(x)).ToArray()))
                     }
                 }
             };
         }
 
-        static WordEntity GetSimpleWord(int index, string value)
-        {
-            var word = new WordEntity()
-            {
-                Index = index,
-                Values = new List<ValueEntity>()
-                {
-                    new ValueEntity()
-                    {
-                        Language = SearchLanguage,
-                        IsMain = false,
-                        Value = FixArabicForSearch(new string(Clean(value).Where(x => SearchChars.Contains(x)).ToArray()))
-                    }
-                }
-            };
-            return word;
-        }
     }
 }
