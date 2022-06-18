@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
+using Translators.Models.Storages;
 
 namespace Translators.ViewModels
 {
@@ -21,6 +22,8 @@ namespace Translators.ViewModels
         public string SelectedName { get; set; }
 
         bool _IsLoading;
+        public static int _FontSize = 20;
+        bool isFirstTime = true;
 
         public bool IsLoading
         {
@@ -32,7 +35,18 @@ namespace Translators.ViewModels
             }
         }
 
-        bool isFirstTime = true;
+
+        public int FontSize
+        {
+            get => _FontSize;
+            set
+            {
+                _FontSize = value;
+                OnPropertyChanged(nameof(FontSize));
+                ApplicationSettingData.Current.Save();
+            }
+        }
+
 
         public async Task LoadData(bool isForce = false)
         {

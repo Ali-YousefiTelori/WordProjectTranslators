@@ -26,5 +26,6 @@
     <TabBar>
         <ShellContent Title="کتب" Icon="icon_feed.png" ContentTemplate="{DataTemplate pages:CategoryPage}" />
         <ShellContent Title="خوانش" Icon="icon_about.png" ContentTemplate="{DataTemplate pages:ReadingPage}" />
+        <ShellContent Title="تنظیمات" Icon="icon_settings.png" ContentTemplate="{DataTemplate pages:SettingPage}" />
     </TabBar>
 </Shell>

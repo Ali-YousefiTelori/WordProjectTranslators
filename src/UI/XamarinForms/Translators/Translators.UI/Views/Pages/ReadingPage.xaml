@@ -21,8 +21,8 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Orientation="Vertical">
-                            <Label Text="{Binding Name}"/>
-                            <Label Text="{Binding Title}" FontSize="10"/>
+                            <Label FontSize="{Binding FontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Name}"/>
+                            <Label FontSize="10"/>
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ReadingPageViewModel}}" CommandParameter="{Binding}" />
                             </StackLayout.GestureRecognizers>

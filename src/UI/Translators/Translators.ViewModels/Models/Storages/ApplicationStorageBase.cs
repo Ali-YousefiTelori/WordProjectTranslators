@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -64,6 +66,8 @@ namespace Translators.Models.Storages
         }
 
         SemaphoreSlim SemaphoreSlim { get; set; } = new SemaphoreSlim(1);
+        bool isSaving = false;
+
         protected async Task SaveFile()
         {
             try
@@ -73,7 +77,12 @@ namespace Translators.Models.Storages
                     DoSaveAfterLoad = true;
                     return;
                 }
+                if (isSaving)
+                    return;
+                isSaving = true;
                 await SemaphoreSlim.WaitAsync();
+                await Task.Delay(1000);
+                isSaving = false;
                 File.WriteAllText(FilePath, JsonConvert.SerializeObject(Value), System.Text.Encoding.UTF8);
             }
             catch (Exception ex)

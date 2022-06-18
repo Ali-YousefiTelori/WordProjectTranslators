@@ -1,0 +1,28 @@
+﻿using System.IO;
+using System.Threading.Tasks;
+using Translators.Models.Storages.Models;
+using Translators.ViewModels;
+
+namespace Translators.Models.Storages
+{
+    public class ApplicationSettingData : ApplicationStorageBase<ApplicationSetting>
+    {
+        public ApplicationSettingData()
+        {
+            FilePath = Path.Combine(GetFolderPath(), "ApplicationSettingData.json");
+        }
+
+        public static ApplicationSettingData Current { get; set; } = new ApplicationSettingData();
+
+        public override async Task Load(ApplicationSetting value)
+        {
+            BaseViewModel._FontSize = value.FontSize;
+        }
+
+        public void Save()
+        {
+            Value.FontSize = BaseViewModel._FontSize;
+            _ = SaveFile();
+        }
+    }
+}
