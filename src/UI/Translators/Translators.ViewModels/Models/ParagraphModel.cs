@@ -5,6 +5,14 @@ namespace Translators.Models
 {
     public class ParagraphModel
     {
+        public bool IsEven
+        {
+            get
+            {
+                return Number % 2 == 0;
+            }
+        }
+
         public long Number { get; set; }
         public string MainValue { get; set; }
         public string TranslatedValue { get; set; }
