@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Translators.Models.Storages.Models;
+using Translators.ServiceManagers;
 using Translators.ViewModels;
 
 namespace Translators.Models.Storages
@@ -17,11 +18,13 @@ namespace Translators.Models.Storages
         public override async Task Load(ApplicationSetting value)
         {
             BaseViewModel._FontSize = value.FontSize;
+            TranslatorService.IsDuplexProtocol = BaseViewModel._UseDuplexProtocol = value.UseDuplexProtocol;
         }
 
         public void Save()
         {
             Value.FontSize = BaseViewModel._FontSize;
+            Value.UseDuplexProtocol = BaseViewModel._UseDuplexProtocol;
             _ = SaveFile();
         }
     }

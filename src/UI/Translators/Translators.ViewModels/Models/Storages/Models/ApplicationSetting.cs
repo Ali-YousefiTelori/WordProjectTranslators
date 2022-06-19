@@ -7,5 +7,6 @@ namespace Translators.Models.Storages.Models
     public class ApplicationSetting
     {
         public int FontSize { get; set; }
+        public bool UseDuplexProtocol { get; set; }
     }
 }

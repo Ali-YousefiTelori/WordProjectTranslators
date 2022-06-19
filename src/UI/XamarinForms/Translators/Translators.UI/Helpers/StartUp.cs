@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Translators.Helpers;
 using Translators.Models.Storages;
+using Translators.ServiceManagers;
 
 namespace Translators.UI.Helpers
 {
@@ -16,6 +17,7 @@ namespace Translators.UI.Helpers
             AlertHelper.Current = new AlertManager();
             PageHelper.Initialize(NavigationManager.Current);
             CommandHelper.Current = new CommandManager();
+            TranslatorService.Initialize();
         }
     }
 }

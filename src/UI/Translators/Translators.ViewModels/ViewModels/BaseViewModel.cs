@@ -6,6 +6,7 @@ using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
+using Translators.ServiceManagers;
 
 namespace Translators.ViewModels
 {
@@ -22,7 +23,9 @@ namespace Translators.ViewModels
         public string SelectedName { get; set; }
 
         bool _IsLoading;
-        public static int _FontSize = 20;
+        public static int _FontSize = 15;
+        public static bool _UseDuplexProtocol = false;
+        
         bool isFirstTime = true;
 
         public bool IsLoading
@@ -47,6 +50,17 @@ namespace Translators.ViewModels
             }
         }
 
+        public bool UseDuplexProtocol
+        {
+            get => _UseDuplexProtocol;
+            set
+            {
+                _UseDuplexProtocol = value;
+                OnPropertyChanged(nameof(UseDuplexProtocol));
+                TranslatorService.IsDuplexProtocol = value;
+                ApplicationSettingData.Current.Save();
+            }
+        }
 
         public async Task LoadData(bool isForce = false)
         {

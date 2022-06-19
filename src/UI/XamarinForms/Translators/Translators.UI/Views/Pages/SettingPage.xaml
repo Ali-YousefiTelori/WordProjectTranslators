@@ -14,6 +14,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <!--<Label Text="اندازه‌ی فونت"
                 VerticalOptions="CenterAndExpand" 
@@ -21,7 +22,11 @@
             <Label Text="اندازه‌ی فونت"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <Slider Value="{Binding FontSize}" Grid.Row="1" Maximum="60" Minimum="20" />
+            <Slider Value="{Binding FontSize}" Grid.Row="1" Maximum="60" Minimum="15" />
+            <StackLayout Grid.Row="2" Orientation="Horizontal" IsVisible="false">
+                <Label Text="پروتکل Duplex" VerticalOptions="Center"/>
+                <CheckBox IsChecked="{Binding UseDuplexProtocol}" VerticalOptions="Center"/>
+            </StackLayout>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

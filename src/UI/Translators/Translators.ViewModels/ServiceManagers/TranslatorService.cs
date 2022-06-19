@@ -1,4 +1,6 @@
-﻿using TranslatorsServices.Interfaces;
+﻿using SignalGo.Client;
+using System.Threading.Tasks;
+using TranslatorsServices.Interfaces;
 
 namespace Translators.ServiceManagers
 {
@@ -6,15 +8,51 @@ namespace Translators.ServiceManagers
     {
         public static void Initialize()
         {
+            ClientProvider clientProvider = new ClientProvider();
+            DuplexBookService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.BookService>(clientProvider);
+            DuplexChapterService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ChapterService>(clientProvider);
+            DuplexPageService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.PageService>(clientProvider);
 
+            clientProvider.OnSendRequestToServer = (serviceName, methodName, parameters) =>
+            {
+                if (IsForce)
+                {
+                    return Task.FromResult(("", false));
+                }
+                if (ClientConnectionManager.TakeData(ClientConnectionManager.GetUrl(serviceName, methodName), parameters, out string result))
+                {
+                    return Task.FromResult((result, true));
+                }
+                return Task.FromResult(("", false));
+            };
+
+            clientProvider.OnGetResponseFromServer = (serviceName, methodName, parameters, result) =>
+            {
+                _ = ClientConnectionManager.SaveLocal(ClientConnectionManager.GetUrl(serviceName, methodName), parameters, result);
+                return Task.CompletedTask;
+            };
+
+            //clientProvider.ConnectAsyncAutoReconnect(ServiceAddress, (isConnected) =>
+            //{
+
+            //});
         }
 
-        static string ServiceAddress { get; set; } = "http://api.noorpod.ir";//"http://localhost:9341"; "http://api.noorpod.ir";
+        public static string ServiceAddress { get; set; } = "http://api.noorpod.ir";//"http://localhost:9341"; "http://api.noorpod.ir";
         static TranslatorNoCacheHttpClient NoCacheHttpClient { get; set; } = new TranslatorNoCacheHttpClient();
         static TranslatorHttpClient CacheHttpClient { get; set; } = new TranslatorHttpClient();
 
+        static IBookServiceAsync DuplexBookService { get; set; }
+        static IChapterServiceAsync DuplexChapterService { get; set; }
+        static IPageServiceAsync DuplexPageService { get; set; }
+        public static bool IsDuplexProtocol { get; set; }
+        static bool IsForce { get; set; }
+
         public static IBookServiceAsync GetBookServiceHttp(bool isForce)
         {
+            IsForce = isForce;
+            if (IsDuplexProtocol)
+                return DuplexBookService;
             if (isForce)
                 return new TranslatorsServices.HttpServices.BookService(ServiceAddress, NoCacheHttpClient);
             else
@@ -23,14 +61,20 @@ namespace Translators.ServiceManagers
 
         public static IChapterServiceAsync GetChapterServiceHttp(bool isForce)
         {
+            IsForce = isForce;
+            if (IsDuplexProtocol)
+                return DuplexChapterService;
             if (isForce)
                 return new TranslatorsServices.HttpServices.ChapterService(ServiceAddress, NoCacheHttpClient);
             else
                 return new TranslatorsServices.HttpServices.ChapterService(ServiceAddress, CacheHttpClient);
         }
 
-        public static IPageService GetPageServiceHttp(bool isForce)
+        public static IPageServiceAsync GetPageServiceHttp(bool isForce)
         {
+            IsForce = isForce;
+            if (IsDuplexProtocol)
+                return DuplexPageService;
             if (isForce)
                 return new TranslatorsServices.HttpServices.PageService(ServiceAddress, NoCacheHttpClient);
             else
