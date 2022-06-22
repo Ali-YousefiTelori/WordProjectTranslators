@@ -65,8 +65,9 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Label Text="{Binding CatalogStartPageNumber}" Grid.Column="1" VerticalOptions="Center"/>
+            <Button HorizontalOptions="Center" Text="{Binding CatalogStartPageNumber}" Grid.Column="1" Command="{Binding SelectPageCommand}"/>
             <Button HorizontalOptions="Start" Text="{Binding ReadingName}" Command="{Binding RemoveReadingCommand}"/>
+            <ActivityIndicator IsRunning="{Binding IsLoading}" Grid.Column="2" HorizontalOptions="End"/>
         </Grid>
         <Grid.GestureRecognizers>
             <SwipeGestureRecognizer Direction="Left" Command="{Binding SwipeLeftCommand}"/>

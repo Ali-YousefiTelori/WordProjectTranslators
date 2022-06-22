@@ -22,12 +22,14 @@ namespace Translators.ViewModels.Pages
             SwipeRightCommand = CommandHelper.Create(SwipeRight);
             TouchedCommand = CommandHelper.Create<ParagraphModel>(Touch);
             RemoveReadingCommand = CommandHelper.Create(RemoveReading);
+            SelectPageCommand = CommandHelper.Create(SelectPage);
         }
 
         public ICommand<ParagraphModel> TouchedCommand { get; set; }
         public ICommand SwipeLeftCommand { get; set; }
         public ICommand SwipeRightCommand { get; set; }
         public ICommand RemoveReadingCommand { get; set; }
+        public ICommand SelectPageCommand { get; set; }
 
         string _CatalogName;
         public string CatalogName
@@ -183,6 +185,16 @@ namespace Translators.ViewModels.Pages
                     }
                 }
                 OnPropertyChanged(nameof(ReadingName));
+            }
+        }
+
+        private async Task SelectPage()
+        {
+            var data = await AlertHelper.DisplayPrompt("صفحات", "لطفا صفحه‌ی مورد نظر را انتخاب کنید..");
+            if (int.TryParse(data, out int number))
+            {
+                CatalogStartPageNumber = number;
+                await LoadData();
             }
         }
     }
