@@ -22,7 +22,7 @@
                     <ViewCell>
                         <StackLayout Orientation="Vertical">
                             <Label FontSize="{Binding FontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Name}"/>
-                            <Label FontSize="10"/>
+                            <Label FontSize="{Binding ReadingFontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Title}"/>
                             <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ReadingPageViewModel}}" CommandParameter="{Binding}" />
                             </StackLayout.GestureRecognizers>

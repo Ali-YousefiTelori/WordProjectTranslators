@@ -22,6 +22,14 @@ namespace Translators.ViewModels.Pages
         public ICommand<PageData> LongTouchedCommand { get; set; }
         public ICommand AddReadingCommand { get; set; }
 
+        public int ReadingFontSize
+        {
+            get
+            {
+                return FontSize - 7;
+            }
+        }
+
         public async Task Touched(PageData pageData)
         {
             var selectedType = await AlertHelper.Display<ReadingRightClickType>("عملیات", "انصراف", "مطالعه", "حذف");
