@@ -23,6 +23,7 @@ namespace Translators.ViewModels.Pages
             TouchedCommand = CommandHelper.Create<ParagraphModel>(Touch);
             RemoveReadingCommand = CommandHelper.Create(RemoveReading);
             SelectPageCommand = CommandHelper.Create(SelectPage);
+            SelectVerseCommand = CommandHelper.Create(SelectVerse);
         }
 
         public ICommand<ParagraphModel> TouchedCommand { get; set; }
@@ -30,7 +31,8 @@ namespace Translators.ViewModels.Pages
         public ICommand SwipeRightCommand { get; set; }
         public ICommand RemoveReadingCommand { get; set; }
         public ICommand SelectPageCommand { get; set; }
-
+        public ICommand SelectVerseCommand { get; set; }
+        
         string _CatalogName;
         public string CatalogName
         {
@@ -190,11 +192,25 @@ namespace Translators.ViewModels.Pages
 
         private async Task SelectPage()
         {
-            var data = await AlertHelper.DisplayPrompt("صفحات", "لطفا صفحه‌ی مورد نظر را انتخاب کنید..");
+            var data = await AlertHelper.DisplayPrompt("صفحات", "لطفا صفحه‌ی مورد نظر را انتخاب کنید.");
             if (int.TryParse(data, out int number))
             {
                 CatalogStartPageNumber = number;
                 await LoadData();
+            }
+        }
+
+        private async Task SelectVerse()
+        {
+            var data = await AlertHelper.DisplayPrompt("انتخاب آیه", "لطفا شماره‌ی آیه‌ی مورد نظر را انتخاب کنید.");
+            if (int.TryParse(data, out int number))
+            {
+                var verseResult = await TranslatorService.GetPageServiceHttp(false).GetPageNumberByVerseNumberAsync(number, BookId);
+                if (verseResult.IsSuccess)
+                {
+                    CatalogStartPageNumber = verseResult.Result;
+                    await LoadData();
+                }
             }
         }
     }

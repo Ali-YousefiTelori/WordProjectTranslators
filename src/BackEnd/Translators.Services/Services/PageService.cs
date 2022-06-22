@@ -26,5 +26,18 @@ namespace Translators.Services
             }
             return result;
         }
+
+        public async Task<MessageContract<long>> GetPageNumberByVerseNumber([NumberValidation] long verseNumber, [NumberValidation] long bookId)
+        {
+            var verseResult = await new LogicBase<TranslatorContext, ParagraphContract, ParagraphEntity>().Find(x =>
+                        x.Where(q => q.Number == verseNumber && q.Page.Catalog.BookId == bookId));
+            if (!verseResult.IsSuccess)
+                return verseResult.ToContract<long>();
+            var pageResult = await new LogicBase<TranslatorContext, PageContract, PageEntity>().Find(x =>
+                       x.Where(q => q.Id == verseResult.Result.PageId));
+            if (!pageResult.IsSuccess)
+                return pageResult.ToContract<long>();
+            return pageResult.Result.Number;
+        }
     }
 }

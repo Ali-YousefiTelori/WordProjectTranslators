@@ -24,5 +24,14 @@
                 Result = contract
             };
         }
+
+        public MessageContract<TContract> ToContract<TContract>()
+        {
+            return new MessageContract<TContract>()
+            {
+                IsSuccess = IsSuccess,
+                Error = Error
+            };
+        }
     }
 }

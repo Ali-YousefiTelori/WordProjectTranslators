@@ -65,8 +65,11 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button HorizontalOptions="Center" Text="{Binding CatalogStartPageNumber}" Grid.Column="1" Command="{Binding SelectPageCommand}"/>
             <Button HorizontalOptions="Start" Text="{Binding ReadingName}" Command="{Binding RemoveReadingCommand}"/>
+            <StackLayout Orientation="Horizontal" Grid.Column="1">
+                <Button Text="{Binding CatalogStartPageNumber}" Command="{Binding SelectPageCommand}"/>
+                <Button Text="آیه" Command="{Binding SelectVerseCommand}"/>
+            </StackLayout>
             <ActivityIndicator IsRunning="{Binding IsLoading}" Grid.Column="2" HorizontalOptions="End"/>
         </Grid>
         <Grid.GestureRecognizers>
