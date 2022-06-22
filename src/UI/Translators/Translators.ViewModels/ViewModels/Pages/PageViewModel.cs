@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,7 +74,11 @@ namespace Translators.ViewModels.Pages
 
         public override async Task FetchData(bool isForce)
         {
-            var pages = await TranslatorService.GetPageServiceHttp(isForce).GetPageAsync(CatalogStartPageNumber, BookId);
+            var pages = await FetchPage(isForce, CatalogStartPageNumber, BookId);
+            //fetch next
+            _ = await FetchPage(isForce, CatalogStartPageNumber + 1, BookId);
+            //fetch prevoius
+            _ = await FetchPage(isForce, CatalogStartPageNumber - 1, BookId);
             if (pages.IsSuccess)
             {
                 InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => ParagraphModel.Map(i))));
@@ -83,6 +88,12 @@ namespace Translators.ViewModels.Pages
                 ApplicationPagesData.Current.AddPageValue(PageType.Pages, CatalogStartPageNumber, BookId);
             }
         }
+
+        async Task<MessageContract<List<PageContract>>> FetchPage(bool isForce, long pageNumber, long bookId)
+        {
+            return await TranslatorService.GetPageServiceHttp(isForce).GetPageAsync(pageNumber, bookId);
+        }
+
 
         private async Task SwipeLeft()
         {

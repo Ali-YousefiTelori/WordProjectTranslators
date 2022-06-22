@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,7 +18,7 @@ namespace Translators.Models.Storages
 
         protected string FilePath { get; set; }
 
-        bool IsLoading = false;
+        protected bool IsLoading = false;
         bool DoSaveAfterLoad = false;
         protected static string GetFolderPath()
         {

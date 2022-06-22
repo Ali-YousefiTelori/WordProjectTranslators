@@ -25,50 +25,20 @@ namespace Translators.UI.Droid
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-
-        //public static Notification ReturnNotif(Context context)
-        //{
-        //    NotificationChannel chan = new NotificationChannel(channelId, "Translators", NotificationImportance.High);
-        //    chan.LockscreenVisibility = NotificationVisibility.Private;
-        //    NotificationManager service = GetSystemService(Context.NotificationService) as NotificationManager;
-        //    service.CreateNotificationChannel(chan);
-
-        //    //// Building intent
-        //    //var intent = new Intent(context, typeof(MainActivity));
-        //    //intent.AddFlags(ActivityFlags.SingleTop);
-        //    //intent.PutExtra("مترجمین", "شما در حال مطالعه‌ کتب هستید");
-
-        //    //var pendingIntent = PendingIntent.GetActivity(context, 0, intent, PendingIntentFlags.UpdateCurrent);
-        //    //string channelId = "translators";
-        //    //var notifBuilder = new NotificationCompat.Builder(context, channelId)
-        //    //    .SetContentTitle("مترجمین")
-        //    //    .SetContentText("شما در حال مطالعه‌ کتب هستید")
-        //    //    .SetSmallIcon(Resource.Mipmap.icon)
-        //    //    .SetOngoing(true)
-        //    //    .SetContentIntent(pendingIntent);
-
-        //    //// Building channel if API verion is 26 or above
-        //    //if (global::Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.O)
-        //    //{
-        //    //    NotificationChannel notificationChannel = new NotificationChannel(channelId, "مترجمین", NotificationImportance.High);
-        //    //    notificationChannel.Importance = NotificationImportance.High;
-        //    //    notificationChannel.LockscreenVisibility = NotificationVisibility.Private;
-
-        //    //    //notificationChannel.EnableLights(true);
-        //    //    //notificationChannel.EnableVibration(true);
-        //    //    //notificationChannel.SetShowBadge(true);
-        //    //    //notificationChannel.SetVibrationPattern(new long[] { 100, 200, 300, 400, 500, 400, 300, 200, 400 });
-
-        //    //    var notifManager = context.GetSystemService(Context.NotificationService) as NotificationManager;
-        //    //    if (notifManager != null)
-        //    //    {
-        //    //        notifBuilder.SetChannelId(channelId);
-        //    //        notifManager.CreateNotificationChannel(notificationChannel);
-        //    //    }
-        //    //}
-
-        //    //return notifBuilder.Build();
-        //}
+        protected override void OnDestroy()
+        {
+            if (TranslatorsService.This != null)
+            {
+                try
+                {
+                    TranslatorsService.This.StopForeground(true);
+                }
+                catch (System.Exception ex)
+                {
+                }
+            }
+            base.OnDestroy();
+        }
 
         public static void StartForegroundServiceCompat<T>(Context context, Bundle args = null) where T : Service
         {
@@ -93,7 +63,7 @@ namespace Translators.UI.Droid
     [IntentFilter(new string[] { "noorpod.ir.translators.translatorservice" })]
     public class TranslatorsService : Service
     {
-
+        public static TranslatorsService This { get; set; }
         Notification GetNotification()
         {
             Notification notification = null;
@@ -120,6 +90,7 @@ namespace Translators.UI.Droid
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
+            This = this;
             try
             {
                 Notification notif = GetNotification();

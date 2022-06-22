@@ -1,7 +1,10 @@
 ﻿using Newtonsoft.Json;
 using SignalGo.Client;
 using SignalGo.Shared.Models;
+using System;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Models.Storages;
@@ -17,7 +20,16 @@ namespace Translators.ServiceManagers
 
         public static string GetKey(string url, ParameterInfo[] parameterInfoes)
         {
-            return $"{url.ToLower().Trim('/')}_{(parameterInfoes == null ? "Null" : string.Join("#", parameterInfoes.Select(p => $"{p.Name}_{p.Value}")))}";
+            return Sha1Hash($"{url.ToLower().Trim('/')}_{(parameterInfoes == null ? "Null" : string.Join("#", parameterInfoes.Select(p => $"{p.Name}_{p.Value}")))}");
+        }
+
+        private static SHA1 _sha1 = SHA1.Create();
+        //hex encoding of the hash, in uppercase.
+        public static string Sha1Hash(this string str)
+        {
+            byte[] data = Encoding.UTF8.GetBytes(str);
+            data = _sha1.ComputeHash(data);
+            return BitConverter.ToString(data).Replace("-", "");
         }
 
         public static async Task SaveLocal(string url, ParameterInfo[] parameterInfoes, HttpClientResponse httpClientResponse)
@@ -32,19 +44,21 @@ namespace Translators.ServiceManagers
             if (messageContract.IsSuccess)
             {
                 var key = GetKey(url, parameterInfoes);
-                await ApplicationBookData.Add(key, json);
+                var saver = new ApplicationBookData();
+                saver.Initialize(key);
+                await saver.Add(json);
             }
         }
 
-        public static bool TakeData(string url, ParameterInfo[] parameterInfoes, out string result)
+        public static async Task<(bool IsSuccess, string Result)> TakeData(string url, ParameterInfo[] parameterInfoes)
         {
-            if (ApplicationBookData.TryGet(ClientConnectionManager.GetKey(url, parameterInfoes), out var value))
+            var saver = new ApplicationBookData();
+            await saver.InitializeLoad(GetKey(url, parameterInfoes));
+            if (saver.TryGet(out var value))
             {
-                result = value;
-                return true;
+                return (true, value);
             }
-            result = null;
-            return false;
+            return (false, null);
         }
     }
 
@@ -53,6 +67,7 @@ namespace Translators.ServiceManagers
         public TranslatorNoCacheHttpClient()
         {
             Encoding = System.Text.Encoding.UTF8;
+            UseJsonPost = true;
         }
 
         public override async Task<HttpClientResponse> PostAsync(string url, ParameterInfo[] parameterInfoes, BaseStreamInfo streamInfo = null)
@@ -61,18 +76,17 @@ namespace Translators.ServiceManagers
             _ = ClientConnectionManager.SaveLocal(url, parameterInfoes, result);
             return result;
         }
-
-
     }
 
     public class TranslatorHttpClient : TranslatorNoCacheHttpClient
     {
         public override async Task<HttpClientResponse> PostAsync(string url, ParameterInfo[] parameterInfoes, BaseStreamInfo streamInfo = null)
         {
-            if (ClientConnectionManager.TakeData(url, parameterInfoes, out var value))
+            (bool Success, string Result) = await ClientConnectionManager.TakeData(url, parameterInfoes);
+            if (Success)
                 return new HttpClientResponse()
                 {
-                    Data = new HttpClientDataResponse(value),
+                    Data = new HttpClientDataResponse(Result),
                     Status = System.Net.HttpStatusCode.OK
                 };
             return await base.PostAsync(url, parameterInfoes, streamInfo);

@@ -29,7 +29,7 @@
                     <SwipeItem Text="Next Page" Command="{Binding SwipeRightCommand,Source={StaticResource PageViewModel}}" />
                 </SwipeItems>
             </SwipeView.LeftItems>
-            <ListView ItemsSource="{Binding Items}" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading,Mode=OneWay}" IsPullToRefreshEnabled="True" HasUnevenRows="True">
+            <ListView CachingStrategy="RecycleElementAndDataTemplate" ItemsSource="{Binding Items}" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading,Mode=OneWay}" IsPullToRefreshEnabled="True" HasUnevenRows="True">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

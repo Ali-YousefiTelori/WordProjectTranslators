@@ -13,17 +13,18 @@ namespace Translators.ServiceManagers
             DuplexChapterService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ChapterService>(clientProvider);
             DuplexPageService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.PageService>(clientProvider);
 
-            clientProvider.OnSendRequestToServer = (serviceName, methodName, parameters) =>
+            clientProvider.OnSendRequestToServer = async (serviceName, methodName, parameters) =>
             {
                 if (IsForce)
                 {
-                    return Task.FromResult(("", false));
+                    return ("", false);
                 }
-                if (ClientConnectionManager.TakeData(ClientConnectionManager.GetUrl(serviceName, methodName), parameters, out string result))
+                (bool Success, string Result) = await ClientConnectionManager.TakeData(ClientConnectionManager.GetUrl(serviceName, methodName), parameters);
+                if (Success)
                 {
-                    return Task.FromResult((result, true));
+                    return (Result, true);
                 }
-                return Task.FromResult(("", false));
+                return ("", false);
             };
 
             clientProvider.OnGetResponseFromServer = (serviceName, methodName, parameters, result) =>

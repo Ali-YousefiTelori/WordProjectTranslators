@@ -1,61 +1,44 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Translators.Models.Storages.Models;
 
 namespace Translators.Models.Storages
 {
-    internal class ApplicationBookData : ApplicationStorageBase<List<LocalStorageData>>
+    internal class ApplicationBookData : ApplicationStorageBase<LocalStorageData>
     {
-        public ApplicationBookData()
+        public void Initialize(string fileName)
         {
-            FilePath = Path.Combine(GetFolderPath(), "ApplicationBookData.json");
+            IsLoading = false;
+            var directory = Path.Combine(GetFolderPath(), "Temp");
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+            FilePath = Path.Combine(directory, $"{fileName}.json");
         }
 
-        static ApplicationBookData()
+        public async Task InitializeLoad(string fileName)
         {
-            _ = Current.BaseInitialize();
+            Initialize(fileName);
+            await BaseInitialize();
         }
 
-        public static ApplicationBookData Current { get; set; } = new ApplicationBookData();
-        static ConcurrentDictionary<string, LocalStorageData> LocalStorageItems { get; set; } = new ConcurrentDictionary<string, LocalStorageData>();
-
-        public override async Task Load(List<LocalStorageData> value)
+        public bool TryGet(out string value)
         {
-            foreach (var localStorage in value)
+            if (Value?.JsonValue != null)
             {
-                LocalStorageItems.TryAdd(localStorage.Key, localStorage);
-            }
-        }
-
-        public static bool TryGet(string key, out string value)
-        {
-            if (LocalStorageItems.TryGetValue(key, out LocalStorageData localStorage))
-            {
-                value = localStorage.JsonValue;
+                value = Value.JsonValue;
                 return true;
             }
             value = null;
             return false;
         }
 
-        public static async Task Add(string key, string value)
+        public async Task Add(string value)
         {
             try
             {
-                var newValue = new LocalStorageData() { Key = key, JsonValue = value };
-                LocalStorageItems.AddOrUpdate(key, newValue, (k, data) => newValue);
-                var find = Current.Value.FirstOrDefault(x => x.Key == key);
-                if (find != null)
-                {
-                    Current.Value.Remove(find);
-                }
-                Current.Value.Add(newValue);
-                _ = Current.SaveFile();
+                Value = new LocalStorageData() { JsonValue = value };
+                _ = SaveFile();
             }
             catch (Exception ex)
             {
