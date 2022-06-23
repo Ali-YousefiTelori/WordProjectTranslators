@@ -80,9 +80,9 @@ namespace Translators.ViewModels.Pages
         {
             var pages = await FetchPage(isForce, CatalogStartPageNumber, BookId);
             //fetch next
-            _ = await FetchPage(isForce, CatalogStartPageNumber + 1, BookId);
+            _ = FetchPage(isForce, CatalogStartPageNumber + 1, BookId);
             //fetch prevoius
-            _ = await FetchPage(isForce, CatalogStartPageNumber - 1, BookId);
+            _ = FetchPage(isForce, CatalogStartPageNumber - 1, BookId);
             if (pages.IsSuccess)
             {
                 InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => ParagraphModel.Map(i))));

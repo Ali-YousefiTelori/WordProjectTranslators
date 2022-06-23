@@ -363,7 +363,10 @@ namespace Translators.Patches
             var newBible = ExtractBooks(splitBooks[2]);
             var newBibleChapters = await ExtractChapters(fileName, newBible);
             var bookNew = GetBook("عهد جدید", newBibleChapters, language, isMain);
-
+            foreach (var item in bookNew.Books.Skip(4))
+            {
+                item.IsHidden = true;
+            }
             return (bookOld, bookNew);
         }
 
@@ -437,7 +440,7 @@ namespace Translators.Patches
                 },
                 Books = bookBase.Select(x => new BookEntity()
                 {
-                    Catalogs = x.Value.OrderBy(s => s.Key).Select(s =>
+                    Catalogs = x.Value.OrderBy(s => s.Key.Number).Select(s =>
                     {
                         var catalogNumber = s.Key.Number;
                         pageNumbers++;

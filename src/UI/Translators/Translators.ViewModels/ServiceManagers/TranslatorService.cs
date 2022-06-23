@@ -33,10 +33,10 @@ namespace Translators.ServiceManagers
                 return Task.CompletedTask;
             };
 
-            //clientProvider.ConnectAsyncAutoReconnect(ServiceAddress, (isConnected) =>
-            //{
+            clientProvider.ConnectAsyncAutoReconnect(ServiceAddress, (isConnected) =>
+            {
 
-            //});
+            });
         }
 
         public static string ServiceAddress { get; set; } = "http://api.noorpod.ir";//"http://localhost:9341"; "http://api.noorpod.ir";
