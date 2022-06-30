@@ -5,6 +5,7 @@ namespace Translators.Models.Storages.Models
     public class PageValue
     {
         public long Id { get; set; }
+        public long DataId { get; set; }
         public long ParentId { get; set; }
         public PageType PageType { get; set; } = PageType.None;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Translators.Database.Entities;
+using Translators.Database.Entities.Authentications;
 using Translators.Models;
 
 namespace Translators.Database.Contexts
@@ -15,7 +16,12 @@ namespace Translators.Database.Contexts
         public DbSet<LanguageEntity> Languages { get; set; }
         public DbSet<ValueEntity> Values { get; set; }
         public DbSet<TranslatorEntity> Translators { get; set; }
-
+        public DbSet<SMSUserEntity> SMSUsers { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
+        public DbSet<UserPermissionEntity> UserPermissions { get; set; }
+        public DbSet<AppVersionEntity> AppVersions { get; set; }
+        public DbSet<LogEntity> Logs { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -63,6 +69,16 @@ namespace Translators.Database.Contexts
             });
 
             modelBuilder.Entity<CategoryEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+            });
+
+            modelBuilder.Entity<AppVersionEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+            });
+
+            modelBuilder.Entity<LogEntity>(x =>
             {
                 x.HasKey(r => r.Id);
             });
@@ -141,6 +157,27 @@ namespace Translators.Database.Contexts
                 x.HasOne(x => x.Word)
                  .WithMany(x => x.WordRoots)
                  .HasForeignKey(x => x.WordId);
+            });
+
+            modelBuilder.Entity<UserEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+                x.HasIndex(r => r.UserName).IsUnique();
+                x.HasIndex(r => r.UserSession);
+            });
+
+            modelBuilder.Entity<SMSUserEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+            });
+
+            modelBuilder.Entity<UserPermissionEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+
+                x.HasOne(x => x.User)
+                 .WithMany(x => x.UserPermissions)
+                 .HasForeignKey(x => x.UserId);
             });
         }
 

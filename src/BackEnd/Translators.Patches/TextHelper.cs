@@ -7,15 +7,19 @@ namespace Translators.Patches
     {
         public static string SearchChars = "اآبتثجچحخدذرزسشصضطظعغفقکلمنوهیكڪىيٱءإئۀةؤأ";
 
-
         public static string UnSpaceArabic(string text)
         {
-            return text.Replace(" ۛ", "ۛ").Replace(" ۖ", "ۖ").Replace(" ۗ", "ۗ").Replace(" ۚ", "ۚ").Replace(" ۙ", "ۙ").Replace(" ۘ", "").Replace(" ۜ", "");
+            return text.Replace(" ۛ", "ۛ").Replace(" ۖ", "ۖ").Replace(" ۗ", "ۗ").Replace(" ۚ", "ۚ").Replace(" ۙ", "ۙ").Replace(" ۘ", "ۘ").Replace(" ۜ", "ۜ");
         }
 
         public static string SpaceArabic(string text)
         {
-            return text.Replace("ۛ", " ۛ").Replace("ۖ", " ۖ").Replace("ۗ", " ۗ").Replace("ۚ", " ۚ").Replace("ۙ", " ۙ").Replace("ۘ", "").Replace("ۜ", " ۜ");
+            return text.Replace("ۛ", " ۛ").Replace("ۖ", " ۖ").Replace("ۗ", " ۗ").Replace("ۚ", " ۚ").Replace("ۙ", " ۙ").Replace("ۘ", " ۘ").Replace("ۜ", " ۜ");
+        }
+
+        public static string CleanArabicChars(string text)
+        {
+            return text.Replace("ۛ", "").Replace("ۖ", "").Replace("ۗ", "").Replace("ۚ", "").Replace("ۙ", "").Replace("ۘ", "").Replace("ۜ", "").Replace("ِ", "").Replace("ُ", "").Replace("َ", "").Replace("ً", "").Replace("ٌ", "").Replace("ٍ", "").Replace("ّ", "").Replace("ِ", "").Replace("ُ", "").Replace("َ", "").Replace("ً", "").Replace("ٌ", "").Replace("ٍ", "").Replace("ّ", "");
         }
 
         public static string Clean(string text)
@@ -25,7 +29,7 @@ namespace Translators.Patches
 
         public static string FixArabicForSearch(string text)
         {
-            return text.Replace("ٱ", "ا").Replace("آ", "ا").Replace("إ", "ا").Replace("أ", "ا").Replace("ء", "").Replace("ؤ", "و").Replace("ة", "ه").Replace("ۀ", "ه").Replace('ك', 'ک').Replace('ڪ', 'ک').Replace('ئ', 'ی').Replace('ي', 'ی').Replace('ى', 'ی').Replace("‌", "");
+            return CleanArabicChars(text).Replace("ٱ", "ا").Replace("آ", "ا").Replace("إ", "ا").Replace("أ", "ا").Replace("ء", "").Replace("ؤ", "و").Replace("ة", "ه").Replace("ۀ", "ه").Replace('ك', 'ک').Replace('ڪ', 'ک').Replace('ئ', 'ی').Replace('ي', 'ی').Replace('ى', 'ی').Replace("‌", "");
         }
 
         /// <summary>
@@ -101,6 +105,5 @@ namespace Translators.Patches
                 }
             };
         }
-
     }
 }

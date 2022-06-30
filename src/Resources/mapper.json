@@ -16,7 +16,8 @@
           "ToNamespace": "Translators.Contracts.Common",
           "ToName": "BookContract",
           "ToSkipProperties": [
-            "Category"
+            "Category",
+            "IsHidden"
           ],
           "CustomPropertiesMap": []
         },
@@ -56,7 +57,8 @@
           "ToName": "CatalogContract",
           "ToSkipProperties": [
             "Book",
-            "Paragraphs"
+            "Paragraphs",
+            "BookNames"
           ],
           "CustomPropertiesMap": []
         },
@@ -175,6 +177,21 @@
           "ToAssemblyName": "Translators.Domain.dll",
           "ToNamespace": "Translators.Contracts.Common",
           "ToName": "TranslatorContract",
+          "ToSkipProperties": [
+            "Values"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "LogEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "LogContract",
           "ToSkipProperties": [
             "Values"
           ],

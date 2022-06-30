@@ -16,6 +16,8 @@ namespace Translators.ServerApplication
                 serverProvider.RegisterServerService<BookService>();
                 serverProvider.RegisterServerService<ChapterService>();
                 serverProvider.RegisterServerService<PageService>();
+                serverProvider.RegisterServerService<HealthService>();
+                serverProvider.RegisterServerService<AuthenticationService>();
                 serverProvider.ErrorHandlingFunction = (ex, type, method, parameters, jsonParameter, client) =>
                 {
                     return new MessageContract()

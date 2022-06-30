@@ -14,4 +14,8 @@
     <Folder Include="Mappers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="KavenegarDotNetCore" Version="1.0.3" />
+  </ItemGroup>
+
 </Project>

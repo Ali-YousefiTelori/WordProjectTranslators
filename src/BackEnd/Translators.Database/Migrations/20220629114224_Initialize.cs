@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -8,6 +9,21 @@ namespace Translators.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AppVersions",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    ForceUpdateNumber = table.Column<int>(type: "int", nullable: false),
+                    CleanCacheTempNumber = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppVersions", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -35,6 +51,20 @@ namespace Translators.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SMSUsers",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApiSession = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PatternKey = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SMSUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Translators",
                 columns: table => new
                 {
@@ -44,6 +74,21 @@ namespace Translators.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Translators", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    IsConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    UserSession = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,6 +107,26 @@ namespace Translators.Migrations
                         name: "FK_Books_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserPermissions",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PermissionType = table.Column<byte>(type: "tinyint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPermissions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserPermissions_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -314,6 +379,23 @@ namespace Translators.Migrations
                 column: "PageId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserPermissions_UserId",
+                table: "UserPermissions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UserName",
+                table: "Users",
+                column: "UserName",
+                unique: true,
+                filter: "[UserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UserSession",
+                table: "Users",
+                column: "UserSession");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Values_BookNameId",
                 table: "Values",
                 column: "BookNameId");
@@ -392,6 +474,15 @@ namespace Translators.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AppVersions");
+
+            migrationBuilder.DropTable(
+                name: "SMSUsers");
+
+            migrationBuilder.DropTable(
+                name: "UserPermissions");
+
+            migrationBuilder.DropTable(
                 name: "Values");
 
             migrationBuilder.DropTable(
@@ -399,6 +490,9 @@ namespace Translators.Migrations
 
             migrationBuilder.DropTable(
                 name: "WordRootEntity");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Languages");

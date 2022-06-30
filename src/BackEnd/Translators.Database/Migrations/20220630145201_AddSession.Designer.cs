@@ -12,8 +12,8 @@ using Translators.Database.Contexts;
 namespace Translators.Migrations
 {
     [DbContext(typeof(TranslatorContext))]
-    [Migration("20220618095036_Initialize")]
-    partial class Initialize
+    [Migration("20220630145201_AddSession")]
+    partial class AddSession
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,96 @@ namespace Translators.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Translators.Database.Entities.AppVersionEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<int>("CleanCacheTempNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ForceUpdateNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppVersions");
+                });
+
+            modelBuilder.Entity("Translators.Database.Entities.Authentications.SMSUserEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("ApiSession")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatternKey")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SMSUsers");
+                });
+
+            modelBuilder.Entity("Translators.Database.Entities.Authentications.UserEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid?>("UserSession")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
+
+                    b.HasIndex("UserSession");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Translators.Database.Entities.Authentications.UserPermissionEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<byte>("PermissionType")
+                        .HasColumnType("tinyint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserPermissions");
+                });
 
             modelBuilder.Entity("Translators.Database.Entities.BookEntity", b =>
                 {
@@ -109,6 +199,31 @@ namespace Translators.Migrations
                     b.HasIndex("Name");
 
                     b.ToTable("Languages");
+                });
+
+            modelBuilder.Entity("Translators.Database.Entities.LogEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<int>("AppVersion")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DeviceDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogTrace")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Session")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("Translators.Database.Entities.PageEntity", b =>
@@ -309,6 +424,17 @@ namespace Translators.Migrations
                     b.ToTable("WordRootEntity");
                 });
 
+            modelBuilder.Entity("Translators.Database.Entities.Authentications.UserPermissionEntity", b =>
+                {
+                    b.HasOne("Translators.Database.Entities.Authentications.UserEntity", "User")
+                        .WithMany("UserPermissions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Translators.Database.Entities.BookEntity", b =>
                 {
                     b.HasOne("Translators.Database.Entities.CategoryEntity", "Category")
@@ -439,6 +565,11 @@ namespace Translators.Migrations
                         .IsRequired();
 
                     b.Navigation("Word");
+                });
+
+            modelBuilder.Entity("Translators.Database.Entities.Authentications.UserEntity", b =>
+                {
+                    b.Navigation("UserPermissions");
                 });
 
             modelBuilder.Entity("Translators.Database.Entities.BookEntity", b =>

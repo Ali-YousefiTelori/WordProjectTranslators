@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Translators.Contracts.Common;
 using Translators.Models;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
@@ -53,7 +54,7 @@ namespace Translators.UI.Helpers
                 case PageType.Book:
                     {
                         var page = new BookPage();
-                        ApplicationPagesData.Current.AddPageValue(pageType, id, 0);
+                        ApplicationPagesData.Current.AddPageValue(pageType, id, 0,0);
                         _ = (page.BindingContext as BookViewModel).Initialize(id);
                         await Navigation.PushAsync(page);
                         break;
@@ -61,7 +62,7 @@ namespace Translators.UI.Helpers
                 case PageType.Chapter:
                     {
                         var page = new ChapterPage();
-                        ApplicationPagesData.Current.AddPageValue(pageType, id, 0);
+                        ApplicationPagesData.Current.AddPageValue(pageType, id, 0, id);
                         BookViewModel.OnSelectedTitleByType(typeof(BookViewModel), id, 0);
                         await (page.BindingContext as ChapterViewModel).Initialize(id);
                         await Navigation.PushAsync(page);
@@ -70,8 +71,8 @@ namespace Translators.UI.Helpers
                 case PageType.Pages:
                     {
                         var page = new PagesPage();
-                        ApplicationPagesData.Current.AddPageValue(pageType, id, rootId);
-                        _ = (page.BindingContext as PageViewModel).Initialize(id, rootId);
+                        ApplicationPagesData.Current.AddPageValue(pageType, id, rootId, (long)data);
+                        _ = (page.BindingContext as PageViewModel).Initialize(id, rootId, (long)data);
                         await Navigation.PushAsync(page);
                         break;
                     }

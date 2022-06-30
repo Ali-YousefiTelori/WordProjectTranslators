@@ -32,7 +32,7 @@ namespace Translators.ViewModels.Pages
         public ICommand RemoveReadingCommand { get; set; }
         public ICommand SelectPageCommand { get; set; }
         public ICommand SelectVerseCommand { get; set; }
-        
+
         string _CatalogName;
         public string CatalogName
         {
@@ -56,7 +56,7 @@ namespace Translators.ViewModels.Pages
         }
 
         public long BookId { get; set; }
-        public CatalogContract Catalog { get; set; }
+        public long CatalogId { get; set; }
 
         private long _catalogStartPageNumber;
         public long CatalogStartPageNumber
@@ -69,8 +69,9 @@ namespace Translators.ViewModels.Pages
             }
         }
 
-        public async Task Initialize(long startPageNumber, long bookId)
+        public async Task Initialize(long startPageNumber, long bookId, long catalogId)
         {
+            CatalogId = catalogId;
             BookId = bookId;
             CatalogStartPageNumber = startPageNumber;
             await LoadData();
@@ -89,7 +90,7 @@ namespace Translators.ViewModels.Pages
                 CatalogName = $"{GetSelectedTitleByType(typeof(BookViewModel))} / ";
                 CatalogName += string.Join(" - ", pages.Result.Select(x => x.CatalogNames.GetPersianValue()).Distinct());
                 ApplicationReadingData.SetTitle(CatalogName);
-                ApplicationPagesData.Current.AddPageValue(PageType.Pages, CatalogStartPageNumber, BookId);
+                ApplicationPagesData.Current.AddPageValue(PageType.Pages, CatalogStartPageNumber, BookId, CatalogId);
             }
         }
 
@@ -205,7 +206,16 @@ namespace Translators.ViewModels.Pages
             var data = await AlertHelper.DisplayPrompt("انتخاب آیه", "لطفا شماره‌ی آیه‌ی مورد نظر را انتخاب کنید.");
             if (int.TryParse(data, out int number))
             {
-                var verseResult = await TranslatorService.GetPageServiceHttp(false).GetPageNumberByVerseNumberAsync(number, BookId);
+                MessageContract<long> verseResult;
+                try
+                {
+                    IsLoading = true;
+                    verseResult = await TranslatorService.GetPageServiceHttp(false).GetPageNumberByVerseNumberAsync(number, CatalogId);
+                }
+                finally
+                {
+                    IsLoading = true;
+                }
                 if (verseResult.IsSuccess)
                 {
                     CatalogStartPageNumber = verseResult.Result;

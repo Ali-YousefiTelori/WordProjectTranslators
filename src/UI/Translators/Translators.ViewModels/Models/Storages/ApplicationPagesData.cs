@@ -31,19 +31,20 @@ namespace Translators.Models.Storages
                 await PageHelper.PushPage(chapter.Id, chapter.ParentId, null, PageType.Chapter);
 
                 var page = value.Pages.FirstOrDefault(x => x.PageType == PageType.Pages);
-                await PageHelper.PushPage(page.Id, page.ParentId, null, PageType.Pages);
+                await PageHelper.PushPage(page.Id, page.ParentId, page.DataId, PageType.Pages);
             }
         }
 
-        public void AddPageValue(PageType pageType, long pageNumber, long bookId)
+        public void AddPageValue(PageType pageType, long pageNumber, long bookId, long dataId)
         {
             var newValue = new PageValue()
             {
                 Id = pageNumber,
+                DataId = dataId,
                 ParentId = bookId,
                 PageType = pageType
             };
-            lock(Value)
+            lock (Value)
             {
                 var find = Value.Pages.FirstOrDefault(x => x.GetKey() == newValue.GetKey());
                 if (find != null)

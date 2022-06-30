@@ -45,6 +45,7 @@ namespace CompileTimeGoMapper
                 Id = toMap.Id,
                 IsMain = toMap.IsMain,
                 Value = toMap.Value,
+                SearchValue = toMap.SearchValue,
                 LanguageId = toMap.LanguageId,
                 Language = toMap.Language.Map(uniqueRecordId, language, parameters),
                 TranslatorId = toMap.TranslatorId,
@@ -62,6 +63,7 @@ namespace CompileTimeGoMapper
                 Id = toMap.Id,
                 IsMain = toMap.IsMain,
                 Value = toMap.Value,
+                SearchValue = toMap.SearchValue,
                 LanguageId = toMap.LanguageId,
                 Language = toMap.Language.Map(uniqueRecordId, language, parameters),
                 TranslatorId = toMap.TranslatorId,
@@ -345,6 +347,39 @@ namespace CompileTimeGoMapper
             {
                 Id = toMap.Id,
                 Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
+            };
+
+            return mapped;
+        }
+    }
+    public static class LogEntity_LogContractMapper
+    {
+        public static global::Translators.Database.Entities.LogEntity Map(this global::Translators.Contracts.Common.LogContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Database.Entities.LogEntity()
+            {
+                Id = toMap.Id,
+                LogTrace = toMap.LogTrace,
+                AppVersion = toMap.AppVersion,
+                Session = toMap.Session,
+                DeviceDescription = toMap.DeviceDescription,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.LogContract Map(this global::Translators.Database.Entities.LogEntity toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.LogContract()
+            {
+                Id = toMap.Id,
+                LogTrace = toMap.LogTrace,
+                AppVersion = toMap.AppVersion,
+                Session = toMap.Session,
+                DeviceDescription = toMap.DeviceDescription,
             };
 
             return mapped;

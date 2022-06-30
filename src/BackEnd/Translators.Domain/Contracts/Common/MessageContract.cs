@@ -10,6 +10,30 @@
     {
         public bool IsSuccess { get; set; }
         public ErrorContract Error { get; set; }
+
+        public static implicit operator MessageContract(bool result)
+        {
+            return new MessageContract()
+            {
+                IsSuccess = result,
+                Error = result ? null : new ErrorContract()
+                {
+                    Message = "No details!"
+                }
+            };
+        }
+
+        public static implicit operator MessageContract(string result)
+        {
+            return new MessageContract()
+            {
+                IsSuccess = false,
+                Error = new ErrorContract()
+                {
+                    Message = result
+                }
+            };
+        }
     }
 
     public class MessageContract<T> : MessageContract

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Translators.Database.Contexts;
 
@@ -11,9 +12,10 @@ using Translators.Database.Contexts;
 namespace Translators.Migrations
 {
     [DbContext(typeof(TranslatorContext))]
-    partial class TranslatorContextModelSnapshot : ModelSnapshot
+    [Migration("20220629114224_Initialize")]
+    partial class Initialize
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,31 +199,6 @@ namespace Translators.Migrations
                     b.HasIndex("Name");
 
                     b.ToTable("Languages");
-                });
-
-            modelBuilder.Entity("Translators.Database.Entities.LogEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<int>("AppVersion")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DeviceDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LogTrace")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Session")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("Translators.Database.Entities.PageEntity", b =>

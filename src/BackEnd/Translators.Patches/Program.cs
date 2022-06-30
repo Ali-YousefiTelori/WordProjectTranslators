@@ -18,9 +18,9 @@ namespace Translators.Patches
                 //List<CategoryEntity> books = new List<CategoryEntity>();
                 var quran = await LoadQuran();
                 //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(quran);
-                var enjil = Merge(mainBible.Old, translatedBible.Old);//await LoadNewTestament();
+                var torat = Merge(mainBible.Old, translatedBible.Old);//await LoadNewTestament();
                 //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(enjil);
-                var torat = Merge(mainBible.New, translatedBible.New);// await LoadOldTestament();
+                var enjil = Merge(mainBible.New, translatedBible.New);// await LoadOldTestament();
                 //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(torat);
                 await Save(new List<CategoryEntity>()
                 {
@@ -443,7 +443,7 @@ namespace Translators.Patches
                     Catalogs = x.Value.OrderBy(s => s.Key.Number).Select(s =>
                     {
                         var catalogNumber = s.Key.Number;
-                        pageNumbers++;
+                        pageNumbers = s.Key.Number;
                         var result = new CatalogEntity()
                         {
                             Names = new List<ValueEntity>()

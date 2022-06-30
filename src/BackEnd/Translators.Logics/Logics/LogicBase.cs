@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System.Linq.Expressions;
 using Translators.Contracts.Common;
 using Translators.Database.Contexts;
 
@@ -47,7 +45,7 @@ namespace Translators.Logics
         async Task<List<TContract>> GetAllFromDatabase(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery)
         {
             TContext context = new TContext();
-            var query =  context.Set<TEntity>().AsQueryable();
+            var query = context.Set<TEntity>().AsQueryable();
             if (getQuery != null)
                 query = getQuery(query);
             var entities = await query.ToListAsync();
@@ -93,5 +91,11 @@ namespace Translators.Logics
         {
             return await FindFromDatabase(getQuery);
         }
+    }
+
+    public class LogicBase<TContext, TEntity> : LogicBase<TContext, byte, TEntity>
+        where TContext : TranslatorContext, new()
+        where TEntity : class
+    {
     }
 }

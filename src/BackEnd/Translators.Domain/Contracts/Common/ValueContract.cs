@@ -14,7 +14,7 @@ namespace Translators.Contracts.Common
         /// </summary>
         public bool IsMain { get; set; }
         public string Value { get; set; }
-
+        public string SearchValue { get; set; }
         public long LanguageId { get; set; }
         public LanguageContract Language { get; set; }
 
