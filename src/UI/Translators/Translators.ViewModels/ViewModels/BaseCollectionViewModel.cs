@@ -8,8 +8,8 @@ namespace Translators.ViewModels
     public class BaseCollectionViewModel<T> : BaseViewModel
     {
         protected static string SearchChars = "اآبتثجچحخدذرزسشصضطظعغفقکلمنوهیكڪىيٱءإئۀةؤأ0123456789";
-        string _SearchText = "";
-        public string SearchText
+        protected string _SearchText = "";
+        public virtual string SearchText
         {
             get => _SearchText;
             set

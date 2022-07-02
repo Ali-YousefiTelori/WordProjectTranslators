@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Translators.UI.Views.Pages.SearchPage"
+             xmlns:conv="clr-namespace:Translators.UI.Converters"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels">
+    <ContentPage.Resources>
+        <viewmodels:SearchPageViewModel x:Key="SearchPageViewModel" />
+        <conv:LanguageValueConverter LanguageCode="fa-ir" x:Key="LanguageValueConverter"/>
+        <conv:ThicknessConverter IsLeft="False" IsBottom="False" IsRight="True" IsTop="False" x:Key="ThicknessConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <Binding Source="{StaticResource SearchPageViewModel}"/>
+    </ContentPage.BindingContext>
+    <Grid FlowDirection="RightToLeft">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Text="متن جستجو:" VerticalOptions="Center"/>
+            <Entry Text="{Binding SearchText}" Grid.Column="1" Margin="10,0,0,0"/>
+        </Grid>
+        <StackLayout Grid.Row="1" Margin="10">
+            <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSearchInMainText}"/>
+                <Label FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="جستجو در متن اصلی"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSearchInTranslateText}"/>
+                <Label FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="جستجو در ترجمه"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding DoFullWordsSearch}"/>
+                <Label FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="جستجوی کل جمله"/>
+            </StackLayout>
+        </StackLayout>
+        <ListView Grid.Row="2"
+                ItemsSource="{Binding Items}"
+                SelectionMode="None" HasUnevenRows="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Margin="10">
+                            <StackLayout Orientation="Horizontal" Margin="{Binding Left,Converter={StaticResource ThicknessConverter}}">
+                                <CheckBox IsChecked="{Binding IsSelected}"/>
+                                <Label FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="{Binding Names, Converter={StaticResource LanguageValueConverter}}"/>
+                            </StackLayout>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button Text="جستجو" Grid.Row="3" Command="{Binding SearchCommand}"/>
+        <ActivityIndicator IsRunning="{Binding IsLoading}" Grid.RowSpan="4" IsVisible="{Binding IsLoading}"/>
+    </Grid>
+</ContentPage>

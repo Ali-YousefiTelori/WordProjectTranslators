@@ -50,6 +50,11 @@ namespace CompileTimeGoMapper
                 Language = toMap.Language.Map(uniqueRecordId, language, parameters),
                 TranslatorId = toMap.TranslatorId,
                 Translator = toMap.Translator.Map(uniqueRecordId, language, parameters),
+                TranslatorNameId = toMap.TranslatorNameId,
+                BookNameId = toMap.BookNameId,
+                CategoryNameId = toMap.CategoryNameId,
+                CatalogNameId = toMap.CatalogNameId,
+                WordValueId = toMap.WordValueId,
             };
 
             return mapped;
@@ -68,6 +73,11 @@ namespace CompileTimeGoMapper
                 Language = toMap.Language.Map(uniqueRecordId, language, parameters),
                 TranslatorId = toMap.TranslatorId,
                 Translator = toMap.Translator.Map(uniqueRecordId, language, parameters),
+                TranslatorNameId = toMap.TranslatorNameId,
+                BookNameId = toMap.BookNameId,
+                CategoryNameId = toMap.CategoryNameId,
+                CatalogNameId = toMap.CatalogNameId,
+                WordValueId = toMap.WordValueId,
             };
 
             return mapped;

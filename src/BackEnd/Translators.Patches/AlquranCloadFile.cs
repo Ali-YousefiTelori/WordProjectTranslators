@@ -1,4 +1,5 @@
 ﻿using Translators.Database.Entities;
+using Translators.Helpers;
 
 namespace Translators.Patches
 {

@@ -1,5 +1,9 @@
 ﻿using SignalGo.Server.ServiceManager;
+using System;
+using System.Threading.Tasks;
+using Translators.Attributes;
 using Translators.Contracts.Common;
+using Translators.Logics;
 using Translators.Models;
 using Translators.Services;
 
@@ -11,7 +15,10 @@ namespace Translators.ServerApplication
         {
             try
             {
+                Console.WriteLine("Starting...");
                 await ConfigData.LoadAsync();
+                await CacheLogic.Initialize();
+
                 ServerProvider serverProvider = new ServerProvider();
                 serverProvider.RegisterServerService<BookService>();
                 serverProvider.RegisterServerService<ChapterService>();

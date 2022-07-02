@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Translators.UI.Views.Pages.SearchResultPage"
+             xmlns:conv="clr-namespace:Translators.UI.Converters"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels">
+    <ContentPage.Resources>
+        <viewmodels:SearchResultPageViewModel x:Key="SearchResultPageViewModel" />
+        <conv:LanguageValueConverter LanguageCode="fa-ir" x:Key="LanguageValueConverter"/>
+        <conv:EvenColorConverter x:Key="EvenColorConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <Binding Source="{StaticResource SearchResultPageViewModel}"/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid Margin="10" FlowDirection="RightToLeft">
+            <ListView
+                ItemsSource="{Binding Items}" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label FontSize="{Binding FontSize,Source={StaticResource SearchResultPageViewModel}}" Text="{Binding MainValue}"  Margin="10,0,10,0"/>
+                                <Label Grid.Row="1" FontSize="{Binding FontSize,Source={StaticResource SearchResultPageViewModel}}" Margin="10,0,10,20" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" />
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource SearchResultPageViewModel}}" CommandParameter="{Binding}" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

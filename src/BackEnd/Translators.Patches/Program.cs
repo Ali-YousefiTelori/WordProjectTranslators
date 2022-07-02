@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using Translators.Database.Contexts;
 using Translators.Database.Entities;
+using Translators.Helpers;
 using Translators.Models;
 
 namespace Translators.Patches
@@ -12,6 +13,7 @@ namespace Translators.Patches
         {
             try
             {
+                Console.WriteLine("Starting...");
                 await ConfigData.LoadAsync();
                 var translatedBible = await LoadBibleCloadRoot(@"D:\Github\WordProjectTranslators\src\Resources\fa_new\index.htm", PersianLanguage, false);
                 var mainBible = await LoadBibleCloadRoot(@"D:\Github\WordProjectTranslators\src\Resources\he_new\index.htm", HebrewLanguage, true);
@@ -28,7 +30,7 @@ namespace Translators.Patches
                      enjil,
                      torat
                 });
-                Console.WriteLine("Started.");
+                Console.WriteLine("Started!");
             }
             catch (Exception ex)
             {

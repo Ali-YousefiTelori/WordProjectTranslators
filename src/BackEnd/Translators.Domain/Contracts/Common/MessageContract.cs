@@ -3,6 +3,7 @@
     public class ErrorContract
     {
         public string Message { get; set; }
+        public string Details { get; set; }
         public string StackTrace { get; set; }
     }
 
@@ -55,6 +56,19 @@
             {
                 IsSuccess = IsSuccess,
                 Error = Error
+            };
+        }
+
+        public static implicit operator MessageContract<T>((string Result, string Details) data)
+        {
+            return new MessageContract<T>()
+            {
+                IsSuccess = false,
+                Error = new ErrorContract()
+                {
+                    Message = data.Result,
+                    Details = data.Details
+                }
             };
         }
     }

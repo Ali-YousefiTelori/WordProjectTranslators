@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Translators.Models.Interfaces;
+using Translators.ViewModels;
 
 namespace Translators.UI.Helpers
 {
@@ -18,7 +17,7 @@ namespace Translators.UI.Helpers
                 }
                 catch (Exception ex)
                 {
-
+                    await BaseViewModel.AlertExcepption(ex);
                 }
             });
         }
@@ -33,7 +32,7 @@ namespace Translators.UI.Helpers
                 }
                 catch (Exception ex)
                 {
-
+                    await BaseViewModel.AlertExcepption(ex);
                 }
             });
         }

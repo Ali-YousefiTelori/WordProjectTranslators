@@ -1,7 +1,12 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Translators.Database.Entities;
 
-namespace Translators.Patches
+namespace Translators.Helpers
 {
     public static class TextHelper
     {
@@ -80,7 +85,7 @@ namespace Translators.Patches
                 index++;
                 return word;
             }).Where(x => x.Values.All(v => !string.IsNullOrEmpty(v.Value.Trim()))).ToList();
-            
+
             return new ParagraphEntity()
             {
                 Words = mainWords,

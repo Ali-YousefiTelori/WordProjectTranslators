@@ -9,8 +9,16 @@ namespace Translators.Contracts.Requests
     public class AdvancedSearchFilterRequestContract
     {
         public string Search { get; set; }
-        public bool DoSearchInQuran { get; set; }
-        public bool DoSearchInTorat { get; set; }
-        public bool DoSearchInEnjil { get; set; }
+        /// <summary>
+        /// search in books
+        /// </summary>
+        public List<long> BookIds { get; set; }
+
+        public bool SkipSearchInTranslates { get; set; }
+        public bool SkipSearchInMain { get; set; }
+        /// <summary>
+        /// جستجو به شکل کل جمله
+        /// </summary>
+        public bool DoFullWordsSearch { get; set; }
     }
 }

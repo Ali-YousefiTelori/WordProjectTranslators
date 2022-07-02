@@ -12,6 +12,7 @@
         /// <summary>
         /// Ayat
         /// </summary>
-        Pages = 4
+        Pages = 4,
+        SearchResult = 5
     }
 }

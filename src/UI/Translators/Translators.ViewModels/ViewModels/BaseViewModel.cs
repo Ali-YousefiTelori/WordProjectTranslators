@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using Translators.Contracts.Common;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
@@ -119,6 +120,24 @@ namespace Translators.ViewModels
         public virtual void OnSelected(long id, long parentId)
         {
 
+        }
+
+        public static async Task AlertContract(MessageContract messageContract)
+        {
+            if (!messageContract.IsSuccess)
+                await AlertHelper.Alert("خطا", messageContract.Error?.Message);
+        }
+
+        public static async Task AlertExcepption(Exception exception)
+        {
+            try
+            {
+                await AlertHelper.Alert("خطا", exception.Message);
+            }
+            catch
+            {
+
+            }
         }
     }
 }

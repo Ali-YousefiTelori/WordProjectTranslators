@@ -32,15 +32,10 @@
           "ToNamespace": "Translators.Contracts.Common",
           "ToName": "ValueContract",
           "ToSkipProperties": [
-            "TranslatorNameId",
             "TranslatorName",
-            "BookNameId",
             "BookName",
-            "CategoryNameId",
             "Category",
-            "CatalogNameId",
             "Catalog",
-            "WordValueId",
             "Word"
           ],
           "CustomPropertiesMap": []

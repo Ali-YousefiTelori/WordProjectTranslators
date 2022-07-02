@@ -5,6 +5,7 @@
         None = 0,
         CopyAll = 1,
         CopyVerse = 2,
-        CopyTranslate = 3
+        CopyTranslate = 3,
+        GoToPage = 4
     }
 }

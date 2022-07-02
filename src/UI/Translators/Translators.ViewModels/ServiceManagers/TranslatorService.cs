@@ -42,7 +42,7 @@ namespace Translators.ServiceManagers
             });
         }
 
-        public static string ServiceAddress { get; set; } = "http://localhost:9341";//"http://localhost:9341"; "http://api.noorpod.ir";
+        public static string ServiceAddress { get; set; } = "http://api.noorpod.ir";//"http://localhost:9341"; "http://api.noorpod.ir";
         static TranslatorNoCacheHttpClient NoCacheHttpClient { get; set; } = new TranslatorNoCacheHttpClient();
         static TranslatorHttpClient CacheHttpClient { get; set; } = new TranslatorHttpClient();
 

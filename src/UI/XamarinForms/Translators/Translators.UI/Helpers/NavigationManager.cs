@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
@@ -18,6 +19,12 @@ namespace Translators.UI.Helpers
         public static void Initialize(INavigation navigation)
         {
             Navigation = navigation;
+        }
+
+        static INavigation SearchNavigation { get; set; }
+        public static void InitializeSearchNavigation(INavigation navigation)
+        {
+            SearchNavigation = navigation;
         }
 
         public static Page GetCurrentPage()
@@ -74,6 +81,13 @@ namespace Translators.UI.Helpers
                         ApplicationPagesData.Current.AddPageValue(pageType, id, rootId, (long)data);
                         _ = (page.BindingContext as PageViewModel).Initialize(id, rootId, (long)data);
                         await Navigation.PushAsync(page);
+                        break;
+                    }
+                case PageType.SearchResult:
+                    {
+                        var page = new SearchResultPage();
+                        (page.BindingContext as SearchResultPageViewModel).Initialize(data as List<SearchValueContract>);
+                        await SearchNavigation.PushAsync(page);
                         break;
                     }
             }

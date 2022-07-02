@@ -20,5 +20,11 @@ namespace Translators.Contracts.Common
 
         public long? TranslatorId { get; set; }
         public TranslatorContract Translator { get; set; }
+
+        public long? TranslatorNameId { get; set; }
+        public long? BookNameId { get; set; }
+        public long? CategoryNameId { get; set; }
+        public long? CatalogNameId { get; set; }
+        public long? WordValueId { get; set; }
     }
 }
