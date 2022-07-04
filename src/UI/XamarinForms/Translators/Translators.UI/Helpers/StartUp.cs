@@ -11,8 +11,10 @@ namespace Translators.UI.Helpers
     {
         public static void Initialize()
         {
+            _ = ApplicationProfileData.Current.BaseInitialize();
             _ = ApplicationSettingData.Current.BaseInitialize();
             _ = ApplicationReadingData.Current.BaseInitialize();
+            
             ClipboardHelper.Current = new ClipboardManager();
             AlertHelper.Current = new AlertManager();
             PageHelper.Initialize(NavigationManager.Current);

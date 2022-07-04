@@ -20,6 +20,7 @@ namespace Translators.Logics
         public static async Task Initialize()
         {
             await using var context = new TranslatorContext();
+            await context.Database.MigrateAsync();
             var categories = await context.Categories.AsNoTracking().ToListAsync();
             foreach (var item in categories)
             {

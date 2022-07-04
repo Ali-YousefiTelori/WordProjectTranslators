@@ -12,23 +12,18 @@ namespace Translators.Services
     [ServiceContract("Authentication", ServiceType.ServerService, InstanceType.SingleInstance)]
     public class AuthenticationService
     {
-        public async Task<MessageContract<string>> Register(string userName)
+        public async Task<MessageContract<UserContract>> Register(string userName)
         {
             var context = OperationContext.Current;
             var getOrCreateUser = await new LogicBase<TranslatorContext, UserEntity, UserEntity>().Find(query => query.Where(x => x.UserName == userName));
             if (!getOrCreateUser.IsSuccess)
-                return getOrCreateUser.ToContract<string>();
+                return getOrCreateUser.ToContract<UserContract>();
             else if (getOrCreateUser.Result != null)
             {
-                OperationContextBase.SetSetting(new UserContract()
-                {
-                    Key = getOrCreateUser.Result.UserSession.ToString(),
-                    UserName = getOrCreateUser.Result.UserName,
-                }, context);
-                return getOrCreateUser.Result.UserSession.ToString();
+                return ("نام کاربری تکراری است!", "");
             }
             var key = Guid.NewGuid();
-            var user = await new LogicBase<TranslatorContext, UserEntity>().Add(new UserEntity()
+            var userResult = await new LogicBase<TranslatorContext, UserEntity>().Add(new UserEntity()
             {
                 IsConfirmed = false,
                 UserName = userName,
@@ -40,31 +35,35 @@ namespace Translators.Services
                          PermissionType = Contracts.Common.DataTypes.PermissionType.EndUser
                     }
                 }
-            });
-            OperationContextBase.SetSetting(new UserContract()
+            }); 
+            if (!userResult.IsSuccess)
+                return userResult.ToContract<UserContract>();
+            var user = new UserContract()
             {
                 Key = key.ToString(),
                 UserName = userName,
-            }, context);
-            return key.ToString();
+            };
+            OperationContextBase.SetSetting(user, context);
+            return user;
         }
 
-        public async Task<MessageContract<string>> Login(Guid session)
+        public async Task<MessageContract<UserContract>> Login(Guid session)
         {
             var context = OperationContext.Current;
             var getOrCreateUser = await new LogicBase<TranslatorContext, UserEntity, UserEntity>().Find(query => query.Where(x => x.UserSession == session));
             if (!getOrCreateUser.IsSuccess)
-                return getOrCreateUser.ToContract<string>();
+                return getOrCreateUser.ToContract<UserContract>();
             else if (getOrCreateUser.Result != null)
             {
-                OperationContextBase.SetSetting(new UserContract()
+                var user = new UserContract()
                 {
                     Key = getOrCreateUser.Result.UserSession.ToString(),
                     UserName = getOrCreateUser.Result.UserName,
-                }, context);
-                return getOrCreateUser.Result.UserSession.ToString();
+                };
+                OperationContextBase.SetSetting(user, context);
+                return user;
             }
-            return "اطلاعات جهتت ورود شما اشتباه است.";
+            return ("اطلاعات جهتت ورود شما اشتباه است.","");
         }
 
         //public async Task<MessageContract<string>> LoginOrRegister(string userName)

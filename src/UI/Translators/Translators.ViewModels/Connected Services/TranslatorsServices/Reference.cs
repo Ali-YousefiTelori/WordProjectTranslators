@@ -18,6 +18,20 @@ using System;
 namespace TranslatorsServices.Interfaces
 {
 
+    public partial interface IChapterServiceSync
+    {
+        global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>> FilterChapters(long bookId);
+        global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract> GetChapters(long chapterId);
+    }
+    public partial interface IChapterServiceAsync
+    {
+        Task<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>> FilterChaptersAsync(long bookId);
+        Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>> GetChaptersAsync(long chapterId);
+    }
+    [ServiceContract("chapterserverservice", ServiceType.ServerService, InstanceType.SingleInstance)]
+    public partial interface IChapterService: IChapterServiceAsync, IChapterServiceSync
+    {
+    }
     public partial interface IBookServiceSync
     {
         global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CategoryContract>> GetCategories();
@@ -34,6 +48,20 @@ namespace TranslatorsServices.Interfaces
     public partial interface IBookService: IBookServiceAsync, IBookServiceSync
     {
     }
+    public partial interface IAuthenticationServiceSync
+    {
+        global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract> Register(string userName);
+        global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract> Login(global::System.Guid session);
+    }
+    public partial interface IAuthenticationServiceAsync
+    {
+        Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>> RegisterAsync(string userName);
+        Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>> LoginAsync(global::System.Guid session);
+    }
+    [ServiceContract("authenticationserverservice", ServiceType.ServerService, InstanceType.SingleInstance)]
+    public partial interface IAuthenticationService: IAuthenticationServiceAsync, IAuthenticationServiceSync
+    {
+    }
     public partial interface IHealthServiceSync
     {
         global::Translators.Contracts.Common.MessageContract AddLog(global::Translators.Contracts.Common.LogContract log);
@@ -44,20 +72,6 @@ namespace TranslatorsServices.Interfaces
     }
     [ServiceContract("healthserverservice", ServiceType.ServerService, InstanceType.SingleInstance)]
     public partial interface IHealthService: IHealthServiceAsync, IHealthServiceSync
-    {
-    }
-    public partial interface IChapterServiceSync
-    {
-        global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>> FilterChapters(long bookId);
-        global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract> GetChapters(long chapterId);
-    }
-    public partial interface IChapterServiceAsync
-    {
-        Task<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>> FilterChaptersAsync(long bookId);
-        Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>> GetChaptersAsync(long chapterId);
-    }
-    [ServiceContract("chapterserverservice", ServiceType.ServerService, InstanceType.SingleInstance)]
-    public partial interface IChapterService: IChapterServiceAsync, IChapterServiceSync
     {
     }
     public partial interface IPageServiceSync
@@ -76,24 +90,49 @@ namespace TranslatorsServices.Interfaces
     public partial interface IPageService: IPageServiceAsync, IPageServiceSync
     {
     }
-    public partial interface IAuthenticationServiceSync
-    {
-        global::Translators.Contracts.Common.MessageContract<string> Register(string userName);
-        global::Translators.Contracts.Common.MessageContract<string> Login(global::System.Guid session);
-    }
-    public partial interface IAuthenticationServiceAsync
-    {
-        Task<global::Translators.Contracts.Common.MessageContract<string>> RegisterAsync(string userName);
-        Task<global::Translators.Contracts.Common.MessageContract<string>> LoginAsync(global::System.Guid session);
-    }
-    [ServiceContract("authenticationserverservice", ServiceType.ServerService, InstanceType.SingleInstance)]
-    public partial interface IAuthenticationService: IAuthenticationServiceAsync, IAuthenticationServiceSync
-    {
-    }
 }
 
 namespace TranslatorsServices.ServerServices
 {
+    [ServiceContract("chapterserverservice",ServiceType.ServerService, InstanceType.SingleInstance)]
+    public partial class ChapterService : IChapterService
+    {
+        private SignalGo.Client.ClientProvider CurrentProvider { get; set; }
+        string ServiceName { get; set; }
+        public ChapterService(SignalGo.Client.ClientProvider clientProvider)
+        {
+            CurrentProvider = clientProvider;
+            ServiceName = this.GetType().GetServerServiceName(true);
+        }
+        public virtual global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>> FilterChapters(long bookId)
+        {
+                return  SignalGo.Client.ClientManager.ConnectorExtensions.SendDataSync<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>>(CurrentProvider, ServiceName,"FilterChapters", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
+                });
+        }
+        public virtual Task<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>> FilterChaptersAsync(long bookId)
+        {
+                return SignalGo.Client.ClientManager.ConnectorExtensions.SendDataAsync<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>>(CurrentProvider, ServiceName,"FilterChapters", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
+                });
+        }
+        public virtual global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract> GetChapters(long chapterId)
+        {
+                return  SignalGo.Client.ClientManager.ConnectorExtensions.SendDataSync<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>>(CurrentProvider, ServiceName,"GetChapters", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(chapterId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(chapterId) },
+                });
+        }
+        public virtual Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>> GetChaptersAsync(long chapterId)
+        {
+                return SignalGo.Client.ClientManager.ConnectorExtensions.SendDataAsync<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>>(CurrentProvider, ServiceName,"GetChapters", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(chapterId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(chapterId) },
+                });
+        }
+    }
     [ServiceContract("bookserverservice",ServiceType.ServerService, InstanceType.SingleInstance)]
     public partial class BookService : IBookService
     {
@@ -143,6 +182,45 @@ namespace TranslatorsServices.ServerServices
                 });
         }
     }
+    [ServiceContract("authenticationserverservice",ServiceType.ServerService, InstanceType.SingleInstance)]
+    public partial class AuthenticationService : IAuthenticationService
+    {
+        private SignalGo.Client.ClientProvider CurrentProvider { get; set; }
+        string ServiceName { get; set; }
+        public AuthenticationService(SignalGo.Client.ClientProvider clientProvider)
+        {
+            CurrentProvider = clientProvider;
+            ServiceName = this.GetType().GetServerServiceName(true);
+        }
+        public virtual global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract> Register(string userName)
+        {
+                return  SignalGo.Client.ClientManager.ConnectorExtensions.SendDataSync<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>>(CurrentProvider, ServiceName,"Register", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(userName),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(userName) },
+                });
+        }
+        public virtual Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>> RegisterAsync(string userName)
+        {
+                return SignalGo.Client.ClientManager.ConnectorExtensions.SendDataAsync<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>>(CurrentProvider, ServiceName,"Register", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(userName),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(userName) },
+                });
+        }
+        public virtual global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract> Login(global::System.Guid session)
+        {
+                return  SignalGo.Client.ClientManager.ConnectorExtensions.SendDataSync<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>>(CurrentProvider, ServiceName,"Login", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(session),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(session) },
+                });
+        }
+        public virtual Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>> LoginAsync(global::System.Guid session)
+        {
+                return SignalGo.Client.ClientManager.ConnectorExtensions.SendDataAsync<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>>(CurrentProvider, ServiceName,"Login", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(session),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(session) },
+                });
+        }
+    }
     [ServiceContract("healthserverservice",ServiceType.ServerService, InstanceType.SingleInstance)]
     public partial class HealthService : IHealthService
     {
@@ -165,45 +243,6 @@ namespace TranslatorsServices.ServerServices
                 return SignalGo.Client.ClientManager.ConnectorExtensions.SendDataAsync<global::Translators.Contracts.Common.MessageContract>(CurrentProvider, ServiceName,"AddLog", new SignalGo.Shared.Models.ParameterInfo[]
                 {
                          new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(log),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(log) },
-                });
-        }
-    }
-    [ServiceContract("chapterserverservice",ServiceType.ServerService, InstanceType.SingleInstance)]
-    public partial class ChapterService : IChapterService
-    {
-        private SignalGo.Client.ClientProvider CurrentProvider { get; set; }
-        string ServiceName { get; set; }
-        public ChapterService(SignalGo.Client.ClientProvider clientProvider)
-        {
-            CurrentProvider = clientProvider;
-            ServiceName = this.GetType().GetServerServiceName(true);
-        }
-        public virtual global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>> FilterChapters(long bookId)
-        {
-                return  SignalGo.Client.ClientManager.ConnectorExtensions.SendDataSync<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>>(CurrentProvider, ServiceName,"FilterChapters", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
-                });
-        }
-        public virtual Task<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>> FilterChaptersAsync(long bookId)
-        {
-                return SignalGo.Client.ClientManager.ConnectorExtensions.SendDataAsync<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>>(CurrentProvider, ServiceName,"FilterChapters", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
-                });
-        }
-        public virtual global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract> GetChapters(long chapterId)
-        {
-                return  SignalGo.Client.ClientManager.ConnectorExtensions.SendDataSync<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>>(CurrentProvider, ServiceName,"GetChapters", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(chapterId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(chapterId) },
-                });
-        }
-        public virtual Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>> GetChaptersAsync(long chapterId)
-        {
-                return SignalGo.Client.ClientManager.ConnectorExtensions.SendDataAsync<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>>(CurrentProvider, ServiceName,"GetChapters", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(chapterId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(chapterId) },
                 });
         }
     }
@@ -264,45 +303,6 @@ namespace TranslatorsServices.ServerServices
                 });
         }
     }
-    [ServiceContract("authenticationserverservice",ServiceType.ServerService, InstanceType.SingleInstance)]
-    public partial class AuthenticationService : IAuthenticationService
-    {
-        private SignalGo.Client.ClientProvider CurrentProvider { get; set; }
-        string ServiceName { get; set; }
-        public AuthenticationService(SignalGo.Client.ClientProvider clientProvider)
-        {
-            CurrentProvider = clientProvider;
-            ServiceName = this.GetType().GetServerServiceName(true);
-        }
-        public virtual global::Translators.Contracts.Common.MessageContract<string> Register(string userName)
-        {
-                return  SignalGo.Client.ClientManager.ConnectorExtensions.SendDataSync<global::Translators.Contracts.Common.MessageContract<string>>(CurrentProvider, ServiceName,"Register", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(userName),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(userName) },
-                });
-        }
-        public virtual Task<global::Translators.Contracts.Common.MessageContract<string>> RegisterAsync(string userName)
-        {
-                return SignalGo.Client.ClientManager.ConnectorExtensions.SendDataAsync<global::Translators.Contracts.Common.MessageContract<string>>(CurrentProvider, ServiceName,"Register", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(userName),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(userName) },
-                });
-        }
-        public virtual global::Translators.Contracts.Common.MessageContract<string> Login(global::System.Guid session)
-        {
-                return  SignalGo.Client.ClientManager.ConnectorExtensions.SendDataSync<global::Translators.Contracts.Common.MessageContract<string>>(CurrentProvider, ServiceName,"Login", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(session),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(session) },
-                });
-        }
-        public virtual Task<global::Translators.Contracts.Common.MessageContract<string>> LoginAsync(global::System.Guid session)
-        {
-                return SignalGo.Client.ClientManager.ConnectorExtensions.SendDataAsync<global::Translators.Contracts.Common.MessageContract<string>>(CurrentProvider, ServiceName,"Login", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(session),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(session) },
-                });
-        }
-    }
 }
 
 namespace TranslatorsServices.StreamServices
@@ -315,6 +315,262 @@ namespace TranslatorsServices.OneWayServices
 
 namespace TranslatorsServices.HttpServices
 {
+    public partial class AuthenticationService : IAuthenticationService
+    {
+        public AuthenticationService(string serverUrl, SignalGo.Client.IHttpClient httpClient = null)
+        {
+            _serverUrl = serverUrl;
+            _httpClient = httpClient;
+            if (_httpClient == null)
+                _httpClient = new SignalGo.Client.HttpClient();
+        }
+
+        private readonly string _serverUrl = null;
+        private SignalGo.Client.IHttpClient _httpClient;
+        public SignalGo.Shared.Http.WebHeaderCollection RequestHeaders
+        {
+            get
+            {
+                return _httpClient.RequestHeaders;
+            }
+            set
+            {
+                _httpClient.RequestHeaders = value;
+            }
+        }
+
+        public SignalGo.Shared.Http.WebHeaderCollection ResponseHeaders { get; set; }
+        public System.Net.HttpStatusCode Status { get; set; }
+        public static AuthenticationService Current { get; set; }
+        public virtual global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract> Register(string userName)
+        {
+                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "authentication/Register", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(userName),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(userName) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>>(result.Data);
+        }
+        public virtual async Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>> RegisterAsync(string userName)
+        {
+                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "authentication/Register", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(userName),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(userName) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>>(result.Data);
+        }
+        public virtual global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract> Login(global::System.Guid session)
+        {
+                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "authentication/Login", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(session),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(session) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>>(result.Data);
+        }
+        public virtual async Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>> LoginAsync(global::System.Guid session)
+        {
+                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "authentication/Login", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(session),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(session) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.Authentications.UserContract>>(result.Data);
+        }
+    }
+    public partial class ChapterService : IChapterService
+    {
+        public ChapterService(string serverUrl, SignalGo.Client.IHttpClient httpClient = null)
+        {
+            _serverUrl = serverUrl;
+            _httpClient = httpClient;
+            if (_httpClient == null)
+                _httpClient = new SignalGo.Client.HttpClient();
+        }
+
+        private readonly string _serverUrl = null;
+        private SignalGo.Client.IHttpClient _httpClient;
+        public SignalGo.Shared.Http.WebHeaderCollection RequestHeaders
+        {
+            get
+            {
+                return _httpClient.RequestHeaders;
+            }
+            set
+            {
+                _httpClient.RequestHeaders = value;
+            }
+        }
+
+        public SignalGo.Shared.Http.WebHeaderCollection ResponseHeaders { get; set; }
+        public System.Net.HttpStatusCode Status { get; set; }
+        public static ChapterService Current { get; set; }
+        public virtual global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>> FilterChapters(long bookId)
+        {
+                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "chapter/FilterChapters", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>>(result.Data);
+        }
+        public virtual async Task<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>> FilterChaptersAsync(long bookId)
+        {
+                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "chapter/FilterChapters", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>>(result.Data);
+        }
+        public virtual global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract> GetChapters(long chapterId)
+        {
+                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "chapter/GetChapters", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(chapterId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(chapterId) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>>(result.Data);
+        }
+        public virtual async Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>> GetChaptersAsync(long chapterId)
+        {
+                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "chapter/GetChapters", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(chapterId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(chapterId) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>>(result.Data);
+        }
+    }
+    public partial class PageService : IPageService
+    {
+        public PageService(string serverUrl, SignalGo.Client.IHttpClient httpClient = null)
+        {
+            _serverUrl = serverUrl;
+            _httpClient = httpClient;
+            if (_httpClient == null)
+                _httpClient = new SignalGo.Client.HttpClient();
+        }
+
+        private readonly string _serverUrl = null;
+        private SignalGo.Client.IHttpClient _httpClient;
+        public SignalGo.Shared.Http.WebHeaderCollection RequestHeaders
+        {
+            get
+            {
+                return _httpClient.RequestHeaders;
+            }
+            set
+            {
+                _httpClient.RequestHeaders = value;
+            }
+        }
+
+        public SignalGo.Shared.Http.WebHeaderCollection ResponseHeaders { get; set; }
+        public System.Net.HttpStatusCode Status { get; set; }
+        public static PageService Current { get; set; }
+        public virtual global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract>> GetPage(long pageNumber, long bookId)
+        {
+                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/GetPage", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(pageNumber),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(pageNumber) },
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract>>>(result.Data);
+        }
+        public virtual async Task<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract>>> GetPageAsync(long pageNumber, long bookId)
+        {
+                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/GetPage", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(pageNumber),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(pageNumber) },
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract>>>(result.Data);
+        }
+        public virtual global::Translators.Contracts.Common.MessageContract<long> GetPageNumberByVerseNumber(long verseNumber, long catalogid)
+        {
+                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/GetPageNumberByVerseNumber", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(verseNumber),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(verseNumber) },
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(catalogid),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(catalogid) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<long>>(result.Data);
+        }
+        public virtual async Task<global::Translators.Contracts.Common.MessageContract<long>> GetPageNumberByVerseNumberAsync(long verseNumber, long catalogid)
+        {
+                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/GetPageNumberByVerseNumber", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(verseNumber),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(verseNumber) },
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(catalogid),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(catalogid) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<long>>(result.Data);
+        }
+        public virtual global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.SearchValueContract>> Search(global::Translators.Contracts.Requests.AdvancedSearchFilterRequestContract advancedSearchFilterRequest)
+        {
+                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/Search", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(advancedSearchFilterRequest),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(advancedSearchFilterRequest) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.SearchValueContract>>>(result.Data);
+        }
+        public virtual async Task<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.SearchValueContract>>> SearchAsync(global::Translators.Contracts.Requests.AdvancedSearchFilterRequestContract advancedSearchFilterRequest)
+        {
+                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/Search", new SignalGo.Shared.Models.ParameterInfo[]
+                {
+                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(advancedSearchFilterRequest),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(advancedSearchFilterRequest) },
+                });
+                ResponseHeaders = result.ResponseHeaders;
+                Status = result.Status;
+                if (Status == System.Net.HttpStatusCode.InternalServerError)
+                        throw new Exception(result.Data);
+                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.SearchValueContract>>>(result.Data);
+        }
+    }
     public partial class HealthService : IHealthService
     {
         public HealthService(string serverUrl, SignalGo.Client.IHttpClient httpClient = null)
@@ -463,262 +719,6 @@ namespace TranslatorsServices.HttpServices
                 return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.BookContract>>>(result.Data);
         }
     }
-    public partial class ChapterService : IChapterService
-    {
-        public ChapterService(string serverUrl, SignalGo.Client.IHttpClient httpClient = null)
-        {
-            _serverUrl = serverUrl;
-            _httpClient = httpClient;
-            if (_httpClient == null)
-                _httpClient = new SignalGo.Client.HttpClient();
-        }
-
-        private readonly string _serverUrl = null;
-        private SignalGo.Client.IHttpClient _httpClient;
-        public SignalGo.Shared.Http.WebHeaderCollection RequestHeaders
-        {
-            get
-            {
-                return _httpClient.RequestHeaders;
-            }
-            set
-            {
-                _httpClient.RequestHeaders = value;
-            }
-        }
-
-        public SignalGo.Shared.Http.WebHeaderCollection ResponseHeaders { get; set; }
-        public System.Net.HttpStatusCode Status { get; set; }
-        public static ChapterService Current { get; set; }
-        public virtual global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>> FilterChapters(long bookId)
-        {
-                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "chapter/FilterChapters", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>>(result.Data);
-        }
-        public virtual async Task<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>> FilterChaptersAsync(long bookId)
-        {
-                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "chapter/FilterChapters", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.CatalogContract>>>(result.Data);
-        }
-        public virtual global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract> GetChapters(long chapterId)
-        {
-                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "chapter/GetChapters", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(chapterId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(chapterId) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>>(result.Data);
-        }
-        public virtual async Task<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>> GetChaptersAsync(long chapterId)
-        {
-                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "chapter/GetChapters", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(chapterId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(chapterId) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::Translators.Contracts.Common.CatalogContract>>(result.Data);
-        }
-    }
-    public partial class AuthenticationService : IAuthenticationService
-    {
-        public AuthenticationService(string serverUrl, SignalGo.Client.IHttpClient httpClient = null)
-        {
-            _serverUrl = serverUrl;
-            _httpClient = httpClient;
-            if (_httpClient == null)
-                _httpClient = new SignalGo.Client.HttpClient();
-        }
-
-        private readonly string _serverUrl = null;
-        private SignalGo.Client.IHttpClient _httpClient;
-        public SignalGo.Shared.Http.WebHeaderCollection RequestHeaders
-        {
-            get
-            {
-                return _httpClient.RequestHeaders;
-            }
-            set
-            {
-                _httpClient.RequestHeaders = value;
-            }
-        }
-
-        public SignalGo.Shared.Http.WebHeaderCollection ResponseHeaders { get; set; }
-        public System.Net.HttpStatusCode Status { get; set; }
-        public static AuthenticationService Current { get; set; }
-        public virtual global::Translators.Contracts.Common.MessageContract<string> Register(string userName)
-        {
-                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "authentication/Register", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(userName),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(userName) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<string>>(result.Data);
-        }
-        public virtual async Task<global::Translators.Contracts.Common.MessageContract<string>> RegisterAsync(string userName)
-        {
-                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "authentication/Register", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(userName),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(userName) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<string>>(result.Data);
-        }
-        public virtual global::Translators.Contracts.Common.MessageContract<string> Login(global::System.Guid session)
-        {
-                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "authentication/Login", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(session),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(session) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<string>>(result.Data);
-        }
-        public virtual async Task<global::Translators.Contracts.Common.MessageContract<string>> LoginAsync(global::System.Guid session)
-        {
-                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "authentication/Login", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(session),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(session) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<string>>(result.Data);
-        }
-    }
-    public partial class PageService : IPageService
-    {
-        public PageService(string serverUrl, SignalGo.Client.IHttpClient httpClient = null)
-        {
-            _serverUrl = serverUrl;
-            _httpClient = httpClient;
-            if (_httpClient == null)
-                _httpClient = new SignalGo.Client.HttpClient();
-        }
-
-        private readonly string _serverUrl = null;
-        private SignalGo.Client.IHttpClient _httpClient;
-        public SignalGo.Shared.Http.WebHeaderCollection RequestHeaders
-        {
-            get
-            {
-                return _httpClient.RequestHeaders;
-            }
-            set
-            {
-                _httpClient.RequestHeaders = value;
-            }
-        }
-
-        public SignalGo.Shared.Http.WebHeaderCollection ResponseHeaders { get; set; }
-        public System.Net.HttpStatusCode Status { get; set; }
-        public static PageService Current { get; set; }
-        public virtual global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract>> GetPage(long pageNumber, long bookId)
-        {
-                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/GetPage", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(pageNumber),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(pageNumber) },
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract>>>(result.Data);
-        }
-        public virtual async Task<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract>>> GetPageAsync(long pageNumber, long bookId)
-        {
-                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/GetPage", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(pageNumber),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(pageNumber) },
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(bookId),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(bookId) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract>>>(result.Data);
-        }
-        public virtual global::Translators.Contracts.Common.MessageContract<long> GetPageNumberByVerseNumber(long verseNumber, long catalogid)
-        {
-                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/GetPageNumberByVerseNumber", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(verseNumber),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(verseNumber) },
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(catalogid),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(catalogid) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<long>>(result.Data);
-        }
-        public virtual async Task<global::Translators.Contracts.Common.MessageContract<long>> GetPageNumberByVerseNumberAsync(long verseNumber, long catalogid)
-        {
-                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/GetPageNumberByVerseNumber", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(verseNumber),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(verseNumber) },
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(catalogid),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(catalogid) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<long>>(result.Data);
-        }
-        public virtual global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.SearchValueContract>> Search(global::Translators.Contracts.Requests.AdvancedSearchFilterRequestContract advancedSearchFilterRequest)
-        {
-                SignalGo.Client.HttpClientResponse result = _httpClient.Post(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/Search", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(advancedSearchFilterRequest),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(advancedSearchFilterRequest) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.SearchValueContract>>>(result.Data);
-        }
-        public virtual async Task<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.SearchValueContract>>> SearchAsync(global::Translators.Contracts.Requests.AdvancedSearchFilterRequestContract advancedSearchFilterRequest)
-        {
-                SignalGo.Client.HttpClientResponse result = await _httpClient.PostAsync(_serverUrl + (_serverUrl.EndsWith("/") ? "" : "/") + "page/Search", new SignalGo.Shared.Models.ParameterInfo[]
-                {
-                         new  SignalGo.Shared.Models.ParameterInfo() { Name = nameof(advancedSearchFilterRequest),Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(advancedSearchFilterRequest) },
-                });
-                ResponseHeaders = result.ResponseHeaders;
-                Status = result.Status;
-                if (Status == System.Net.HttpStatusCode.InternalServerError)
-                        throw new Exception(result.Data);
-                return _httpClient.Deserialize<global::Translators.Contracts.Common.MessageContract<global::System.Collections.Generic.List<global::Translators.Contracts.Common.SearchValueContract>>>(result.Data);
-        }
-    }
 }
 
 namespace TranslatorsServices.ClientServices
@@ -773,6 +773,109 @@ namespace Translators.Contracts.Common
                 {
                         _Result = value;
                         OnPropertyChanged(nameof(Result));
+                }
+        }
+
+
+    }
+
+    public partial class CatalogContract : global::SignalGo.Shared.Models.NotifyPropertyChangedBase
+    {
+        private long _Id;
+        public long Id
+        {
+                get
+                {
+                        return _Id;
+                }
+                set
+                {
+                        _Id = value;
+                        OnPropertyChanged(nameof(Id));
+                }
+        }
+
+        private int _Number;
+        public int Number
+        {
+                get
+                {
+                        return _Number;
+                }
+                set
+                {
+                        _Number = value;
+                        OnPropertyChanged(nameof(Number));
+                }
+        }
+
+        private int _StartPageNumber;
+        public int StartPageNumber
+        {
+                get
+                {
+                        return _StartPageNumber;
+                }
+                set
+                {
+                        _StartPageNumber = value;
+                        OnPropertyChanged(nameof(StartPageNumber));
+                }
+        }
+
+        private global::System.Collections.Generic.List<global::Translators.Contracts.Common.ValueContract> _Names;
+        public global::System.Collections.Generic.List<global::Translators.Contracts.Common.ValueContract> Names
+        {
+                get
+                {
+                        return _Names;
+                }
+                set
+                {
+                        _Names = value;
+                        OnPropertyChanged(nameof(Names));
+                }
+        }
+
+        private long _BookId;
+        public long BookId
+        {
+                get
+                {
+                        return _BookId;
+                }
+                set
+                {
+                        _BookId = value;
+                        OnPropertyChanged(nameof(BookId));
+                }
+        }
+
+        private global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract> _Pages;
+        public global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract> Pages
+        {
+                get
+                {
+                        return _Pages;
+                }
+                set
+                {
+                        _Pages = value;
+                        OnPropertyChanged(nameof(Pages));
+                }
+        }
+
+        private global::System.Collections.Generic.List<global::Translators.Contracts.Common.ValueContract> _BookNames;
+        public global::System.Collections.Generic.List<global::Translators.Contracts.Common.ValueContract> BookNames
+        {
+                get
+                {
+                        return _BookNames;
+                }
+                set
+                {
+                        _BookNames = value;
+                        OnPropertyChanged(nameof(BookNames));
                 }
         }
 
@@ -881,184 +984,6 @@ namespace Translators.Contracts.Common
                 {
                         _Catalogs = value;
                         OnPropertyChanged(nameof(Catalogs));
-                }
-        }
-
-
-    }
-
-    public partial class LogContract : global::SignalGo.Shared.Models.NotifyPropertyChangedBase
-    {
-        private long _Id;
-        public long Id
-        {
-                get
-                {
-                        return _Id;
-                }
-                set
-                {
-                        _Id = value;
-                        OnPropertyChanged(nameof(Id));
-                }
-        }
-
-        private string _LogTrace;
-        public string LogTrace
-        {
-                get
-                {
-                        return _LogTrace;
-                }
-                set
-                {
-                        _LogTrace = value;
-                        OnPropertyChanged(nameof(LogTrace));
-                }
-        }
-
-        private int _AppVersion;
-        public int AppVersion
-        {
-                get
-                {
-                        return _AppVersion;
-                }
-                set
-                {
-                        _AppVersion = value;
-                        OnPropertyChanged(nameof(AppVersion));
-                }
-        }
-
-        private string _Session;
-        public string Session
-        {
-                get
-                {
-                        return _Session;
-                }
-                set
-                {
-                        _Session = value;
-                        OnPropertyChanged(nameof(Session));
-                }
-        }
-
-        private string _DeviceDescription;
-        public string DeviceDescription
-        {
-                get
-                {
-                        return _DeviceDescription;
-                }
-                set
-                {
-                        _DeviceDescription = value;
-                        OnPropertyChanged(nameof(DeviceDescription));
-                }
-        }
-
-
-    }
-
-    public partial class CatalogContract : global::SignalGo.Shared.Models.NotifyPropertyChangedBase
-    {
-        private long _Id;
-        public long Id
-        {
-                get
-                {
-                        return _Id;
-                }
-                set
-                {
-                        _Id = value;
-                        OnPropertyChanged(nameof(Id));
-                }
-        }
-
-        private int _Number;
-        public int Number
-        {
-                get
-                {
-                        return _Number;
-                }
-                set
-                {
-                        _Number = value;
-                        OnPropertyChanged(nameof(Number));
-                }
-        }
-
-        private int _StartPageNumber;
-        public int StartPageNumber
-        {
-                get
-                {
-                        return _StartPageNumber;
-                }
-                set
-                {
-                        _StartPageNumber = value;
-                        OnPropertyChanged(nameof(StartPageNumber));
-                }
-        }
-
-        private global::System.Collections.Generic.List<global::Translators.Contracts.Common.ValueContract> _Names;
-        public global::System.Collections.Generic.List<global::Translators.Contracts.Common.ValueContract> Names
-        {
-                get
-                {
-                        return _Names;
-                }
-                set
-                {
-                        _Names = value;
-                        OnPropertyChanged(nameof(Names));
-                }
-        }
-
-        private long _BookId;
-        public long BookId
-        {
-                get
-                {
-                        return _BookId;
-                }
-                set
-                {
-                        _BookId = value;
-                        OnPropertyChanged(nameof(BookId));
-                }
-        }
-
-        private global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract> _Pages;
-        public global::System.Collections.Generic.List<global::Translators.Contracts.Common.PageContract> Pages
-        {
-                get
-                {
-                        return _Pages;
-                }
-                set
-                {
-                        _Pages = value;
-                        OnPropertyChanged(nameof(Pages));
-                }
-        }
-
-        private global::System.Collections.Generic.List<global::Translators.Contracts.Common.ValueContract> _BookNames;
-        public global::System.Collections.Generic.List<global::Translators.Contracts.Common.ValueContract> BookNames
-        {
-                get
-                {
-                        return _BookNames;
-                }
-                set
-                {
-                        _BookNames = value;
-                        OnPropertyChanged(nameof(BookNames));
                 }
         }
 
@@ -1265,6 +1190,81 @@ namespace Translators.Contracts.Common
                 {
                         _BookNames = value;
                         OnPropertyChanged(nameof(BookNames));
+                }
+        }
+
+
+    }
+
+    public partial class LogContract : global::SignalGo.Shared.Models.NotifyPropertyChangedBase
+    {
+        private long _Id;
+        public long Id
+        {
+                get
+                {
+                        return _Id;
+                }
+                set
+                {
+                        _Id = value;
+                        OnPropertyChanged(nameof(Id));
+                }
+        }
+
+        private string _LogTrace;
+        public string LogTrace
+        {
+                get
+                {
+                        return _LogTrace;
+                }
+                set
+                {
+                        _LogTrace = value;
+                        OnPropertyChanged(nameof(LogTrace));
+                }
+        }
+
+        private int _AppVersion;
+        public int AppVersion
+        {
+                get
+                {
+                        return _AppVersion;
+                }
+                set
+                {
+                        _AppVersion = value;
+                        OnPropertyChanged(nameof(AppVersion));
+                }
+        }
+
+        private string _Session;
+        public string Session
+        {
+                get
+                {
+                        return _Session;
+                }
+                set
+                {
+                        _Session = value;
+                        OnPropertyChanged(nameof(Session));
+                }
+        }
+
+        private string _DeviceDescription;
+        public string DeviceDescription
+        {
+                get
+                {
+                        return _DeviceDescription;
+                }
+                set
+                {
+                        _DeviceDescription = value;
+                        OnPropertyChanged(nameof(DeviceDescription));
                 }
         }
 
@@ -1859,6 +1859,71 @@ namespace Translators.Contracts.Common
 
 }
 
+namespace Translators.Contracts.Common.Authentications
+{
+    public partial class UserContract : global::SignalGo.Shared.Models.NotifyPropertyChangedBase
+    {
+        private string _UserName;
+        public string UserName
+        {
+                get
+                {
+                        return _UserName;
+                }
+                set
+                {
+                        _UserName = value;
+                        OnPropertyChanged(nameof(UserName));
+                }
+        }
+
+        private string _LoginCode;
+        public string LoginCode
+        {
+                get
+                {
+                        return _LoginCode;
+                }
+                set
+                {
+                        _LoginCode = value;
+                        OnPropertyChanged(nameof(LoginCode));
+                }
+        }
+
+        private global::System.Collections.Generic.List<global::Translators.Contracts.Common.DataTypes.PermissionType> _Permissions;
+        public global::System.Collections.Generic.List<global::Translators.Contracts.Common.DataTypes.PermissionType> Permissions
+        {
+                get
+                {
+                        return _Permissions;
+                }
+                set
+                {
+                        _Permissions = value;
+                        OnPropertyChanged(nameof(Permissions));
+                }
+        }
+
+        private string _Key;
+        public string Key
+        {
+                get
+                {
+                        return _Key;
+                }
+                set
+                {
+                        _Key = value;
+                        OnPropertyChanged(nameof(Key));
+                }
+        }
+
+
+    }
+
+}
+
 namespace Translators.Contracts.Requests
 {
     public partial class AdvancedSearchFilterRequestContract : global::SignalGo.Shared.Models.NotifyPropertyChangedBase
@@ -1934,6 +1999,18 @@ namespace Translators.Contracts.Requests
         }
 
 
+    }
+
+}
+
+namespace Translators.Contracts.Common.DataTypes
+{
+    public enum PermissionType : byte
+    {
+        None = 0,
+        EndUser = 1,
+        Admin = 2,
+        EditLink = 3,
     }
 
 }

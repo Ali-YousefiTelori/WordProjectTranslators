@@ -28,5 +28,6 @@
         <ShellContent Title="خوانش" Icon="icon_about.png" ContentTemplate="{DataTemplate pages:ReadingPage}" />
         <ShellContent Title="تنظیمات" Icon="icon_settings.png" ContentTemplate="{DataTemplate pages:SettingPage}" />
         <ShellContent Title="جستجو" Icon="icon_search.png" ContentTemplate="{DataTemplate pages:SearchPage}" />
+        <ShellContent Title="پروفایل" Icon="profile_icon.png" ContentTemplate="{DataTemplate pages:ProfilePage}" />
     </TabBar>
 </Shell>
