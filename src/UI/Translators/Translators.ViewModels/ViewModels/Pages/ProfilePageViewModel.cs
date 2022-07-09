@@ -54,7 +54,7 @@ namespace Translators.ViewModels.Pages
             try
             {
                 IsLoading = true;
-                var result = await TranslatorService.GetAuthenticationServiceHttp(true).RegisterAsync(userName);
+                var result = await TranslatorService.GetAuthenticationService(true).RegisterAsync(userName);
                 if (result.IsSuccess)
                 {
                     ApplicationProfileData.Current.Value.Session = Guid.Parse(result.Result.Key);
@@ -75,10 +75,9 @@ namespace Translators.ViewModels.Pages
         {
             if (ApplicationProfileData.Current.Value.Session.HasValue)
             {
-                var result = await TranslatorService.GetAuthenticationServiceHttp(true).LoginAsync(ApplicationProfileData.Current.Value.Session.Value);
+                var result = await ApplicationProfileData.Login(ApplicationProfileData.Current.Value.Session);
                 if (result.IsSuccess)
                 {
-                    ApplicationProfileData.Current.Value.Session = Guid.Parse(result.Result.Key);
                     UserName = result.Result.UserName;
                     ApplicationProfileData.Current.Save();
                 }

@@ -66,7 +66,7 @@ namespace Translators.ViewModels.Pages
             {
                 IsLoading = true;
                 var bookIds = Items.Where(x => x.IsSelected).Select(x => x.CategoryId).Distinct().ToList();
-                var result = await TranslatorService.GetPageServiceHttp(true).SearchAsync(new Contracts.Requests.AdvancedSearchFilterRequestContract()
+                var result = await TranslatorService.GetPageService(true).SearchAsync(new Contracts.Requests.AdvancedSearchFilterRequestContract()
                 {
                     BookIds = bookIds,
                     Search = SearchText,
@@ -92,7 +92,7 @@ namespace Translators.ViewModels.Pages
 
         public async Task FetchBook(bool isForce)
         {
-            var books = await TranslatorService.GetBookServiceHttp(isForce).GetBooksAsync();
+            var books = await TranslatorService.GetBookService(isForce).GetBooksAsync();
             if (books.IsSuccess)
             {
                 List<SearchModel> items = new List<SearchModel>();

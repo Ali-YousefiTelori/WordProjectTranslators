@@ -59,6 +59,8 @@ namespace Translators.Logics
             if (getQuery != null)
                 query = getQuery(query);
             var entity = await query.FirstOrDefaultAsync();
+            if (entity is TContract contract)
+                return contract;
             return entity.Map<TContract>();
         }
 

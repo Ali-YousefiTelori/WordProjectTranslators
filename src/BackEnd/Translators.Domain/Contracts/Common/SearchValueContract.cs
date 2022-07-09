@@ -8,6 +8,7 @@ namespace Translators.Contracts.Common
 {
     public class SearchValueContract
     {
+        public bool HasLink { get; set; }
         public long Number { get; set; }
         public ValueContract Value { get; set; }
         public long ParagraphId { get; set; }

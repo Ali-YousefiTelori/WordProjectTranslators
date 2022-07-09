@@ -199,6 +199,42 @@ namespace Translators.Migrations
                     b.ToTable("Languages");
                 });
 
+            modelBuilder.Entity("Translators.Database.Entities.LinkGroupEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LinkGroups");
+                });
+
+            modelBuilder.Entity("Translators.Database.Entities.LinkParagraphEntity", b =>
+                {
+                    b.Property<long>("FromParagraphId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ToParagraphId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("LinkGroupId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("FromParagraphId", "ToParagraphId");
+
+                    b.HasIndex("LinkGroupId");
+
+                    b.HasIndex("ToParagraphId");
+
+                    b.ToTable("LinkParagraphs");
+                });
+
             modelBuilder.Entity("Translators.Database.Entities.LogEntity", b =>
                 {
                     b.Property<long>("Id")
@@ -455,6 +491,33 @@ namespace Translators.Migrations
                     b.Navigation("Book");
                 });
 
+            modelBuilder.Entity("Translators.Database.Entities.LinkParagraphEntity", b =>
+                {
+                    b.HasOne("Translators.Database.Entities.ParagraphEntity", "FromParagraph")
+                        .WithMany("FromLinkParagraphs")
+                        .HasForeignKey("FromParagraphId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Translators.Database.Entities.LinkGroupEntity", "LinkGroup")
+                        .WithMany("LinkParagraphs")
+                        .HasForeignKey("LinkGroupId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Translators.Database.Entities.ParagraphEntity", "ToParagraph")
+                        .WithMany("ToLinkParagraphs")
+                        .HasForeignKey("ToParagraphId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("FromParagraph");
+
+                    b.Navigation("LinkGroup");
+
+                    b.Navigation("ToParagraph");
+                });
+
             modelBuilder.Entity("Translators.Database.Entities.PageEntity", b =>
                 {
                     b.HasOne("Translators.Database.Entities.CatalogEntity", "Catalog")
@@ -598,6 +661,11 @@ namespace Translators.Migrations
                     b.Navigation("Values");
                 });
 
+            modelBuilder.Entity("Translators.Database.Entities.LinkGroupEntity", b =>
+                {
+                    b.Navigation("LinkParagraphs");
+                });
+
             modelBuilder.Entity("Translators.Database.Entities.PageEntity", b =>
                 {
                     b.Navigation("Paragraphs");
@@ -605,6 +673,10 @@ namespace Translators.Migrations
 
             modelBuilder.Entity("Translators.Database.Entities.ParagraphEntity", b =>
                 {
+                    b.Navigation("FromLinkParagraphs");
+
+                    b.Navigation("ToLinkParagraphs");
+
                     b.Navigation("Words");
                 });
 

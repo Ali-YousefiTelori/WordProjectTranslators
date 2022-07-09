@@ -23,8 +23,9 @@ namespace Translators.ServerApplication
                 serverProvider.RegisterServerService<BookService>();
                 serverProvider.RegisterServerService<ChapterService>();
                 serverProvider.RegisterServerService<PageService>();
-                serverProvider.RegisterServerService<HealthService>();
+                serverProvider.RegisterServerService<HealthService>(); 
                 serverProvider.RegisterServerService<AuthenticationService>();
+                serverProvider.RegisterServerService<ParagraphService>();
                 serverProvider.ErrorHandlingFunction = (ex, type, method, parameters, jsonParameter, client) =>
                 {
                     return new MessageContract()
@@ -32,6 +33,7 @@ namespace Translators.ServerApplication
                         IsSuccess = false,
                         Error = new ErrorContract()
                         {
+                            FailedReasonType = FailedReasonType.InternalError,
                             Message = ex.Message,
                             StackTrace = ex.StackTrace
                         }

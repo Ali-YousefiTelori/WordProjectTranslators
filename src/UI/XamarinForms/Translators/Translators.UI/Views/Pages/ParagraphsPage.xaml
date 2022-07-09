@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Translators.UI.Views.Pages.ParagraphsPage"
+             xmlns:conv="clr-namespace:Translators.UI.Converters"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels">
+    <ContentPage.Resources>
+        <viewmodels:ParagraphsPageViewModel x:Key="ParagraphsPageViewModel" />
+        <conv:LanguageValueConverter LanguageCode="fa-ir" x:Key="LanguageValueConverter"/>
+        <conv:EvenColorConverter x:Key="EvenColorConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <Binding Source="{StaticResource ParagraphsPageViewModel}"/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid Margin="10" FlowDirection="RightToLeft">
+            <ListView
+                ItemsSource="{Binding Items}" HasUnevenRows="True">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Label FontSize="{Binding FontSize,Source={StaticResource ParagraphsPageViewModel}}" Text="{Binding MainValue}"  Margin="10,0,10,0"/>
+                                <Label Grid.Row="1" FontSize="{Binding FontSize,Source={StaticResource ParagraphsPageViewModel}}" Margin="10,0,10,20" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" />
+                                <Grid WidthRequest="24" HeightRequest="24" HorizontalOptions="End" IsVisible="{Binding HasLink}" VerticalOptions="End" Grid.RowSpan="2">
+                                    <Frame CornerRadius="24" BackgroundColor="White" Padding="5" Margin="5,0,0,5">
+                                        <Image Source="icon_link.png"/>
+                                    </Frame>
+                                </Grid>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ParagraphsPageViewModel}}" CommandParameter="{Binding}" />
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

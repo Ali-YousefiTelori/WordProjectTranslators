@@ -1,4 +1,5 @@
-﻿using SignalGo.Server.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SignalGo.Server.Models;
 using SignalGo.Shared.DataTypes;
 using Translators.Contracts.Common;
 using Translators.Contracts.Common.Authentications;
@@ -35,13 +36,14 @@ namespace Translators.Services
                          PermissionType = Contracts.Common.DataTypes.PermissionType.EndUser
                     }
                 }
-            }); 
+            });
             if (!userResult.IsSuccess)
                 return userResult.ToContract<UserContract>();
             var user = new UserContract()
             {
                 Key = key.ToString(),
                 UserName = userName,
+                Permissions = userResult.Result.UserPermissions.Select(x => x.PermissionType).ToList()
             };
             OperationContextBase.SetSetting(user, context);
             return user;
@@ -50,7 +52,7 @@ namespace Translators.Services
         public async Task<MessageContract<UserContract>> Login(Guid session)
         {
             var context = OperationContext.Current;
-            var getOrCreateUser = await new LogicBase<TranslatorContext, UserEntity, UserEntity>().Find(query => query.Where(x => x.UserSession == session));
+            var getOrCreateUser = await new LogicBase<TranslatorContext, UserEntity, UserEntity>().Find(query => query.Include(x => x.UserPermissions).Where(x => x.UserSession == session));
             if (!getOrCreateUser.IsSuccess)
                 return getOrCreateUser.ToContract<UserContract>();
             else if (getOrCreateUser.Result != null)
@@ -59,11 +61,12 @@ namespace Translators.Services
                 {
                     Key = getOrCreateUser.Result.UserSession.ToString(),
                     UserName = getOrCreateUser.Result.UserName,
+                    Permissions = getOrCreateUser.Result.UserPermissions.Select(x => x.PermissionType).ToList()
                 };
                 OperationContextBase.SetSetting(user, context);
                 return user;
             }
-            return ("اطلاعات جهتت ورود شما اشتباه است.","");
+            return ("اطلاعات شما جهت ورود اشتباه وارد شده است.", "");
         }
 
         //public async Task<MessageContract<string>> LoginOrRegister(string userName)

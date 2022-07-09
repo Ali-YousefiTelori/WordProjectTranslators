@@ -32,7 +32,7 @@ namespace Translators.ViewModels.Pages
 
         public async Task FetchCategory(bool isForce)
         {
-            var categories = await TranslatorService.GetBookServiceHttp(isForce).GetCategoriesAsync();
+            var categories = await TranslatorService.GetBookService(isForce).GetCategoriesAsync();
             if (categories.IsSuccess)
             {
                 InitialData(categories.Result.Select(x => (CategoryModel)x));

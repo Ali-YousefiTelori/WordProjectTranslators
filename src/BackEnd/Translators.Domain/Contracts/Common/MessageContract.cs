@@ -1,7 +1,17 @@
 ﻿namespace Translators.Contracts.Common
 {
+    public enum FailedReasonType : byte
+    {
+        None = 0,
+        SessionAccessDenied = 1,
+        AccessDenied = 2,
+        InternalError = 3,
+        Dupplicate = 4
+    }
+
     public class ErrorContract
     {
+        public FailedReasonType FailedReasonType { get; set; }
         public string Message { get; set; }
         public string Details { get; set; }
         public string StackTrace { get; set; }
@@ -20,6 +30,19 @@
                 Error = result ? null : new ErrorContract()
                 {
                     Message = "No details!"
+                }
+            };
+        }
+
+        public static implicit operator MessageContract((string Message, FailedReasonType FailedReasonType) result)
+        {
+            return new MessageContract()
+            {
+                IsSuccess = false,
+                Error = new ErrorContract()
+                {
+                    Message = result.Message,
+                    FailedReasonType = result.FailedReasonType
                 }
             };
         }

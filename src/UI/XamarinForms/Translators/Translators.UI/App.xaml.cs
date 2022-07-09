@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Translators.ServiceManagers;
 using Translators.UI.Helpers;
 using Translators.UI.Services;
@@ -13,24 +14,33 @@ namespace Translators.UI
 {
     public partial class App : Application
     {
-
         public App()
         {
-            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            TaskScheduler.UnobservedTaskException += (o,e) =>
             {
-                int.TryParse(VersionTracking.CurrentVersion, out int version);
-                TranslatorService.GetHealthServiceHttp(true).AddLog(new Contracts.Common.LogContract()
-                {
-                     LogTrace = e.ToString(),
-                     DeviceDescription = GetVersion(),
-                     AppVersion = version,
-                     Session = TranslatorService.Session
-                });
+                UnhandleExceptionHappens(o, e.Exception);
             };
+            AppDomain.CurrentDomain.UnhandledException += (o, e) =>
+            {
+                UnhandleExceptionHappens(o, (Exception)e.ExceptionObject);
+            };
+
             InitializeComponent();
             StartUp.Initialize();
             DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
+        }
+
+        private void UnhandleExceptionHappens(object sender, Exception e)
+        {
+            int.TryParse(VersionTracking.CurrentVersion, out int version);
+            TranslatorService.GetHealthService(true).AddLog(new Contracts.Common.LogContract()
+            {
+                LogTrace = e.ToString(),
+                DeviceDescription = GetVersion(),
+                AppVersion = version,
+                Session = TranslatorService.Session
+            });
         }
 
         static string GetVersion()

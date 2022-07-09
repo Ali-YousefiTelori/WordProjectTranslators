@@ -23,10 +23,11 @@
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
             <Slider Value="{Binding FontSize}" Grid.Row="1" Maximum="60" Minimum="15" />
-            <StackLayout Grid.Row="2" Orientation="Horizontal">
+            <StackLayout Grid.Row="2" Orientation="Horizontal" IsVisible="false">
                 <Label Text="پروتکل Duplex" VerticalOptions="Center"/>
                 <CheckBox IsChecked="{Binding UseDuplexProtocol}" VerticalOptions="Center"/>
             </StackLayout>
+            <Button Text="حذف داده های کش شده" Command="{Binding RemoveCacheCommand}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

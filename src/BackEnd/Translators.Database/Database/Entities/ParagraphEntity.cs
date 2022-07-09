@@ -22,5 +22,7 @@ namespace Translators.Database.Entities
         public CatalogEntity Catalog { get; set; }
 
         public List<WordEntity> Words { get; set; }
+        public List<LinkParagraphEntity> FromLinkParagraphs { get; set; }
+        public List<LinkParagraphEntity> ToLinkParagraphs { get; set; }
     }
 }

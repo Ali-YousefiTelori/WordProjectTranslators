@@ -8,7 +8,7 @@ namespace Translators.Models.Interfaces
 {
     public interface IPageManager
     {
-        Task<object> PushPage(long id, long rootId, object data, PageType pageType);
+        Task<object> PushPage(long id, long rootId, object data, PageType pageType, bool isFromSearchPage = false);
         Task Clean();
     }
 }

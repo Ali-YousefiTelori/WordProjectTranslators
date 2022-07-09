@@ -54,14 +54,14 @@ namespace Translators.UI.Helpers
             }
         }
 
-        public async Task<object> PushPage(long id, long rootId, object data, PageType pageType)
+        public async Task<object> PushPage(long id, long rootId, object data, PageType pageType, bool isFromSearchPage = false)
         {
             switch (pageType)
             {
                 case PageType.Book:
                     {
                         var page = new BookPage();
-                        ApplicationPagesData.Current.AddPageValue(pageType, id, 0,0);
+                        ApplicationPagesData.Current.AddPageValue(pageType, id, 0, 0);
                         _ = (page.BindingContext as BookViewModel).Initialize(id);
                         await Navigation.PushAsync(page);
                         break;
@@ -88,6 +88,16 @@ namespace Translators.UI.Helpers
                         var page = new SearchResultPage();
                         (page.BindingContext as SearchResultPageViewModel).Initialize(data as List<SearchValueContract>);
                         await SearchNavigation.PushAsync(page);
+                        break;
+                    }
+                case PageType.ParagraphResult:
+                    {
+                        var page = new ParagraphsPage();
+                        (page.BindingContext as ParagraphsPageViewModel).Initialize(data as List<SearchValueContract>);
+                        if (isFromSearchPage)
+                            await SearchNavigation.PushAsync(page);
+                        else
+                            await Navigation.PushAsync(page);
                         break;
                     }
             }

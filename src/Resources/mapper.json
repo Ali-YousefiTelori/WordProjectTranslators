@@ -113,9 +113,17 @@
           "ToName": "ParagraphContract",
           "ToSkipProperties": [
             "Page",
-            "Catalog"
+            "Catalog",
+            "FromLinkParagraphs",
+            "ToLinkParagraphs"
           ],
-          "CustomPropertiesMap": []
+          "CustomPropertiesMap": [
+            {
+              "From": "HasLink",
+              "To": "$toMap.ToLinkParagraphs?.Count > 0 || toMap.FromLinkParagraphs?.Count > 0",
+              "Type": 0
+            }
+          ]
         },
         {
           "FromAssemblyName": "Translators.Database.dll",

@@ -21,6 +21,8 @@ namespace Translators.Database.Contexts
         public DbSet<UserPermissionEntity> UserPermissions { get; set; }
         public DbSet<AppVersionEntity> AppVersions { get; set; }
         public DbSet<LogEntity> Logs { get; set; }
+        public DbSet<LinkParagraphEntity> LinkParagraphs { get; set; }
+        public DbSet<LinkGroupEntity> LinkGroups { get; set; }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -178,6 +180,31 @@ namespace Translators.Database.Contexts
                 x.HasOne(x => x.User)
                  .WithMany(x => x.UserPermissions)
                  .HasForeignKey(x => x.UserId);
+            });
+
+            modelBuilder.Entity<LinkParagraphEntity>(x =>
+            {
+                x.HasKey(r => new { r.FromParagraphId ,r.ToParagraphId});
+
+                x.HasOne(x => x.ToParagraph)
+                 .WithMany(x => x.ToLinkParagraphs)
+                 .HasForeignKey(x => x.ToParagraphId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.FromParagraph)
+                 .WithMany(x => x.FromLinkParagraphs)
+                 .HasForeignKey(x => x.FromParagraphId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.LinkGroup)
+                 .WithMany(x => x.LinkParagraphs)
+                 .HasForeignKey(x => x.LinkGroupId)
+                 .OnDelete(DeleteBehavior.Restrict);
+            });  
+            
+            modelBuilder.Entity<LinkGroupEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
             });
         }
 

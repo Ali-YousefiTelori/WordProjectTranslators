@@ -9,6 +9,7 @@
         public long Id { get; set; }
         public long Number { get; set; }
         public string AnotherValue { get; set; }
+        public bool HasLink { get; set; }
 
         public long PageId { get; set; }
         public long CatalogId { get; set; }

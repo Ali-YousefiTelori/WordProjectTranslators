@@ -26,6 +26,11 @@
                                 </Grid.RowDefinitions>
                                 <Label FontSize="{Binding FontSize,Source={StaticResource SearchResultPageViewModel}}" Text="{Binding MainValue}"  Margin="10,0,10,0"/>
                                 <Label Grid.Row="1" FontSize="{Binding FontSize,Source={StaticResource SearchResultPageViewModel}}" Margin="10,0,10,20" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" />
+                                <Grid WidthRequest="24" HeightRequest="24" HorizontalOptions="End" IsVisible="{Binding HasLink}" VerticalOptions="End" Grid.RowSpan="2">
+                                    <Frame CornerRadius="24" BackgroundColor="White" Padding="5" Margin="5,0,0,5">
+                                        <Image Source="icon_link.png"/>
+                                    </Frame>
+                                </Grid>
                                 <Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource SearchResultPageViewModel}}" CommandParameter="{Binding}" />
                                 </Grid.GestureRecognizers>

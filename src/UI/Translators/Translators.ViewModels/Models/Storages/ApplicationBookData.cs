@@ -7,13 +7,18 @@ namespace Translators.Models.Storages
 {
     internal class ApplicationBookData : ApplicationStorageBase<LocalStorageData>
     {
-        public void Initialize(string fileName)
+        public static string GetCurrentFolderPath()
         {
-            IsLoading = false;
             var directory = Path.Combine(GetFolderPath(), "Temp");
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
-            FilePath = Path.Combine(directory, $"{fileName}.json");
+            return directory;
+        }
+
+        public void Initialize(string fileName)
+        {
+            IsLoading = false;
+            FilePath = Path.Combine(GetCurrentFolderPath(), $"{fileName}.json");
         }
 
         public async Task InitializeLoad(string fileName)

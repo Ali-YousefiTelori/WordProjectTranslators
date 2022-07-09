@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Translators.Models.Interfaces;
 
@@ -9,11 +10,13 @@ namespace Translators.UI.Helpers
         public async Task<T> Display<T>(string title, string cancel, params string[] items)
             where T : Enum
         {
-            var result = await NavigationManager.GetCurrentPage().DisplayActionSheet(title, cancel, null, items);
+            var generatedItems = items.Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            var result = await NavigationManager.GetCurrentPage().DisplayActionSheet(title, cancel, null, generatedItems);
             var index = Array.IndexOf(items, result);
             if (index == -1)
                 return (T)(object)0;
             index++;
+            //index += Array.IndexOf(items, result) - Array.IndexOf(generatedItems, result);
             return (T)(object)index;
         }
 

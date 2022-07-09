@@ -46,7 +46,7 @@ namespace Translators.ViewModels.Pages
 
         public async Task FetchBook(bool isForce, long categoryId)
         {
-            var books = await TranslatorService.GetBookServiceHttp(isForce).FilterBooksAsync(categoryId);
+            var books = await TranslatorService.GetBookService(isForce).FilterBooksAsync(categoryId);
             if (books.IsSuccess)
             {
                 InitialData(books.Result.Select(x => (CategoryModel)x));

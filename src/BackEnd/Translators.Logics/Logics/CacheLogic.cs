@@ -51,7 +51,7 @@ namespace Translators.Logics
                 Pages.TryAdd(item.Id, item.Map<PageContract>());
             }
 
-            var paragraphs = await context.Paragraphs.AsNoTracking().ToListAsync();
+            var paragraphs = await context.Paragraphs.Include(x => x.ToLinkParagraphs).Include(x => x.FromLinkParagraphs).AsNoTracking().ToListAsync();
             foreach (var item in paragraphs)
             {
                 Paragraphs.TryAdd(item.Id, item.Map<ParagraphContract>());

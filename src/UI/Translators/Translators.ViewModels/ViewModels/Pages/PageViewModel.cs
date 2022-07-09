@@ -14,7 +14,7 @@ using Translators.ServiceManagers;
 
 namespace Translators.ViewModels.Pages
 {
-    public class PageViewModel : BaseCollectionViewModel<ParagraphModel>
+    public class PageViewModel : ParagraphBaseViewModel<ParagraphModel>
     {
         public PageViewModel()
         {
@@ -96,7 +96,7 @@ namespace Translators.ViewModels.Pages
 
         async Task<MessageContract<List<PageContract>>> FetchPage(bool isForce, long pageNumber, long bookId)
         {
-            return await TranslatorService.GetPageServiceHttp(isForce).GetPageAsync(pageNumber, bookId);
+            return await TranslatorService.GetPageService(isForce).GetPageAsync(pageNumber, bookId);
         }
 
 
@@ -122,44 +122,19 @@ namespace Translators.ViewModels.Pages
         private async Task Touch(ParagraphModel paragraph)
         {
             string displayName = null;
-            _ = Task.Run(async () =>
+            try
             {
-                var catalog = await TranslatorService.GetChapterServiceHttp(false).GetChaptersAsync(paragraph.CatalogId);
+                IsLoading = true;
+                var catalog = await TranslatorService.GetChapterService(false).GetChaptersAsync(paragraph.CatalogId);
                 if (catalog.IsSuccess)
                     displayName = $"({catalog.Result.Number}- {LanguageValueBaseConverter.GetValue(catalog.Result.BookNames, false, "fa-ir")} آیه {paragraph.Number})";
-            });
-
-            var selectedType = await AlertHelper.Display<VerseRightClickType>("عملیات", "انصراف", "کپی همه", "کپی آیه", "کپی ترجمه");
-            switch (selectedType)
-            {
-                case VerseRightClickType.CopyAll:
-                    {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.AppendLine(paragraph.MainValue);
-                        stringBuilder.Append(paragraph.TranslatedValue);
-                        stringBuilder.Append(displayName);
-                        await ClipboardHelper.CopyText(stringBuilder.ToString());
-                        break;
-                    }
-                case VerseRightClickType.CopyVerse:
-                    {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.Append(paragraph.MainValue);
-                        stringBuilder.Append(displayName);
-                        await ClipboardHelper.CopyText(stringBuilder.ToString());
-                        break;
-                    }
-                case VerseRightClickType.CopyTranslate:
-                    {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.Append(paragraph.TranslatedValue);
-                        stringBuilder.Append(displayName);
-                        await ClipboardHelper.CopyText(stringBuilder.ToString());
-                        break;
-                    }
-                default:
-                    break;
             }
+            finally
+            {
+                IsLoading = false;
+            }
+            paragraph.DisplayName = displayName;
+            await TouchBase(paragraph, false);
         }
 
         private async Task RemoveReading()
@@ -210,7 +185,7 @@ namespace Translators.ViewModels.Pages
                 try
                 {
                     IsLoading = true;
-                    verseResult = await TranslatorService.GetPageServiceHttp(false).GetPageNumberByVerseNumberAsync(number, CatalogId);
+                    verseResult = await TranslatorService.GetPageService(false).GetPageNumberByVerseNumberAsync(number, CatalogId);
                 }
                 finally
                 {
