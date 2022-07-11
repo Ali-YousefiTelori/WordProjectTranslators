@@ -65,7 +65,7 @@ namespace Translators.ViewModels.Pages
             try
             {
                 IsLoading = true;
-                var bookIds = Items.Where(x => x.IsSelected).Select(x => x.CategoryId).Distinct().ToList();
+                var bookIds = Items.Where(x => x.IsSelected).Select(x => x.Id).Distinct().ToList();
                 var result = await TranslatorService.GetPageService(true).SearchAsync(new Contracts.Requests.AdvancedSearchFilterRequestContract()
                 {
                     BookIds = bookIds,

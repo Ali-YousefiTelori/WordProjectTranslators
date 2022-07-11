@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using Xamarin.Forms;
 
 namespace Translators.UI.Converters
@@ -10,10 +8,40 @@ namespace Translators.UI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            OSAppTheme currentTheme = Application.Current.RequestedTheme;
             if (value is bool b && b)
             {
-                OSAppTheme currentTheme = Application.Current.RequestedTheme;
-                return currentTheme == OSAppTheme.Dark ? Color.FromHex("#2FFFFFFF") : Color.FromHex("#2F000000");
+                if (currentTheme == OSAppTheme.Dark)
+                {
+                    //if (Application.Current.Resources.TryGetValue("LightBackgroundColor", out object color) && color is Color darkBackgroundColor)
+                    //{
+                    return Color.FromHex("#424242");
+                    //}
+                }
+                else
+                {
+                    //if (Application.Current.Resources.TryGetValue("DarkBackgroundColor", out object color) && color is Color darkBackgroundColor)
+                    //{
+                    return Color.FromHex("#ADADAD");
+                    //}
+                }
+            }
+            else
+            {
+                if (currentTheme == OSAppTheme.Dark)
+                {
+                    if (Application.Current.Resources.TryGetValue("DarkBackgroundColor", out object color) && color is Color darkBackgroundColor)
+                    {
+                        return darkBackgroundColor;
+                    }
+                }
+                else
+                {
+                    if (Application.Current.Resources.TryGetValue("LightBackgroundColor", out object color) && color is Color darkBackgroundColor)
+                    {
+                        return darkBackgroundColor;
+                    }
+                }
             }
             return Color.Transparent;
         }

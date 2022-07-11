@@ -14,7 +14,7 @@ namespace Translators.Helpers
 
         public static async Task<object> PushPage(long id, long rootId, object data, PageType pageType, bool isFromSearchPage = false)
         {
-            return await Current.PushPage(id, rootId, data, pageType);
+            return await Current.PushPage(id, rootId, data, pageType, isFromSearchPage);
         }
 
         public static async Task Clean()

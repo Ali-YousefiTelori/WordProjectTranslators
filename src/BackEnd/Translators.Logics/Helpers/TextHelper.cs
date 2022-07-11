@@ -10,7 +10,7 @@ namespace Translators.Helpers
 {
     public static class TextHelper
     {
-        public static string SearchChars = "اآبتثجچحخدذرزسشصضطظعغفقکلمنوهیكڪىيٱءإئۀةؤأ";
+        public static string SearchChars = "اآبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهیكڪىيٱءإئۀةؤأ";
 
         public static string UnSpaceArabic(string text)
         {

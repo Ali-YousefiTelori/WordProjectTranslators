@@ -23,11 +23,11 @@
                 SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame Margin="10" BackgroundColor="White" WidthRequest="200" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
+                        <Frame Margin="10" WidthRequest="200" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
                             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                                <Label FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" TextColor="Black" Text="{Binding Names, Converter={StaticResource LanguageValueConverter}}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                                <Label FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" TextColor="Black" Text=" -" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                                <Label FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" TextColor="Black" Text="{Binding Number}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" Text="{Binding Names, Converter={StaticResource LanguageValueConverter}}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" Text=" -" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" Text="{Binding Number}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
                             </StackLayout>
                             <Frame.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ChapterViewModel}}" CommandParameter="{Binding}" />

@@ -1,4 +1,5 @@
 ﻿using SignalGo.Client;
+using System;
 using System.Threading.Tasks;
 using Translators.Models;
 using TranslatorsServices.Interfaces;
@@ -44,7 +45,7 @@ namespace Translators.ServiceManagers
             });
         }
 
-        public static string ServiceAddress { get; set; } = "http://localhost:9341";//"http://localhost:9341"; "http://api.noorpod.ir";
+        public static string ServiceAddress { get; set; } = "http://api.noorpod.ir";//"http://localhost:9341"; "http://api.noorpod.ir";
         static TranslatorNoCacheHttpClient NoCacheHttpClient { get; set; } = new TranslatorNoCacheHttpClient();
         static TranslatorHttpClient CacheHttpClient { get; set; } = new TranslatorHttpClient();
 
@@ -123,6 +124,27 @@ namespace Translators.ServiceManagers
                 return new TranslatorsServices.HttpServices.ParagraphService(ServiceAddress, NoCacheHttpClient);
             else
                 return new TranslatorsServices.HttpServices.ParagraphService(ServiceAddress, CacheHttpClient);
+        }
+
+        public static Func<string> GetVersion { get; set; }
+        public static Func<string> GetCurrentVersionNumber { get; set; }
+        public static void LogException(string error)
+        {
+            try
+            {
+                int.TryParse(GetCurrentVersionNumber(), out int version);
+                GetHealthService(true).AddLog(new Contracts.Common.LogContract()
+                {
+                    LogTrace = error,
+                    DeviceDescription = GetVersion(),
+                    AppVersion = version,
+                    Session = TranslatorService.Session
+                });
+            }
+            catch
+            {
+
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Translators.Helpers;
 
 namespace Translators.ViewModels
 {
@@ -37,11 +38,14 @@ namespace Translators.ViewModels
 
         public void InitialData(IEnumerable<T> items)
         {
-            Items.Clear();
-            foreach (var category in items)
+            AsyncHelper.RunOnUI(() =>
             {
-                Items.Add(category);
-            }
+                Items.Clear();
+                foreach (var category in items)
+                {
+                    Items.Add(category);
+                }
+            });
         }
 
         public virtual void Search()

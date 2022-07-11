@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 using Translators.ServiceManagers;
 using Translators.UI.Helpers;
 using Translators.UI.Services;
-using Translators.UI.Views;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Translators.UI
 {
@@ -16,7 +14,9 @@ namespace Translators.UI
     {
         public App()
         {
-            TaskScheduler.UnobservedTaskException += (o,e) =>
+            TranslatorService.GetCurrentVersionNumber = () => VersionTracking.CurrentVersion;
+            TranslatorService.GetVersion = GetVersion;
+            TaskScheduler.UnobservedTaskException += (o, e) =>
             {
                 UnhandleExceptionHappens(o, e.Exception);
             };
@@ -33,14 +33,7 @@ namespace Translators.UI
 
         private void UnhandleExceptionHappens(object sender, Exception e)
         {
-            int.TryParse(VersionTracking.CurrentVersion, out int version);
-            TranslatorService.GetHealthService(true).AddLog(new Contracts.Common.LogContract()
-            {
-                LogTrace = e.ToString(),
-                DeviceDescription = GetVersion(),
-                AppVersion = version,
-                Session = TranslatorService.Session
-            });
+            TranslatorService.LogException(e.ToString());
         }
 
         static string GetVersion()

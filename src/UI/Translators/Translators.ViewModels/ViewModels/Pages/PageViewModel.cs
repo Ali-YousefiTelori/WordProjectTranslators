@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Converters;
 using Translators.Helpers;
 using Translators.Models;
-using Translators.Models.DataTypes;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
 using Translators.ServiceManagers;
@@ -74,16 +72,25 @@ namespace Translators.ViewModels.Pages
             CatalogId = catalogId;
             BookId = bookId;
             CatalogStartPageNumber = startPageNumber;
-            await LoadData();
+            _ = Task.Run(async () =>
+            {
+                await LoadData();
+            });
         }
 
         public override async Task FetchData(bool isForce)
         {
             var pages = await FetchPage(isForce, CatalogStartPageNumber, BookId);
             //fetch next
-            _ = FetchPage(isForce, CatalogStartPageNumber + 1, BookId);
+            _ = Task.Run(async () =>
+            {
+                await FetchPage(isForce, CatalogStartPageNumber + 1, BookId);
+            });
             //fetch prevoius
-            _ = FetchPage(isForce, CatalogStartPageNumber - 1, BookId);
+            _ = Task.Run(async () =>
+            {
+                await FetchPage(isForce, CatalogStartPageNumber - 1, BookId);
+            });
             if (pages.IsSuccess)
             {
                 InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => ParagraphModel.Map(i))));
@@ -98,7 +105,6 @@ namespace Translators.ViewModels.Pages
         {
             return await TranslatorService.GetPageService(isForce).GetPageAsync(pageNumber, bookId);
         }
-
 
         private async Task SwipeLeft()
         {

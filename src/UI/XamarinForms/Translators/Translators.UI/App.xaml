@@ -7,6 +7,16 @@
     -->
     <Application.Resources>
         <ResourceDictionary>
+            <!-- Light colors -->
+            <Color x:Key="LightTextColor">Black</Color>
+            <Color x:Key="LightBackgroundColor">White</Color>
+
+            <!-- Dark colors -->
+            <Color x:Key="DarkTextColor">White</Color>
+            <Color x:Key="DarkBackgroundColor">Black</Color>
+
+            <Color x:Key="LinkBackgroundColor">LightSeaGreen</Color>
+
             <Color x:Key="Primary">#2196F3</Color>
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White"></Setter>

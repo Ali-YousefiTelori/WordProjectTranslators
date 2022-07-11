@@ -113,8 +113,7 @@ namespace Translators.Services
                 return false;
             if (value.IsMain && skipSearchInMain)
                 return false;
-
-            return value.SearchValue.Contains(key);
+            return value.SearchValue.Contains(key) || value.Value.Contains(key);
         }
     }
 }
