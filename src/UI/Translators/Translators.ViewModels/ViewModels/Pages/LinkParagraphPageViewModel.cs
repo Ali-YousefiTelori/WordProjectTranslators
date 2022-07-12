@@ -97,12 +97,18 @@ namespace Translators.ViewModels.Pages
 
         private async Task Save()
         {
-            if (await AlertHelper.DisplayQuestion("لینک", ContentToLink))
+            var find = GetRealItems().FirstOrDefault(x => x.IsSelected);
+            string title = find == null ? SearchText : find.Contract.Title;
+            if (await AlertHelper.DisplayQuestion("لینک", $"{ContentToLink}{Environment.NewLine}نام گروه:{Environment.NewLine}{title}"))
             {
-                var find = GetRealItems().FirstOrDefault(x => x.IsSelected);
+                if (string.IsNullOrEmpty(title))
+                {
+                    await AlertHelper.Alert("لینک", "لطفا نام گروه لینک را وارد کنید یا از گروه های قبلی یک گروه را انتخاب کنید!");
+                    return;
+                }
                 var result = await TranslatorService.GetParagraphService(true).LinkParagraphAsync(new Contracts.Requests.LinkParagraphRequestContract()
                 {
-                    Title = find == null ? SearchText : find.Contract.Title,
+                    Title = title,
                     FromParagraphId = TranslatorService.ParagraphForLink.Id,
                     ToParagraphId = LinkToParagraphBaseModel.Id
                 });
