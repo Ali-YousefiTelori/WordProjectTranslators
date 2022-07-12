@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Translators.Models;
 using Translators.Models.Interfaces;
+using Translators.Models.Storages;
 
 namespace Translators.Helpers
 {
@@ -19,6 +20,7 @@ namespace Translators.Helpers
 
         public static async Task Clean()
         {
+            ApplicationReadingData.IsSwitchingToNewReading = true;
             await Current.Clean();
         }
     }

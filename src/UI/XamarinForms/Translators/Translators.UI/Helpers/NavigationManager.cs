@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
+using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
@@ -94,6 +95,16 @@ namespace Translators.UI.Helpers
                     {
                         var page = new ParagraphsPage();
                         (page.BindingContext as ParagraphsPageViewModel).Initialize(data as List<SearchValueContract>);
+                        if (isFromSearchPage)
+                            await SearchNavigation.PushAsync(page);
+                        else
+                            await Navigation.PushAsync(page);
+                        break;
+                    }
+                case PageType.DoLinkPage:
+                    {
+                        var page = new LinkParagraphPage();
+                        (page.BindingContext as LinkParagraphPageViewModel).Initialize(data as ParagraphBaseModel);
                         if (isFromSearchPage)
                             await SearchNavigation.PushAsync(page);
                         else

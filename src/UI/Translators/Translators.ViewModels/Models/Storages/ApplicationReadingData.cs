@@ -13,6 +13,7 @@ namespace Translators.Models.Storages
 
         public static ApplicationReadingData Current { get; set; } = new ApplicationReadingData();
 
+        public static bool IsSwitchingToNewReading { get; set; }
         public static PageData CurrentReadingData { get; set; }
         public void AddPageValue(PageType pageType, long pageNumber, long bookId)
         {

@@ -23,7 +23,7 @@ namespace Translators.Database.Contexts
         public DbSet<LogEntity> Logs { get; set; }
         public DbSet<LinkParagraphEntity> LinkParagraphs { get; set; }
         public DbSet<LinkGroupEntity> LinkGroups { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -184,7 +184,7 @@ namespace Translators.Database.Contexts
 
             modelBuilder.Entity<LinkParagraphEntity>(x =>
             {
-                x.HasKey(r => new { r.FromParagraphId ,r.ToParagraphId});
+                x.HasKey(r => new { r.FromParagraphId, r.ToParagraphId });
 
                 x.HasOne(x => x.ToParagraph)
                  .WithMany(x => x.ToLinkParagraphs)
@@ -200,11 +200,17 @@ namespace Translators.Database.Contexts
                  .WithMany(x => x.LinkParagraphs)
                  .HasForeignKey(x => x.LinkGroupId)
                  .OnDelete(DeleteBehavior.Restrict);
-            });  
-            
+
+                x.HasOne(x => x.User)
+                 .WithMany(x => x.LinkParagraphs)
+                 .HasForeignKey(x => x.UserId)
+                 .OnDelete(DeleteBehavior.Restrict);
+            });
+
             modelBuilder.Entity<LinkGroupEntity>(x =>
             {
                 x.HasKey(r => r.Id);
+                x.HasIndex(x => x.Title);
             });
         }
 

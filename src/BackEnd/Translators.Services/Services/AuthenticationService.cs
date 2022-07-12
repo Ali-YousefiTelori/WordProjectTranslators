@@ -41,6 +41,7 @@ namespace Translators.Services
                 return userResult.ToContract<UserContract>();
             var user = new UserContract()
             {
+                UserId = userResult.Result.Id,
                 Key = key.ToString(),
                 UserName = userName,
                 Permissions = userResult.Result.UserPermissions.Select(x => x.PermissionType).ToList()
@@ -59,6 +60,7 @@ namespace Translators.Services
             {
                 var user = new UserContract()
                 {
+                    UserId = getOrCreateUser.Result.Id,
                     Key = getOrCreateUser.Result.UserSession.ToString(),
                     UserName = getOrCreateUser.Result.UserName,
                     Permissions = getOrCreateUser.Result.UserPermissions.Select(x => x.PermissionType).ToList()

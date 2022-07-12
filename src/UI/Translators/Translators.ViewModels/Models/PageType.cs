@@ -15,5 +15,6 @@
         Pages = 4,
         SearchResult = 5,
         ParagraphResult = 6,
+        DoLinkPage = 7
     }
 }

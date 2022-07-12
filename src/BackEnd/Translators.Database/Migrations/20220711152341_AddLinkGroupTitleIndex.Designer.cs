@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Translators.Database.Contexts;
 
@@ -11,9 +12,10 @@ using Translators.Database.Contexts;
 namespace Translators.Migrations
 {
     [DbContext(typeof(TranslatorContext))]
-    partial class TranslatorContextModelSnapshot : ModelSnapshot
+    [Migration("20220711152341_AddLinkGroupTitleIndex")]
+    partial class AddLinkGroupTitleIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,16 +230,11 @@ namespace Translators.Migrations
                     b.Property<long>("LinkGroupId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("FromParagraphId", "ToParagraphId");
 
                     b.HasIndex("LinkGroupId");
 
                     b.HasIndex("ToParagraphId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("LinkParagraphs");
                 });
@@ -518,19 +515,11 @@ namespace Translators.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Translators.Database.Entities.Authentications.UserEntity", "User")
-                        .WithMany("LinkParagraphs")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("FromParagraph");
 
                     b.Navigation("LinkGroup");
 
                     b.Navigation("ToParagraph");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Translators.Database.Entities.PageEntity", b =>
@@ -645,8 +634,6 @@ namespace Translators.Migrations
 
             modelBuilder.Entity("Translators.Database.Entities.Authentications.UserEntity", b =>
                 {
-                    b.Navigation("LinkParagraphs");
-
                     b.Navigation("UserPermissions");
                 });
 

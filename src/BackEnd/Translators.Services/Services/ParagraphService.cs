@@ -3,6 +3,7 @@ using SignalGo.Shared.DataTypes;
 using Translators.Attributes;
 using Translators.Contracts.Common;
 using Translators.Contracts.Common.Authentications;
+using Translators.Contracts.Requests;
 using Translators.Database.Contexts;
 using Translators.Database.Entities;
 using Translators.Logics;
@@ -15,7 +16,13 @@ namespace Translators.Services
     public class ParagraphService
     {
         [JsonCustomSerialization]
-        public async Task<MessageContract> LinkParagraph([NumberValidation] long fromParagraphId, [NumberValidation] long toParagraphId)
+        public async Task<MessageContract<List<LinkGroupContract>>> GetLinkGroups()
+        {
+            return await new LogicBase<TranslatorContext, LinkGroupContract, LinkGroupEntity>().GetAll();
+        }
+
+        [JsonCustomSerialization]
+        public async Task<MessageContract> LinkParagraph([NumberValidation] LinkParagraphRequestContract linkParagraphRequest)
         {
             var currentUser = OperationContext<UserContract>.CurrentSetting;
             if (currentUser == null || currentUser.Permissions == null)
@@ -23,24 +30,26 @@ namespace Translators.Services
             else if (!currentUser.Permissions.Any(x => x == Contracts.Common.DataTypes.PermissionType.Admin))
                 return ("شما دسترسی انجام اینکار را ندارید!", FailedReasonType.AccessDenied);
 
-            if ((await new LogicBase<TranslatorContext, LinkParagraphEntity, LinkParagraphEntity>().Find(q => q.Where(x => x.FromParagraphId == fromParagraphId && x.ToParagraphId == toParagraphId))).Result != null)
+            if ((await new LogicBase<TranslatorContext, LinkParagraphEntity, LinkParagraphEntity>().Find(q => q.Where(x => x.FromParagraphId == linkParagraphRequest.FromParagraphId && x.ToParagraphId == linkParagraphRequest.ToParagraphId && x.LinkGroup.Title == linkParagraphRequest.Title))).Result != null)
                 return ("این آیات قبلا به هم لینک شده بودند!", FailedReasonType.Dupplicate);
-            else if ((await new LogicBase<TranslatorContext, LinkParagraphEntity, LinkParagraphEntity>().Find(q => q.Where(x => x.ToParagraphId == fromParagraphId && x.FromParagraphId == toParagraphId))).Result != null)
+            else if ((await new LogicBase<TranslatorContext, LinkParagraphEntity, LinkParagraphEntity>().Find(q => q.Where(x => x.ToParagraphId == linkParagraphRequest.FromParagraphId && x.FromParagraphId == linkParagraphRequest.ToParagraphId && x.LinkGroup.Title == linkParagraphRequest.Title))).Result != null)
                 return ("این آیات قبلا به هم لینک شده بودند!", FailedReasonType.Dupplicate);
 
+            var findGroup = await new LogicBase<TranslatorContext, LinkGroupEntity, LinkGroupEntity>().Find(q => q.Where(x => x.Title == linkParagraphRequest.Title));
             var result = await new LogicBase<TranslatorContext, LinkParagraphEntity>().Add(new LinkParagraphEntity()
             {
-                LinkGroup = new LinkGroupEntity()
+                LinkGroup = findGroup.Result == null ? new LinkGroupEntity()
                 {
-
-                },
-                FromParagraphId = fromParagraphId,
-                ToParagraphId = toParagraphId
+                    Title = linkParagraphRequest.Title
+                } : null,
+                LinkGroupId = findGroup.Result == null ? 0 : findGroup.Result.Id,
+                UserId = currentUser.UserId,
+                FromParagraphId = linkParagraphRequest.FromParagraphId,
+                ToParagraphId = linkParagraphRequest.ToParagraphId
             });
 
             return result;
         }
-
 
         [JsonCustomSerialization]
         public async Task<MessageContract<List<SearchValueContract>>> GetLinkedParagraphs([NumberValidation] long paragraphId)

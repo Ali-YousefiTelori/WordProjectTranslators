@@ -53,6 +53,16 @@ namespace Translators.ViewModels
 
         }
 
+        /// <summary>
+        /// not filtered items, all items
+        /// </summary>
+        public List<T> GetRealItems()
+        {
+            if (OfflineItems == null || OfflineItems.Count == 0)
+                return Items.ToList();
+            return OfflineItems;
+        }
+
         public void Filter(Func<T, bool> canAdd, Func<T, int> getIndex)
         {
             if (OfflineItems == null || OfflineItems.Count == 0)

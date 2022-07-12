@@ -17,5 +17,6 @@ namespace Translators.Database.Entities.Authentications
         public Guid? UserSession { get; set; }
 
         public List<UserPermissionEntity> UserPermissions { get; set; }
+        public List<LinkParagraphEntity> LinkParagraphs { get; set; }
     }
 }

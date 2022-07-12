@@ -63,28 +63,30 @@ namespace Translators.ViewModels.Pages
                     }
                 case VerseRightClickType.PasteForLink:
                     {
-                        StringBuilder builder = new StringBuilder();
-                        builder.AppendLine("آیا می‌خواهید");
-                        builder.AppendLine(TranslatorService.ParagraphForLink.TranslatedValue);
-                        if (!string.IsNullOrEmpty(TranslatorService.ParagraphForLink.DisplayName))
-                            builder.AppendLine(TranslatorService.ParagraphForLink.DisplayName);
-                        builder.AppendLine("را به");
-                        builder.AppendLine(paragraphBaseModel.TranslatedValue);
-                        if (!string.IsNullOrEmpty(paragraphBaseModel.DisplayName))
-                            builder.AppendLine(paragraphBaseModel.DisplayName);
-                        builder.AppendLine("لینک کنید؟");
-                        if (await AlertHelper.DisplayQuestion("لینک", builder.ToString()))
-                        {
-                            var result = await TranslatorService.GetParagraphService(true).LinkParagraphAsync(TranslatorService.ParagraphForLink.Id, paragraphBaseModel.Id);
-                            if (result.IsSuccess)
-                            {
-                                await AlertHelper.Alert("لینک", "آیه‌ی مورد نظر با موفقیت لینک شد.");
-                            }
-                            else
-                            {
-                                await AlertHelper.Alert("خطا در لینک", result.Error.Message);
-                            }
-                        }
+                        await PageHelper.PushPage(0, 0, paragraphBaseModel, PageType.DoLinkPage, this is SearchResultPageViewModel);
+
+                        //StringBuilder builder = new StringBuilder();
+                        //builder.AppendLine("آیا می‌خواهید");
+                        //builder.AppendLine(TranslatorService.ParagraphForLink.TranslatedValue);
+                        //if (!string.IsNullOrEmpty(TranslatorService.ParagraphForLink.DisplayName))
+                        //    builder.AppendLine(TranslatorService.ParagraphForLink.DisplayName);
+                        //builder.AppendLine("را به");
+                        //builder.AppendLine(paragraphBaseModel.TranslatedValue);
+                        //if (!string.IsNullOrEmpty(paragraphBaseModel.DisplayName))
+                        //    builder.AppendLine(paragraphBaseModel.DisplayName);
+                        //builder.AppendLine("لینک کنید؟");
+                        //if (await AlertHelper.DisplayQuestion("لینک", builder.ToString()))
+                        //{
+                        //    var result = await TranslatorService.GetParagraphService(true).LinkParagraphAsync(TranslatorService.ParagraphForLink.Id, paragraphBaseModel.Id);
+                        //    if (result.IsSuccess)
+                        //    {
+                        //        await AlertHelper.Alert("لینک", "آیه‌ی مورد نظر با موفقیت لینک شد.");
+                        //    }
+                        //    else
+                        //    {
+                        //        await AlertHelper.Alert("خطا در لینک", result.Error.Message);
+                        //    }
+                        //}
                         break;
                     }
                 case VerseRightClickType.ShowLinks:
