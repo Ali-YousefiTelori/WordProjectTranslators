@@ -13,7 +13,9 @@
 
         public long PageId { get; set; }
         public long CatalogId { get; set; }
-
+        public long BookId { get; set; }
+        public long PageNumber { get; set; }
+        
         public List<WordContract> Words { get; set; }
 
         string mainValue = "";

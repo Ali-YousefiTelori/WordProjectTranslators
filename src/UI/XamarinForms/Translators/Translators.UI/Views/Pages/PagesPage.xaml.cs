@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Translators.Helpers;
 using Translators.Models.Storages;
+using Translators.ViewModels.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -23,7 +24,7 @@ namespace Translators.UI.Views.Pages
         {
             base.OnParentSet();
 
-            if (Parent == null && !ApplicationReadingData.IsSwitchingToNewReading)
+            if (Parent == null && !ApplicationReadingData.IsSwitchingToNewReading && !(this.BindingContext as PageViewModel).IsOutsideOfBookTab)
             {
                 try
                 {

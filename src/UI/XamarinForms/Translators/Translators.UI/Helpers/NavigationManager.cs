@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
-using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
 using Translators.UI.Views.Pages;
+using Translators.ViewModels;
 using Translators.ViewModels.Pages;
 using Xamarin.Forms;
 
@@ -55,62 +55,71 @@ namespace Translators.UI.Helpers
             }
         }
 
-        public async Task<object> PushPage(long id, long rootId, object data, PageType pageType, bool isFromSearchPage = false)
+        public async Task<object> PushPage(long id, long rootId, object data, PageType pageType, BaseViewModel fromBaseViewModel)
         {
+            Page page = null;
             switch (pageType)
             {
                 case PageType.Book:
                     {
-                        var page = new BookPage();
+                        page = new BookPage();
                         ApplicationPagesData.Current.AddPageValue(pageType, id, 0, 0);
                         _ = (page.BindingContext as BookViewModel).Initialize(id);
-                        await Navigation.PushAsync(page);
                         break;
                     }
                 case PageType.Chapter:
                     {
-                        var page = new ChapterPage();
+                        page = new ChapterPage();
                         ApplicationPagesData.Current.AddPageValue(pageType, id, 0, id);
                         BookViewModel.OnSelectedTitleByType(typeof(BookViewModel), id, 0);
                         await (page.BindingContext as ChapterViewModel).Initialize(id);
-                        await Navigation.PushAsync(page);
                         break;
                     }
                 case PageType.Pages:
                     {
-                        var page = new PagesPage();
+                        page = new PagesPage();
                         ApplicationPagesData.Current.AddPageValue(pageType, id, rootId, (long)data);
                         _ = (page.BindingContext as PageViewModel).Initialize(id, rootId, (long)data);
-                        await Navigation.PushAsync(page);
                         break;
                     }
                 case PageType.SearchResult:
                     {
-                        var page = new SearchResultPage();
+                        page = new SearchResultPage();
                         (page.BindingContext as SearchResultPageViewModel).Initialize(data as List<SearchValueContract>);
-                        await SearchNavigation.PushAsync(page);
                         break;
                     }
                 case PageType.ParagraphResult:
                     {
-                        var page = new ParagraphsPage();
+                        page = new ParagraphsPage();
                         (page.BindingContext as ParagraphsPageViewModel).Initialize(data as List<SearchValueContract>);
-                        if (isFromSearchPage)
-                            await SearchNavigation.PushAsync(page);
-                        else
-                            await Navigation.PushAsync(page);
                         break;
                     }
                 case PageType.DoLinkPage:
                     {
-                        var page = new LinkParagraphPage();
+                        page = new LinkParagraphPage();
                         (page.BindingContext as LinkParagraphPageViewModel).Initialize(data as ParagraphBaseModel);
-                        if (isFromSearchPage)
-                            await SearchNavigation.PushAsync(page);
-                        else
-                            await Navigation.PushAsync(page);
                         break;
                     }
+                case PageType.PagesFastRead:
+                    {
+                        page = new PagesPage();
+                        (page.BindingContext as PageViewModel).SetIsOutsideOfBookTab();
+                        _ = (page.BindingContext as PageViewModel).Initialize(id, rootId, (long)data);
+                        break;
+                    }
+            }
+
+            if (page != null)
+            {
+                if (page.BindingContext is BaseViewModel baseViewModel)
+                {
+                    if (fromBaseViewModel != null)
+                        baseViewModel.IsInSearchTab = fromBaseViewModel.IsInSearchTab;
+                }
+                if (fromBaseViewModel != null && fromBaseViewModel.IsInSearchTab)
+                    await SearchNavigation.PushAsync(page);
+                else
+                    await Navigation.PushAsync(page);
             }
             return null;
         }

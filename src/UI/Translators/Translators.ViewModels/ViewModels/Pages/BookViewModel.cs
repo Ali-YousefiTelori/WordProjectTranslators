@@ -19,7 +19,7 @@ namespace Translators.ViewModels.Pages
 
         public async Task Touched(CategoryModel category)
         {
-            await PageHelper.PushPage(category.Id, 0, null, PageType.Chapter);
+            await PageHelper.PushPage(category.Id, 0, null, PageType.Chapter, this);
         }
 
         public override void OnSelected(long id, long parentId)

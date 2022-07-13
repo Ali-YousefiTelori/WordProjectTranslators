@@ -52,7 +52,9 @@ namespace Translators.ViewModels.Pages
                     }
                 case VerseRightClickType.GoToPage:
                     {
-                        await AlertHelper.Alert("قابلیت", "این قابلیت هنوز اضافه نشده!");
+                        await PageHelper.PushPage(paragraphBaseModel.PageNumber, paragraphBaseModel.BookId, paragraphBaseModel.CatalogId, PageType.PagesFastRead, this);
+                        //await PageHelper.PushPage(0, 0, paragraphBaseModel, PageType.DoLinkPage, this is SearchResultPageViewModel);
+                        //await AlertHelper.Alert("قابلیت", "این قابلیت هنوز اضافه نشده!");
                         //PageHelper.PushPage
                         break;
                     }
@@ -63,7 +65,7 @@ namespace Translators.ViewModels.Pages
                     }
                 case VerseRightClickType.PasteForLink:
                     {
-                        await PageHelper.PushPage(0, 0, paragraphBaseModel, PageType.DoLinkPage, this is SearchResultPageViewModel);
+                        await PageHelper.PushPage(0, 0, paragraphBaseModel, PageType.DoLinkPage, this);
 
                         //StringBuilder builder = new StringBuilder();
                         //builder.AppendLine("آیا می‌خواهید");
@@ -96,7 +98,7 @@ namespace Translators.ViewModels.Pages
                             IsLoading = true;
                             var result = await TranslatorService.GetParagraphService(true).GetLinkedParagraphsAsync(paragraphBaseModel.Id);
                             if (result.IsSuccess)
-                                await PageHelper.PushPage(0, 0, result.Result, PageType.ParagraphResult, this is SearchResultPageViewModel);
+                                await PageHelper.PushPage(0, 0, result.Result, PageType.ParagraphResult, this);
                             else
                                 await AlertContract(result);
                         }
@@ -120,6 +122,9 @@ namespace Translators.ViewModels.Pages
                 HasLink = value.HasLink,
                 TranslatedValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && x.Language.Code == "fa-ir").Select(x => x.Value)) + displayName,
                 MainValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => x.IsMain).Select(x => x.Value)) + displayName,
+                CatalogId = value.CatalogId,
+                BookId = value.BookId,
+                PageNumber = value.PageNumber
             };
             return result;
         }

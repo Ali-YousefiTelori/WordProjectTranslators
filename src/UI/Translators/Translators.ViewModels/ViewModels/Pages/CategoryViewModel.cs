@@ -21,7 +21,7 @@ namespace Translators.ViewModels.Pages
         public async Task Touched(CategoryModel category)
         {
             SelectedName = category.Names.GetPersianValue();
-            await PageHelper.PushPage(category.Id, 0, null, PageType.Book);
+            await PageHelper.PushPage(category.Id, 0, null, PageType.Book, this);
         }
 
         public long SelectedCategoryId { get; set; }

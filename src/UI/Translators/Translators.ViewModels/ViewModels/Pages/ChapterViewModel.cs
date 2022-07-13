@@ -30,7 +30,7 @@ namespace Translators.ViewModels.Pages
         public async Task Touched(CatalogContract catalog)
         {
             SelectedName = catalog.Names.GetPersianValue();
-            await PageHelper.PushPage(catalog.StartPageNumber, catalog.BookId, catalog.Id, PageType.Pages);
+            await PageHelper.PushPage(catalog.StartPageNumber, catalog.BookId, catalog.Id, PageType.Pages, this);
         }
 
         public override async Task FetchData(bool isForce)

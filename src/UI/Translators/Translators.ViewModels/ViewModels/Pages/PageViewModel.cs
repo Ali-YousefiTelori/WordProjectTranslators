@@ -47,11 +47,24 @@ namespace Translators.ViewModels.Pages
         {
             get
             {
+                if (IsOutsideOfBookTab)
+                    return null;
                 if (ApplicationReadingData.CurrentReadingData == null)
                     return EmptyReading;
                 return ApplicationReadingData.CurrentReadingData.Name;
             }
         }
+
+        /// <summary>
+        /// برای وقتی که کاربر روی برو به صفحه کلیک میکند و نباید روی خوانش ها تاثیر گزار باشد
+        /// </summary>
+        public void SetIsOutsideOfBookTab()
+        {
+            IsOutsideOfBookTab = true;
+            OnPropertyChanged(nameof(ReadingName));
+        }
+
+        public bool IsOutsideOfBookTab { get; set; }
 
         public long BookId { get; set; }
         public long CatalogId { get; set; }
@@ -96,8 +109,11 @@ namespace Translators.ViewModels.Pages
                 InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => ParagraphModel.Map(i))));
                 CatalogName = $"{GetSelectedTitleByType(typeof(BookViewModel))} / ";
                 CatalogName += string.Join(" - ", pages.Result.Select(x => x.CatalogNames.GetPersianValue()).Distinct());
-                ApplicationReadingData.SetTitle(CatalogName);
-                ApplicationPagesData.Current.AddPageValue(PageType.Pages, CatalogStartPageNumber, BookId, CatalogId);
+                if (!IsOutsideOfBookTab)
+                {
+                    ApplicationReadingData.SetTitle(CatalogName);
+                    ApplicationPagesData.Current.AddPageValue(PageType.Pages, CatalogStartPageNumber, BookId, CatalogId);
+                }
             }
         }
 
@@ -145,6 +161,8 @@ namespace Translators.ViewModels.Pages
 
         private async Task RemoveReading()
         {
+            if (IsOutsideOfBookTab)
+                return;
             if (ApplicationReadingData.Current.Value.Items.Count == 0)
                 await AlertHelper.Alert("خوانش", "در حال حاضر خوانشی وجود ندارد، به بخش خوانش ها مراجعه کنید.");
             else

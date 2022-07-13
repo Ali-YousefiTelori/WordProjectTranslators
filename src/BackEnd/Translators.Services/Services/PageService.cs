@@ -29,6 +29,12 @@ namespace Translators.Services
             var catalogs = await new LogicBase<TranslatorContext, CatalogContract, CatalogEntity>().GetAll(x => x.Include(c => c.Names).ThenInclude(c => c.Language).Where(i => catalogIds.Contains(i.Id)));
             foreach (var page in result.Result)
             {
+                foreach (var p in page.Paragraphs)
+                {
+                    var catalog = catalogs.Result.FirstOrDefault(x => x.Id == p.CatalogId);
+                    p.BookId = catalog.BookId;
+                    p.PageNumber = CacheLogic.Pages[p.PageId].Number;
+                }
                 page.CatalogNames = page.Paragraphs.SelectMany(p => catalogs.Result.FirstOrDefault(x => x.Id == p.CatalogId)?.Names).Distinct().ToList();
             }
             return result;
@@ -99,6 +105,7 @@ namespace Translators.Services
                     ParagraphWords = paragraph.Words,
                     ParagraphId = paragraph.Id,
                     PageId = paragraph.PageId,
+                    PageNumber = CacheLogic.Pages[paragraph.PageId].Number,
                     CatalogId = paragraph.CatalogId,
                     CatalogNames = catalog.Names,
                     BookId = catalog.BookId,

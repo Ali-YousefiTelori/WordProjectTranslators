@@ -40,6 +40,7 @@ namespace Translators.ViewModels.Pages
     {
         public SearchPageViewModel()
         {
+            IsInSearchTab = true;
             SearchCommand = CommandHelper.Create(DoSearch);
             _ = LoadData();
         }
@@ -49,7 +50,7 @@ namespace Translators.ViewModels.Pages
         public bool IsSearchInMainText { get; set; } = true;
         public bool IsSearchInTranslateText { get; set; } = true;
         public bool DoFullWordsSearch { get; set; }
-        
+
         public override string SearchText
         {
             get => _SearchText;
@@ -75,7 +76,7 @@ namespace Translators.ViewModels.Pages
                     DoFullWordsSearch = DoFullWordsSearch
                 });
                 if (result.IsSuccess)
-                    await PageHelper.PushPage(0, 0, result.Result, PageType.SearchResult);
+                    await PageHelper.PushPage(0, 0, result.Result, PageType.SearchResult, this);
                 else
                     await AlertContract(result);
             }

@@ -74,6 +74,7 @@ namespace Translators.Services
                     CatalogNames = catalog.Names,
                     BookId = catalog.BookId,
                     BookNames = CacheLogic.Books[catalog.BookId].Names,
+                    PageNumber = CacheLogic.Pages[paragraph.PageId].Number
                 });
             }
 

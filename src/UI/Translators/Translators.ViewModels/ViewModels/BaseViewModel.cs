@@ -7,6 +7,7 @@ using Translators.Models;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
 using Translators.ServiceManagers;
+using Translators.ViewModels.Pages;
 
 namespace Translators.ViewModels
 {
@@ -61,6 +62,8 @@ namespace Translators.ViewModels
                 ApplicationSettingData.Current.Save();
             }
         }
+
+        public bool IsInSearchTab { get; set; }
 
         public async Task LoadData(bool isForce = false)
         {

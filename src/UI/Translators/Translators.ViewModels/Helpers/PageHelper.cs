@@ -2,6 +2,7 @@
 using Translators.Models;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
+using Translators.ViewModels;
 
 namespace Translators.Helpers
 {
@@ -13,9 +14,9 @@ namespace Translators.Helpers
             Current = navigation;
         }
 
-        public static async Task<object> PushPage(long id, long rootId, object data, PageType pageType, bool isFromSearchPage = false)
+        public static async Task<object> PushPage(long id, long rootId, object data, PageType pageType, BaseViewModel fromBaseViewModel)
         {
-            return await Current.PushPage(id, rootId, data, pageType, isFromSearchPage);
+            return await Current.PushPage(id, rootId, data, pageType, fromBaseViewModel);
         }
 
         public static async Task Clean()

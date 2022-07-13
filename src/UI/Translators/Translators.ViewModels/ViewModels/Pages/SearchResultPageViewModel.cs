@@ -18,6 +18,7 @@ namespace Translators.ViewModels.Pages
     {
         public SearchResultPageViewModel()
         {
+            IsInSearchTab = true;
             TouchedCommand = CommandHelper.Create<SearchResultModel>(Touch);
         }
 
