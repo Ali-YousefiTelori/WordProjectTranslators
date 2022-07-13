@@ -1,0 +1,2 @@
+MainPackage=D:\Github\WordProjectTranslators\src\UI\XamarinForms\Translators\Translators.UI.UWP\bin\x64\Release\Translators.UI.UWP_1.0.2.0_x64.appx
+SymbolPackage=D:\Github\WordProjectTranslators\src\UI\XamarinForms\Translators\Translators.UI.UWP\obj\x64\Release\Symbols\Translators.UI.UWP_1.0.2.0_x64.appxsym

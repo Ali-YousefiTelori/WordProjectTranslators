@@ -1,0 +1,6 @@
+MainPackage=D:\Github\WordProjectTranslators\src\UI\XamarinForms\Translators\Translators.UI.UWP\bin\ARM\Release\Translators.UI.UWP_1.0.2.0_ARM.appx
+SymbolPackage=D:\Github\WordProjectTranslators\src\UI\XamarinForms\Translators\Translators.UI.UWP\obj\ARM\Release\Symbols\Translators.UI.UWP_1.0.2.0_ARM.appxsym
+ResourcePack=D:\Github\WordProjectTranslators\src\UI\XamarinForms\Translators\Translators.UI.UWP\bin\ARM\Release\Translators.UI.UWP_1.0.2.0_scale-100.appx
+ResourcePack=D:\Github\WordProjectTranslators\src\UI\XamarinForms\Translators\Translators.UI.UWP\bin\ARM\Release\Translators.UI.UWP_1.0.2.0_scale-125.appx
+ResourcePack=D:\Github\WordProjectTranslators\src\UI\XamarinForms\Translators\Translators.UI.UWP\bin\ARM\Release\Translators.UI.UWP_1.0.2.0_scale-150.appx
+ResourcePack=D:\Github\WordProjectTranslators\src\UI\XamarinForms\Translators\Translators.UI.UWP\bin\ARM\Release\Translators.UI.UWP_1.0.2.0_scale-400.appx
