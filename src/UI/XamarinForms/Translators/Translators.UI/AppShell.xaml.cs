@@ -9,5 +9,12 @@ namespace Translators.UI
             InitializeComponent();
         }
 
+        public TabBar TabBar
+        {
+            get
+            {
+                return MainTabBar;
+            }
+        }
     }
 }

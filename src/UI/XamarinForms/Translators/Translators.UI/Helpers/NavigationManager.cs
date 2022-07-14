@@ -128,5 +128,13 @@ namespace Translators.UI.Helpers
         {
             await CleanPages();
         }
+
+        public void SwitchPage(PageType pageType)
+        {
+            if (pageType == PageType.Category)
+            {
+                ((AppShell)Shell.Current).TabBar.CurrentItem = ((AppShell)Shell.Current).TabBar.Items.First();
+            }
+        }
     }
 }

@@ -44,6 +44,7 @@ namespace Translators.ViewModels.Pages
                         {
                             await PageHelper.Clean();
                             await ApplicationPagesData.LoadStaticPageData(pageData);
+                            PageHelper.SwitchPage(Models.PageType.Category);
                         }
                         break;
                     }

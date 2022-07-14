@@ -8,6 +8,9 @@ using Translators.UI.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
+[assembly: ExportFont("QuranTaha.ttf", Alias = "QuranTaha")]
+[assembly: ExportFont("Nasim.ttf", Alias = "Nasim")]
+
 namespace Translators.UI
 {
     public partial class App : Application

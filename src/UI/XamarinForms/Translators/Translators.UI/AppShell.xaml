@@ -16,6 +16,13 @@
             <Style TargetType="Label">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackgroundColor}, Dark={StaticResource DarkBackgroundColor}}" />
                 <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LightTextColor}, Dark={StaticResource DarkTextColor}}" />
+                <Setter Property="FontFamily" Value="Nasim" />
+            </Style>
+            <Style TargetType="Label" x:Key="MainParagraphLabel">
+                <Setter Property="FontFamily" Value="QuranTaha" />
+            </Style>
+            <Style TargetType="Label" x:Key="TranslatedParagraphLabel">
+                <Setter Property="TextColor" Value="Gray" />
             </Style>
             <Style TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackgroundColor}, Dark={StaticResource DarkBackgroundColor}}" />
@@ -41,7 +48,7 @@
         </ResourceDictionary>
     </Shell.Resources>
 
-    <TabBar>
+    <TabBar x:Name="MainTabBar">
         <ShellContent Title="کتب" Icon="icon_feed.png" ContentTemplate="{DataTemplate pages:CategoryPage}" />
         <ShellContent Title="خوانش" Icon="icon_about.png" ContentTemplate="{DataTemplate pages:ReadingPage}" />
         <ShellContent Title="تنظیمات" Icon="icon_settings.png" ContentTemplate="{DataTemplate pages:SettingPage}" />

@@ -56,7 +56,7 @@ namespace Translators.Models.Storages
                 if (pageType == PageType.Pages)
                     _ = SaveFile();
 
-                ApplicationReadingData.Current.AddPageValue(pageType, pageNumber, bookId);
+                ApplicationReadingData.Current.AddPageValue(pageType, pageNumber, bookId, dataId);
             }
         }
     }

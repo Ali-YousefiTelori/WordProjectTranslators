@@ -15,7 +15,7 @@ namespace Translators.Models.Storages
 
         public static bool IsSwitchingToNewReading { get; set; }
         public static PageData CurrentReadingData { get; set; }
-        public void AddPageValue(PageType pageType, long pageNumber, long bookId)
+        public void AddPageValue(PageType pageType, long pageNumber, long bookId, long dataId)
         {
             if (CurrentReadingData == null)
                 return;
@@ -23,7 +23,8 @@ namespace Translators.Models.Storages
             {
                 Id = pageNumber,
                 ParentId = bookId,
-                PageType = pageType
+                PageType = pageType,
+                DataId = dataId
             };
             var find = CurrentReadingData.Pages.FirstOrDefault(x => x.GetKey() == newValue.GetKey());
             if (find != null)

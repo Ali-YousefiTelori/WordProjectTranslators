@@ -149,7 +149,7 @@ namespace Translators.ViewModels.Pages
                 IsLoading = true;
                 var catalog = await TranslatorService.GetChapterService(false).GetChaptersAsync(paragraph.CatalogId);
                 if (catalog.IsSuccess)
-                    displayName = $"({catalog.Result.Number}- {LanguageValueBaseConverter.GetValue(catalog.Result.BookNames, false, "fa-ir")} آیه {paragraph.Number})";
+                    displayName = $"({LanguageValueBaseConverter.GetValue(catalog.Result.BookNames, false, "fa-ir")} {catalog.Result.Number}-{CleanArabicChars(LanguageValueBaseConverter.GetValue(catalog.Result.Names, false, "fa-ir"))} آیه‌ی {paragraph.Number})";
             }
             finally
             {
@@ -193,6 +193,7 @@ namespace Translators.ViewModels.Pages
         private async Task SelectPage()
         {
             var data = await AlertHelper.DisplayPrompt("صفحات", "لطفا صفحه‌ی مورد نظر را انتخاب کنید.");
+            data = FixArabicForSearch(data);
             if (int.TryParse(data, out int number))
             {
                 CatalogStartPageNumber = number;
@@ -203,6 +204,7 @@ namespace Translators.ViewModels.Pages
         private async Task SelectVerse()
         {
             var data = await AlertHelper.DisplayPrompt("انتخاب آیه", "لطفا شماره‌ی آیه‌ی مورد نظر را انتخاب کنید.");
+            data = FixArabicForSearch(data);
             if (int.TryParse(data, out int number))
             {
                 MessageContract<long> verseResult;
@@ -213,13 +215,15 @@ namespace Translators.ViewModels.Pages
                 }
                 finally
                 {
-                    IsLoading = true;
+                    IsLoading = false;
                 }
                 if (verseResult.IsSuccess)
                 {
                     CatalogStartPageNumber = verseResult.Result;
                     await LoadData();
                 }
+                else
+                    await AlertContract(verseResult);
             }
         }
     }

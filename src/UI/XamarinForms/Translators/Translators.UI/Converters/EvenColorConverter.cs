@@ -13,17 +13,11 @@ namespace Translators.UI.Converters
             {
                 if (currentTheme == OSAppTheme.Dark)
                 {
-                    //if (Application.Current.Resources.TryGetValue("LightBackgroundColor", out object color) && color is Color darkBackgroundColor)
-                    //{
                     return Color.FromHex("#424242");
-                    //}
                 }
                 else
                 {
-                    //if (Application.Current.Resources.TryGetValue("DarkBackgroundColor", out object color) && color is Color darkBackgroundColor)
-                    //{
                     return Color.FromHex("#ADADAD");
-                    //}
                 }
             }
             else

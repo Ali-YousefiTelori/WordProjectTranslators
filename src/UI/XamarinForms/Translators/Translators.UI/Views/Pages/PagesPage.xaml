@@ -33,17 +33,17 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}">
+                            <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" VerticalOptions="Start">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="50"/>
+                                    <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding MainValue}"  Margin="10,0,10,0"/>
-                                <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Grid.Row="1" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" Margin="10,0,10,20" />
+                                <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding MainValue}" Style="{DynamicResource MainParagraphLabel}" VerticalOptions="Start" Margin="10,0,10,0"/>
+                                <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Grid.Row="1" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" Style="{DynamicResource TranslatedParagraphLabel}" Margin="10,0,10,20" />
                                 <StackLayout Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalOptions="Center">
                                     <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text=")" />
                                     <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding Number}"/>

@@ -19,6 +19,11 @@ namespace Translators.Helpers
             return await Current.PushPage(id, rootId, data, pageType, fromBaseViewModel);
         }
 
+        public static void SwitchPage(PageType pageType)
+        {
+            Current.SwitchPage(pageType);
+        }
+
         public static async Task Clean()
         {
             ApplicationReadingData.IsSwitchingToNewReading = true;
