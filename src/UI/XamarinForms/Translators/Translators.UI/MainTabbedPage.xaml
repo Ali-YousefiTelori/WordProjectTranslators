@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:pages="clr-namespace:Translators.UI.Views.Pages"
-       Title="Translators.UI"
-       x:Class="Translators.UI.AppShell">
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Translators.UI.Views.Pages"
+             x:Class="Translators.UI.MainTabbedPage">
 
-    <Shell.Resources>
+    <TabbedPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Page">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackgroundColor}, Dark={StaticResource DarkBackgroundColor}}" />
@@ -31,7 +30,7 @@
             <Style TargetType="Frame">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackgroundColor}, Dark={StaticResource DarkBackgroundColor}}" />
             </Style>
-            
+
             <Style x:Key="BaseStyle" TargetType="Element">
                 <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="Shell.ForegroundColor" Value="White" />
@@ -46,33 +45,16 @@
             <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
             <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
         </ResourceDictionary>
-    </Shell.Resources>
+    </TabbedPage.Resources>
+    <NavigationPage Title="کتب" IconImageSource="icon_feed.png">
+        <x:Arguments>
+            <pages:CategoryPage IconImageSource="icon_feed.png"/>
+        </x:Arguments>
+    </NavigationPage>
+    <NavigationPage Title="خوانش" IconImageSource="icon_about.png">
+        <x:Arguments>
+            <pages:ReadingPage IconImageSource="icon_about.png"/>
+        </x:Arguments>
+    </NavigationPage>
 
-    <TabBar x:Name="MainTabBar">
-        <ShellContent Title="کتب" ContentTemplate="{DataTemplate pages:CategoryPage}" >
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="icomoon" Glyph=""/>
-            </ShellContent.Icon>
-        </ShellContent>
-        <ShellContent Title="خوانش" ContentTemplate="{DataTemplate pages:ReadingPage}" >
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="icomoon" Glyph=""/>
-            </ShellContent.Icon>
-        </ShellContent>
-        <ShellContent Title="تنظیمات" ContentTemplate="{DataTemplate pages:SettingPage}" >
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="icomoon" Glyph=""/>
-            </ShellContent.Icon>
-        </ShellContent>
-        <ShellContent Title="جستجو" ContentTemplate="{DataTemplate pages:SearchPage}" >
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="icomoon" Glyph=""/>
-            </ShellContent.Icon>
-        </ShellContent>
-        <ShellContent Title="پروفایل" ContentTemplate="{DataTemplate pages:ProfilePage}" >
-            <ShellContent.Icon>
-                <FontImageSource FontFamily="icomoon" Glyph=""/>
-            </ShellContent.Icon>
-        </ShellContent>
-    </TabBar>
-</Shell>
+</TabbedPage>

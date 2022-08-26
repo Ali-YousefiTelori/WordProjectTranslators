@@ -20,7 +20,6 @@ namespace Translators.UI.UWP
         public MainPage()
         {
             this.InitializeComponent();
-
             LoadApplication(new Translators.UI.App());
         }
     }

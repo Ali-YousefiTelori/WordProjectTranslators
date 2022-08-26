@@ -9,7 +9,8 @@ namespace Translators.UI.Helpers
     {
         public ICommand<T> Create<T>(Func<T, Task> func)
         {
-            return new RelayCommand<T>(async (data) =>
+            RelayCommand<T> command = null;
+            command = new RelayCommand<T>(async (data) =>
             {
                 try
                 {
@@ -19,12 +20,19 @@ namespace Translators.UI.Helpers
                 {
                     await BaseViewModel.AlertExcepption(ex);
                 }
+                finally
+                {
+                    if (command.AfterRun != null)
+                        await AfterRun(data, command);
+                }
             });
+            return command;
         }
 
         public ICommand Create(Func<Task> func)
         {
-            return new RelayCommand(async () =>
+            RelayCommand command = null;
+            command = new RelayCommand(async () =>
             {
                 try
                 {
@@ -34,7 +42,37 @@ namespace Translators.UI.Helpers
                 {
                     await BaseViewModel.AlertExcepption(ex);
                 }
+                finally
+                {
+                    if (command.AfterRun != null)
+                        await AfterRun(command);
+                }
             });
+            return command;
+        }
+
+        public async Task AfterRun(ICommand command)
+        {
+            try
+            {
+                await command.AfterRun();
+            }
+            catch (Exception ex)
+            {
+                await BaseViewModel.AlertExcepption(ex);
+            }
+        }
+
+        public async Task AfterRun<T>(T data, ICommand<T> command)
+        {
+            try
+            {
+                await command.AfterRun(data);
+            }
+            catch (Exception ex)
+            {
+                await BaseViewModel.AlertExcepption(ex);
+            }
         }
     }
 }

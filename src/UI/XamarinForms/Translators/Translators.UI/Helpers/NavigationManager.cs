@@ -72,7 +72,7 @@ namespace Translators.UI.Helpers
                         page = new ChapterPage();
                         ApplicationPagesData.Current.AddPageValue(pageType, id, 0, id);
                         BookViewModel.OnSelectedTitleByType(typeof(BookViewModel), id, 0);
-                        await (page.BindingContext as ChapterViewModel).Initialize(id);
+                        _ = (page.BindingContext as ChapterViewModel).Initialize(id);
                         break;
                     }
                 case PageType.Pages:

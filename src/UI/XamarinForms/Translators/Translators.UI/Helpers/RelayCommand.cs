@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Translators.Models.Interfaces;
 using Xamarin.Forms;
 
@@ -17,6 +18,8 @@ namespace Translators.UI.Helpers
         {
 
         }
+
+        public Func<T, Task> AfterRun { get; set; }
     }
 
     public class RelayCommand : Command, ICommand
@@ -30,5 +33,7 @@ namespace Translators.UI.Helpers
         {
 
         }
+
+        public Func<Task> AfterRun { get; set; }
     }
 }

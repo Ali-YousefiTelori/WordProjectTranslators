@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Translators.ServiceManagers;
 using Translators.UI.Helpers;
 using Translators.UI.Services;
+using Translators.UI.Views.Pages;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-
-[assembly: ExportFont("QuranTaha.ttf", Alias = "QuranTaha")]
-[assembly: ExportFont("Nasim.ttf", Alias = "Nasim")]
 
 namespace Translators.UI
 {
@@ -27,10 +27,10 @@ namespace Translators.UI
             {
                 UnhandleExceptionHappens(o, (Exception)e.ExceptionObject);
             };
-
             InitializeComponent();
             StartUp.Initialize();
             DependencyService.Register<MockDataStore>();
+
             MainPage = new AppShell();
         }
 

@@ -10,10 +10,12 @@
             <!-- Light colors -->
             <Color x:Key="LightTextColor">Black</Color>
             <Color x:Key="LightBackgroundColor">White</Color>
+            <Color x:Key="LightTranslateTextColor">#383838</Color>
 
             <!-- Dark colors -->
             <Color x:Key="DarkTextColor">White</Color>
             <Color x:Key="DarkBackgroundColor">Black</Color>
+            <Color x:Key="DarkTranslateColor">#D3D3D3</Color>
 
             <Color x:Key="LinkBackgroundColor">LightSeaGreen</Color>
 
@@ -37,6 +39,6 @@
                     </VisualStateGroupList>
                 </Setter>
             </Style>
-        </ResourceDictionary>        
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
