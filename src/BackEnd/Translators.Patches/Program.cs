@@ -15,21 +15,7 @@ namespace Translators.Patches
             {
                 Console.WriteLine("Starting...");
                 await ConfigData.LoadAsync();
-                var translatedBible = await LoadBibleCloadRoot(@"D:\Github\WordProjectTranslators\src\Resources\fa_new\index.htm", PersianLanguage, false);
-                var mainBible = await LoadBibleCloadRoot(@"D:\Github\WordProjectTranslators\src\Resources\he_new\index.htm", HebrewLanguage, true);
-                //List<CategoryEntity> books = new List<CategoryEntity>();
-                var quran = await LoadQuran();
-                //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(quran);
-                var torat = Merge(mainBible.Old, translatedBible.Old);//await LoadNewTestament();
-                //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(enjil);
-                var enjil = Merge(mainBible.New, translatedBible.New);// await LoadOldTestament();
-                //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(torat);
-                await Save(new List<CategoryEntity>()
-                {
-                     quran,
-                     enjil,
-                     torat
-                });
+                await UploadVoices();
                 Console.WriteLine("Started!");
             }
             catch (Exception ex)
@@ -38,6 +24,31 @@ namespace Translators.Patches
             }
 
             Console.ReadLine();
+        }
+
+
+        static async Task UploadVoices()
+        {
+            await VoidUploader.Upload();
+        }
+
+        static async Task InitializeBooks()
+        {
+            var translatedBible = await LoadBibleCloadRoot(@"D:\Github\WordProjectTranslators\src\Resources\fa_new\index.htm", PersianLanguage, false);
+            var mainBible = await LoadBibleCloadRoot(@"D:\Github\WordProjectTranslators\src\Resources\he_new\index.htm", HebrewLanguage, true);
+            //List<CategoryEntity> books = new List<CategoryEntity>();
+            var quran = await LoadQuran();
+            //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(quran);
+            var torat = Merge(mainBible.Old, translatedBible.Old);//await LoadNewTestament();
+                                                                  //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(enjil);
+            var enjil = Merge(mainBible.New, translatedBible.New);// await LoadOldTestament();
+                                                                  //await new LogicBase<TranslatorContext, bool, CategoryEntity>().Add(torat);
+            await Save(new List<CategoryEntity>()
+            {
+                 quran,
+                 enjil,
+                 torat
+            });
         }
 
         static async Task Save(List<CategoryEntity> categories)

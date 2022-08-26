@@ -23,6 +23,7 @@ namespace Translators.Database.Contexts
         public DbSet<LogEntity> Logs { get; set; }
         public DbSet<LinkParagraphEntity> LinkParagraphs { get; set; }
         public DbSet<LinkGroupEntity> LinkGroups { get; set; }
+        public DbSet<AudioEntity> Audioes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -211,6 +212,11 @@ namespace Translators.Database.Contexts
             {
                 x.HasKey(r => r.Id);
                 x.HasIndex(x => x.Title);
+            });
+            
+            modelBuilder.Entity<AudioEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
             });
         }
 

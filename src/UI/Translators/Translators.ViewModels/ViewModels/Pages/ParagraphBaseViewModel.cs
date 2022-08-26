@@ -53,9 +53,6 @@ namespace Translators.ViewModels.Pages
                 case VerseRightClickType.GoToPage:
                     {
                         await PageHelper.PushPage(paragraphBaseModel.PageNumber, paragraphBaseModel.BookId, paragraphBaseModel.CatalogId, PageType.PagesFastRead, this);
-                        //await PageHelper.PushPage(0, 0, paragraphBaseModel, PageType.DoLinkPage, this is SearchResultPageViewModel);
-                        //await AlertHelper.Alert("قابلیت", "این قابلیت هنوز اضافه نشده!");
-                        //PageHelper.PushPage
                         break;
                     }
                 case VerseRightClickType.CopyForLink:
@@ -66,29 +63,6 @@ namespace Translators.ViewModels.Pages
                 case VerseRightClickType.PasteForLink:
                     {
                         await PageHelper.PushPage(0, 0, paragraphBaseModel, PageType.DoLinkPage, this);
-
-                        //StringBuilder builder = new StringBuilder();
-                        //builder.AppendLine("آیا می‌خواهید");
-                        //builder.AppendLine(TranslatorService.ParagraphForLink.TranslatedValue);
-                        //if (!string.IsNullOrEmpty(TranslatorService.ParagraphForLink.DisplayName))
-                        //    builder.AppendLine(TranslatorService.ParagraphForLink.DisplayName);
-                        //builder.AppendLine("را به");
-                        //builder.AppendLine(paragraphBaseModel.TranslatedValue);
-                        //if (!string.IsNullOrEmpty(paragraphBaseModel.DisplayName))
-                        //    builder.AppendLine(paragraphBaseModel.DisplayName);
-                        //builder.AppendLine("لینک کنید؟");
-                        //if (await AlertHelper.DisplayQuestion("لینک", builder.ToString()))
-                        //{
-                        //    var result = await TranslatorService.GetParagraphService(true).LinkParagraphAsync(TranslatorService.ParagraphForLink.Id, paragraphBaseModel.Id);
-                        //    if (result.IsSuccess)
-                        //    {
-                        //        await AlertHelper.Alert("لینک", "آیه‌ی مورد نظر با موفقیت لینک شد.");
-                        //    }
-                        //    else
-                        //    {
-                        //        await AlertHelper.Alert("خطا در لینک", result.Error.Message);
-                        //    }
-                        //}
                         break;
                     }
                 case VerseRightClickType.ShowLinks:

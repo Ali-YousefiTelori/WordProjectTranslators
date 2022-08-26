@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
-             xmlns:behaviors="clr-namespace:Translators.UI.Behaviors"
              x:Class="Translators.UI.Views.Pages.ReadingPage">
     <ContentPage.Resources>
         <viewmodels:ReadingPageViewModel x:Key="ReadingPageViewModel" />

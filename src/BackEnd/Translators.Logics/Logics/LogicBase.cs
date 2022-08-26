@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SignalGo.Shared.Models;
 using Translators.Contracts.Common;
 using Translators.Database.Contexts;
 

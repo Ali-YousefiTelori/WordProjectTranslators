@@ -4,7 +4,10 @@
              x:Class="Translators.UI.Views.Pages.PagesPage"
              xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
              xmlns:conv="clr-namespace:Translators.UI.Converters"
-             Title="{Binding CatalogName}">
+             xmlns:effect="clr-namespace:Xamarin.CommunityToolkit.Effects;assembly=Xamarin.CommunityToolkit"
+             xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
+             Title="{Binding CatalogName}"
+             x:Name="thisPage">
     <ContentPage.Resources>
         <viewmodels:PageViewModel x:Key="PageViewModel" />
         <conv:EvenColorConverter x:Key="EvenColorConverter"/>
@@ -12,6 +15,9 @@
     <ContentPage.BindingContext>
         <Binding Source="{StaticResource PageViewModel}"/>
     </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="icon_add.png" Command="{Binding AddReadingCommand}"/>
+    </ContentPage.ToolbarItems>
     <Grid BackgroundColor="#01FFFFFF" FlowDirection="RightToLeft">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -33,7 +39,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" VerticalOptions="Start">
+                            <Grid effect:TouchEffect.Command="{Binding TouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.CommandParameter="{Binding}" effect:TouchEffect.LongPressCommand="{Binding LongTouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.LongPressCommandParameter="{Binding}" BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" VerticalOptions="Start">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
@@ -54,9 +60,9 @@
                                         <Image Source="icon_link.png"/>
                                     </Frame>
                                 </Grid>
-                                <Grid.GestureRecognizers>
+                                <!--<Grid.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource PageViewModel}}" CommandParameter="{Binding}" />
-                                </Grid.GestureRecognizers>
+                                </Grid.GestureRecognizers>-->
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
@@ -74,6 +80,32 @@
             <StackLayout Orientation="Horizontal" Grid.Column="1">
                 <Button Text="{Binding CatalogStartPageNumber}" Command="{Binding SelectPageCommand}"/>
                 <Button Text="آیه" Command="{Binding SelectVerseCommand}"/>
+                <Button FontFamily="icomoon" Text="" WidthRequest="40" Command="{Binding PlayCommand}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsPlaying}" Value="False">
+                            <Setter Property="Text" Value="" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsPlaying}" Value="True">
+                            <Setter Property="Text" Value="" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsLoadingPlayStream}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsLoadingPlayStream}" Value="False">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+                <ActivityIndicator IsRunning="{Binding IsLoadingPlayStream}" WidthRequest="40">
+                    <ActivityIndicator.Triggers>
+                        <DataTrigger TargetType="ActivityIndicator" Binding="{Binding IsLoadingPlayStream}" Value="False">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="ActivityIndicator" Binding="{Binding IsLoadingPlayStream}" Value="True">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </ActivityIndicator.Triggers>
+                </ActivityIndicator>
             </StackLayout>
             <ActivityIndicator IsRunning="{Binding IsLoading}" Grid.Column="2" HorizontalOptions="End"/>
         </Grid>

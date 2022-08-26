@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Translators.Helpers;
 using Translators.Models.Storages;
 using Translators.ViewModels.Pages;
+using Xamarin.CommunityToolkit.Core;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,6 +16,8 @@ namespace Translators.UI.Views.Pages
         {
             InitializeComponent();
             ApplicationReadingData.IsSwitchingToNewReading = false;
+            //var vm = BindingContext as PageViewModel;
+            //vm.PlayCommand.AfterRun = PlayCommand;
         }
 
         protected override async void OnParentSet()
@@ -42,5 +42,12 @@ namespace Translators.UI.Views.Pages
                 }
             }
         }
+
+        //async Task PlayCommand()
+        //{
+        //    var vm = BindingContext as PageViewModel;
+        //    MediaElement.Source = MediaSource.FromFile(vm.SourceToPlay);
+        //    MediaElement.Play();
+        //}
     }
 }

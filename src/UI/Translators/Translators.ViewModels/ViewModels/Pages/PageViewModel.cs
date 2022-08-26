@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Converters;
@@ -19,17 +20,43 @@ namespace Translators.ViewModels.Pages
             SwipeLeftCommand = CommandHelper.Create(SwipeLeft);
             SwipeRightCommand = CommandHelper.Create(SwipeRight);
             TouchedCommand = CommandHelper.Create<ParagraphModel>(Touch);
+            LongTouchedCommand = CommandHelper.Create<ParagraphModel>(LongTouched);
             RemoveReadingCommand = CommandHelper.Create(RemoveReading);
             SelectPageCommand = CommandHelper.Create(SelectPage);
             SelectVerseCommand = CommandHelper.Create(SelectVerse);
+            PlayCommand = CommandHelper.Create(Play);
         }
 
         public ICommand<ParagraphModel> TouchedCommand { get; set; }
+        public ICommand<ParagraphModel> LongTouchedCommand { get; set; }
         public ICommand SwipeLeftCommand { get; set; }
         public ICommand SwipeRightCommand { get; set; }
         public ICommand RemoveReadingCommand { get; set; }
         public ICommand SelectPageCommand { get; set; }
         public ICommand SelectVerseCommand { get; set; }
+        public ICommand PlayCommand { get; set; }
+
+        bool _isLoadingPlayStream = false;
+        public bool IsLoadingPlayStream
+        {
+            get => _isLoadingPlayStream;
+            set
+            {
+                _isLoadingPlayStream = value;
+                OnPropertyChanged(nameof(IsLoadingPlayStream));
+            }
+        }
+
+        bool _isPlaying = false;
+        public bool IsPlaying
+        {
+            get => _isPlaying;
+            set
+            {
+                _isPlaying = value;
+                OnPropertyChanged(nameof(IsPlaying));
+            }
+        }
 
         string _CatalogName;
         public string CatalogName
@@ -66,6 +93,7 @@ namespace Translators.ViewModels.Pages
 
         public bool IsOutsideOfBookTab { get; set; }
 
+        public long PageId { get; set; }
         public long BookId { get; set; }
         public long CatalogId { get; set; }
 
@@ -119,7 +147,10 @@ namespace Translators.ViewModels.Pages
 
         async Task<MessageContract<List<PageContract>>> FetchPage(bool isForce, long pageNumber, long bookId)
         {
-            return await TranslatorService.GetPageService(isForce).GetPageAsync(pageNumber, bookId);
+            var pageResult = await TranslatorService.GetPageService(isForce).GetPageAsync(pageNumber, bookId);
+            if (pageResult.IsSuccess && pageNumber == CatalogStartPageNumber && bookId == BookId)
+                PageId = pageResult.Result.First().Id;
+            return pageResult;
         }
 
         private async Task SwipeLeft()
@@ -130,6 +161,7 @@ namespace Translators.ViewModels.Pages
             {
                 CatalogStartPageNumber--;
                 await LoadData();
+                ResetPlayBack();
             }
         }
 
@@ -139,6 +171,7 @@ namespace Translators.ViewModels.Pages
                 return;
             CatalogStartPageNumber++;
             await LoadData();
+            ResetPlayBack();
         }
 
         private async Task Touch(ParagraphModel paragraph)
@@ -225,6 +258,68 @@ namespace Translators.ViewModels.Pages
                 else
                     await AlertContract(verseResult);
             }
+        }
+
+        bool isLoaded = false;
+        private async Task Play()
+        {
+            try
+            {
+                IsLoadingPlayStream = true;
+                if (!isLoaded)
+                {
+                    string key = PageId.ToString();
+                    using WebClient client = new WebClient();
+                    var saver = new ApplicationBookAudioData();
+                    saver.Initialize(key, ".mp3");
+                    var stream = await saver.DownloadFileStream($"http://api.noorpod.ir/Page/DownloadFile?pageId={key}");
+                    var run = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Load(stream);
+                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.PlaybackEnded -= Current_PlaybackEnded;
+                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.PlaybackEnded += Current_PlaybackEnded;
+                }
+
+                if (IsPlaying)
+                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Pause();
+                else
+                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Play();
+                IsPlaying = !IsPlaying;
+                isLoaded = true;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                IsLoadingPlayStream = false;
+            }
+        }
+
+        void ResetPlayBack()
+        {
+            isLoaded = false;
+            IsPlaying = false;
+            Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Stop();
+        }
+
+        private async void Current_PlaybackEnded(object sender, EventArgs e)
+        {
+            if (!IsPlaying)
+                return;
+            try
+            {
+                await SwipeRight();
+                await Play();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private async Task LongTouched(ParagraphModel paragraphModel)
+        {
+
         }
     }
 }

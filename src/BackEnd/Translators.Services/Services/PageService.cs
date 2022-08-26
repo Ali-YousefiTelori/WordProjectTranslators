@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SignalGo.Server.Models;
 using SignalGo.Shared.DataTypes;
+using SignalGo.Shared.Http;
+using SignalGo.Shared.Models;
 using System.Linq;
 using Translators.Attributes;
 using Translators.Contracts.Common;
@@ -41,10 +44,10 @@ namespace Translators.Services
         }
 
         [JsonCustomSerialization]
-        public async Task<MessageContract<long>> GetPageNumberByVerseNumber([NumberValidation] long verseNumber, [NumberValidation] long catalogid)
+        public async Task<MessageContract<long>> GetPageNumberByVerseNumber([NumberValidation] long verseNumber, [NumberValidation] long catalogId)
         {
             var verseResult = await new LogicBase<TranslatorContext, ParagraphContract, ParagraphEntity>().Find(x =>
-                        x.Where(q => q.Number == verseNumber && q.Page.CatalogId == catalogid));
+                        x.Where(q => q.Number == verseNumber && q.Page.CatalogId == catalogId));
             if (!verseResult.IsSuccess)
                 return verseResult.ToContract<long>();
             var pageResult = await new LogicBase<TranslatorContext, PageContract, PageEntity>().Find(x =>
@@ -52,6 +55,14 @@ namespace Translators.Services
             if (!pageResult.IsSuccess)
                 return pageResult.ToContract<long>();
             return pageResult.Result.Number;
+        }
+
+        [JsonCustomSerialization]
+        public async Task<MessageContract<List<PageContract>>> GetPagesByBookId([NumberValidation] long bookId)
+        {
+            var pageResult = await new LogicBase<TranslatorContext, PageContract, PageEntity>().GetAll(x =>
+                       x.Where(q => q.Catalog.BookId == bookId));
+            return pageResult;
         }
 
         [JsonCustomSerialization]
@@ -121,6 +132,69 @@ namespace Translators.Services
             if (value.IsMain && skipSearchInMain)
                 return false;
             return value.SearchValue.Contains(key) || value.Value.Contains(key);
+        }
+
+        public async Task<MessageContract> UploadFile(StreamInfo<long> stream)
+        {
+            var verseResult = await new LogicBase<TranslatorContext, PageEntity, PageEntity>().Find(x =>
+                        x.Include(q => q.Audioes).Where(q => q.Id == stream.Data));
+            if (!verseResult.IsSuccess)
+                return verseResult.ToContract<MessageContract>();
+
+            var bytes = await StreamHelper.ReadAllBytes(stream);
+            if (verseResult.Result.Audioes.Count == 0)
+            {
+                var audioEntity = new AudioEntity()
+                {
+                    Data = bytes,
+                    PageId = stream.Data,
+                    FileName = stream.FileName
+                };
+                var addAudioEntity = await new LogicBase<TranslatorContext, AudioEntity>().Add(audioEntity);
+                if (!addAudioEntity.IsSuccess)
+                    return addAudioEntity;
+            }
+            else
+            {
+                var audioEntity = verseResult.Result.Audioes[0];
+                audioEntity.FileName = stream.FileName;
+                audioEntity.Data = bytes;
+                var updateAudioEntity = await new LogicBase<TranslatorContext, AudioEntity, AudioEntity>().Update(audioEntity);
+                if (!updateAudioEntity.IsSuccess)
+                    return updateAudioEntity;
+            }
+
+            return true;
+        }
+
+        public async Task<ActionResult> DownloadFile(long pageId)
+        {
+            var context = OperationContext.Current;
+            try
+            {
+                var verseResult = await new LogicBase<TranslatorContext, PageEntity, PageEntity>().Find(x =>
+                        x.Include(q => q.Audioes).Where(q => q.Id == pageId));
+                var audio = verseResult.Result?.Audioes?.FirstOrDefault();
+                if (!verseResult.IsSuccess || audio == null)
+                {
+                    context.HttpClient.Status = System.Net.HttpStatusCode.NotFound;
+                    return $"File Or Page Not found";
+                }
+                context.HttpClient.ResponseHeaders.Add("Content-Disposition", $"attachment; filename=\"{audio.FileName}\"");
+                context.HttpClient.ResponseHeaders.Add("Content-Length", audio.Data.Length.ToString());
+                context.HttpClient.ResponseHeaders.Add("Content-Type", "audio/mpeg");
+                //context.HttpClient.ResponseHeaders.Add("Cache-Control", "max-age=604800");//604800 sec = 1 week
+                //context.HttpClient.ResponseHeaders.Add("Date", fileInfo.LastUpdateDateTime.ToUniversalTime().ToString("R"));
+                //context.HttpClient.ResponseHeaders.Add("ETag", $"{fileInfo.LastUpdateDateTime.Ticks}");
+
+                //context.HttpClient.ResponseHeaders.Add("Last-Modified", fileInfo.LastUpdateDateTime.ToString());
+                return new FileActionResult(new MemoryStream(audio.Data));
+            }
+            catch (Exception ex)
+            {
+                context.HttpClient.Status = System.Net.HttpStatusCode.InternalServerError;
+                return new ActionResult(ex.ToString());
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace Translators.Models.Storages
 
         protected bool IsLoading = false;
         bool DoSaveAfterLoad = false;
-        protected static string GetFolderPath()
+        protected string GetFolderPath()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
         }
@@ -91,6 +92,46 @@ namespace Translators.Models.Storages
             {
                 SemaphoreSlim.Release();
             }
+        }
+
+        public async Task<string> DownloadFile(string uri)
+        {
+            try
+            {
+                if (File.Exists(FilePath))
+                {
+                    if (new FileInfo(FilePath).Length > 0)
+                        return FilePath;
+                }
+                using WebClient client = new WebClient();
+                await client.DownloadFileTaskAsync(new Uri(uri), FilePath);
+            }
+            finally
+            {
+            }
+            return FilePath;
+        }
+
+        public async Task<Stream> DownloadFileStream(string uri)
+        {
+            var stream = new MemoryStream(File.ReadAllBytes(await DownloadFile(uri)));
+            return stream;
+        }
+
+        public string SaveFile(byte[] data)
+        {
+            try
+            {
+                File.WriteAllBytes(FilePath, data);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+            }
+            return FilePath;
         }
     }
 }

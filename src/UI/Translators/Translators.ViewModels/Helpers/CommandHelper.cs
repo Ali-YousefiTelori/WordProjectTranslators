@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Translators.Models.Interfaces;
 
@@ -10,7 +8,7 @@ namespace Translators.Helpers
     {
         public static ICommandManager Current { get; set; }
 
-        public static ICommand<T> Create<T>(Func<T,Task> func)
+        public static ICommand<T> Create<T>(Func<T, Task> func)
         {
             return Current.Create<T>(func);
         }

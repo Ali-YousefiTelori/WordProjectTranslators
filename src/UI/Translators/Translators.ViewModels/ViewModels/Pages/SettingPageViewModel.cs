@@ -22,7 +22,8 @@ namespace Translators.ViewModels.Pages
             {
                 if (await AlertHelper.DisplayQuestion("حذف", "آیا می‌خواهید داده های کش حذف شوند؟"))
                 {
-                    Directory.Delete(ApplicationBookData.GetCurrentFolderPath(), true);
+                    Directory.Delete(new ApplicationBookData().GetCurrentFolderPath(), true);
+                    Directory.Delete(new ApplicationBookAudioData().GetCurrentFolderPath(), true);
                     await AlertHelper.Alert("حذف", "داده های کش با موفقیت حذف شدند");
                 }
             }

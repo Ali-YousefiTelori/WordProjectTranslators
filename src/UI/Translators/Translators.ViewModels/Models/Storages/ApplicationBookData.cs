@@ -7,18 +7,19 @@ namespace Translators.Models.Storages
 {
     internal class ApplicationBookData : ApplicationStorageBase<LocalStorageData>
     {
-        public static string GetCurrentFolderPath()
+        public string FolderName { get; set; } = "Temp";
+        public string GetCurrentFolderPath()
         {
-            var directory = Path.Combine(GetFolderPath(), "Temp");
+            var directory = Path.Combine(GetFolderPath(), FolderName);
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
             return directory;
         }
 
-        public void Initialize(string fileName)
+        public void Initialize(string fileName, string extentions = ".json")
         {
             IsLoading = false;
-            FilePath = Path.Combine(GetCurrentFolderPath(), $"{fileName}.json");
+            FilePath = Path.Combine(GetCurrentFolderPath(), $"{fileName}{extentions}");
         }
 
         public async Task InitializeLoad(string fileName)
