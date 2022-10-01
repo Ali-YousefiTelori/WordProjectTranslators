@@ -30,7 +30,7 @@ namespace Translators.Patches
 
         static async Task UpdateEnjilToAramicValues()
         {
-            var lines = await File.ReadAllLinesAsync(@"D:\Github\WordProjectTranslators\src\Resources\Holy-Bible---Aramaic---Aramaic-NT-Peshitta---Source-Edition.UNBOUND.txt");
+            var lines = await File.ReadAllLinesAsync(@"D:\Github\WordProjectTranslators\src\Resources\Holy-Bible---Aramaic---Aramaic-NT-Peshitta---Source-Edition.UNBOUND - Ashuri.txt");
             using TranslatorContext translatorContext = new TranslatorContext();
             //var languages = await translatorContext.Languages.ToListAsync();
             var books = await translatorContext.Books.Where(x => x.CategoryId == 2).ToListAsync();
