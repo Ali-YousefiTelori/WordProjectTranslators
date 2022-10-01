@@ -69,7 +69,7 @@ namespace Translators.Patches
                             new ValueEntity()
                             {
                                 IsMain = true,
-                                LanguageId = 4,
+                                LanguageId = 3,
                                 SearchValue = createdWords[i],
                                 Value = createdWords[i]
                             }
