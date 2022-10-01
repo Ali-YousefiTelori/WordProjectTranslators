@@ -20,5 +20,6 @@ namespace Translators.Database.Entities
         /// چیزهایی که ترجمه کرده
         /// </summary>
         public List<ValueEntity> Values { get; set; }
+        public List<AudioEntity> Audios { get; set; }
     }
 }

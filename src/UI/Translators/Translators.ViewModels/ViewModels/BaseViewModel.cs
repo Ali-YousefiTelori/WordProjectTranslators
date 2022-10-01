@@ -89,6 +89,11 @@ namespace Translators.ViewModels
             }
         }
 
+        public virtual Task WaitToFetchData()
+        {
+            return Task.CompletedTask;
+        }
+
         public virtual Task FetchData(bool isForce = false)
         {
             return Task.CompletedTask;
@@ -118,10 +123,13 @@ namespace Translators.ViewModels
             return default;
         }
 
-        public static void OnSelectedTitleByType(Type type, long id, long parentId)
+        public static async Task OnSelectedTitleByType(Type type, long id, long parentId)
         {
             if (Pages.TryGetValue(type, out var vm))
+            {
+                await vm.WaitToFetchData();
                 vm.OnSelected(id, parentId);
+            }
         }
 
         public virtual void OnSelected(long id, long parentId)

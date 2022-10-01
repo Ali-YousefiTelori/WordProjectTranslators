@@ -106,6 +106,12 @@ namespace Translators.Models.Storages
                 using WebClient client = new WebClient();
                 await client.DownloadFileTaskAsync(new Uri(uri), FilePath);
             }
+            catch
+            {
+                if (File.Exists(FilePath))
+                    File.Delete(FilePath);
+                throw;
+            }
             finally
             {
             }

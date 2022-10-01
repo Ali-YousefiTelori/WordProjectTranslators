@@ -28,6 +28,12 @@ namespace Translators.UI.Helpers
             SearchNavigation = navigation;
         }
 
+        static INavigation SettingNavigation { get; set; }
+        public static void InitializeSettingNavigation(INavigation navigation)
+        {
+            SettingNavigation = navigation;
+        }
+
         public static Page GetCurrentPage()
         {
             return App.Current.MainPage;//Navigation.NavigationStack.LastOrDefault();
@@ -71,7 +77,7 @@ namespace Translators.UI.Helpers
                     {
                         page = new ChapterPage();
                         ApplicationPagesData.Current.AddPageValue(pageType, id, 0, id);
-                        BookViewModel.OnSelectedTitleByType(typeof(BookViewModel), id, 0);
+                        await BookViewModel.OnSelectedTitleByType(typeof(BookViewModel), id, 0);
                         _ = (page.BindingContext as ChapterViewModel).Initialize(id);
                         break;
                     }
@@ -107,19 +113,32 @@ namespace Translators.UI.Helpers
                         _ = (page.BindingContext as PageViewModel).Initialize(id, rootId, (long)data);
                         break;
                     }
+                case PageType.OfflineDownloadPage:
+                    {
+                        page = new OfflineDownloaderPage();
+                        break;
+                    }
             }
+
 
             if (page != null)
             {
-                if (page.BindingContext is BaseViewModel baseViewModel)
+                if (fromBaseViewModel is SettingPageViewModel)
                 {
-                    if (fromBaseViewModel != null)
-                        baseViewModel.IsInSearchTab = fromBaseViewModel.IsInSearchTab;
+                    await SettingNavigation.PushAsync(page);
                 }
-                if (fromBaseViewModel != null && fromBaseViewModel.IsInSearchTab)
-                    await SearchNavigation.PushAsync(page);
                 else
-                    await Navigation.PushAsync(page);
+                {
+                    if (page.BindingContext is BaseViewModel baseViewModel)
+                    {
+                        if (fromBaseViewModel != null)
+                            baseViewModel.IsInSearchTab = fromBaseViewModel.IsInSearchTab;
+                    }
+                    if (fromBaseViewModel != null && fromBaseViewModel.IsInSearchTab)
+                        await SearchNavigation.PushAsync(page);
+                    else
+                        await Navigation.PushAsync(page);
+                }
             }
             return null;
         }
@@ -135,6 +154,11 @@ namespace Translators.UI.Helpers
             {
                 ((AppShell)Shell.Current).TabBar.CurrentItem = ((AppShell)Shell.Current).TabBar.Items.First();
             }
+        }
+
+        public async Task PopSettingPage()
+        {
+            Device.BeginInvokeOnMainThread(async () => await SettingNavigation.PopAsync());
         }
     }
 }

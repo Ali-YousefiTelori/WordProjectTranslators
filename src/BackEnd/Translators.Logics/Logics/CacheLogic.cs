@@ -51,6 +51,8 @@ namespace Translators.Logics
                 Pages.TryAdd(item.Id, item.Map<PageContract>());
             }
 
+            FixPageBookIds(Pages.Values.ToList());
+
             var paragraphs = await context.Paragraphs.Include(x => x.ToLinkParagraphs).Include(x => x.FromLinkParagraphs).AsNoTracking().ToListAsync();
             foreach (var item in paragraphs)
             {
@@ -109,7 +111,7 @@ namespace Translators.Logics
             foreach (var page in Pages)
             {
                 page.Value.Paragraphs = Paragraphs.Select(x => x.Value).Where(x => x.PageId == page.Key).ToList();
-                page.Value.CatalogNames = hasCatalogs.Where(x => x.CatalogNameId == page.Key).ToList();
+                page.Value.CatalogNames = page.Value.Paragraphs.SelectMany(p => hasCatalogs.Where(x => x.CatalogNameId == p.CatalogId)).Distinct().ToList();
             }
 
             foreach (var catalog in Catalogs)
@@ -130,6 +132,14 @@ namespace Translators.Logics
             {
                 category.Value.Names = hasCategories.Where(x => x.CategoryNameId == category.Key).ToList();
                 category.Value.Books = Books.Select(x => x.Value).Where(x => x.CategoryId == category.Key).ToList();
+            }
+        }
+
+        public static void FixPageBookIds(List<PageContract> pageContracts)
+        {
+            foreach (var item in pageContracts)
+            {
+                item.BookId = Catalogs[item.CatalogId].BookId;
             }
         }
     }

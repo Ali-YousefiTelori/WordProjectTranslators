@@ -1,11 +1,13 @@
 ﻿using SignalGo.Server.Models;
 using SignalGo.Shared.DataTypes;
+using SignalGo.Shared.Http;
 using Translators.Attributes;
 using Translators.Contracts.Common;
 using Translators.Contracts.Common.Authentications;
 using Translators.Contracts.Requests;
 using Translators.Database.Contexts;
 using Translators.Database.Entities;
+using Translators.Helpers;
 using Translators.Logics;
 using Translators.Validations;
 

@@ -137,6 +137,10 @@ namespace Translators.ViewModels.Pages
                 InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => ParagraphModel.Map(i))));
                 CatalogName = $"{GetSelectedTitleByType(typeof(BookViewModel))} / ";
                 CatalogName += string.Join(" - ", pages.Result.Select(x => x.CatalogNames.GetPersianValue()).Distinct());
+                if (!CatalogName.Any(x => char.IsDigit(x)))
+                {
+                    CatalogName += " - " + pages.Result.FirstOrDefault()?.Number;
+                }
                 if (!IsOutsideOfBookTab)
                 {
                     ApplicationReadingData.SetTitle(CatalogName);
@@ -285,10 +289,6 @@ namespace Translators.ViewModels.Pages
                 IsPlaying = !IsPlaying;
                 isLoaded = true;
             }
-            catch (Exception ex)
-            {
-
-            }
             finally
             {
                 IsLoadingPlayStream = false;
@@ -313,7 +313,7 @@ namespace Translators.ViewModels.Pages
             }
             catch (Exception ex)
             {
-
+                await BaseViewModel.AlertExcepption(ex);
             }
         }
 

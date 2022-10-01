@@ -58,12 +58,25 @@ namespace Translators.Migrations
                     b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
+
+                    b.Property<long?>("LanguageId")
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("PageId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("TranslatorId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LanguageId");
+
                     b.HasIndex("PageId");
+
+                    b.HasIndex("TranslatorId");
 
                     b.ToTable("Audioes");
                 });
@@ -491,11 +504,23 @@ namespace Translators.Migrations
 
             modelBuilder.Entity("Translators.Database.Entities.AudioEntity", b =>
                 {
+                    b.HasOne("Translators.Database.Entities.LanguageEntity", "Language")
+                        .WithMany("Audios")
+                        .HasForeignKey("LanguageId");
+
                     b.HasOne("Translators.Database.Entities.PageEntity", "Page")
                         .WithMany("Audioes")
                         .HasForeignKey("PageId");
 
+                    b.HasOne("Translators.Database.Entities.TranslatorEntity", "Translator")
+                        .WithMany("Audios")
+                        .HasForeignKey("TranslatorId");
+
+                    b.Navigation("Language");
+
                     b.Navigation("Page");
+
+                    b.Navigation("Translator");
                 });
 
             modelBuilder.Entity("Translators.Database.Entities.Authentications.UserPermissionEntity", b =>
@@ -708,6 +733,8 @@ namespace Translators.Migrations
 
             modelBuilder.Entity("Translators.Database.Entities.LanguageEntity", b =>
                 {
+                    b.Navigation("Audios");
+
                     b.Navigation("Values");
                 });
 
@@ -734,6 +761,8 @@ namespace Translators.Migrations
 
             modelBuilder.Entity("Translators.Database.Entities.TranslatorEntity", b =>
                 {
+                    b.Navigation("Audios");
+
                     b.Navigation("Names");
 
                     b.Navigation("Values");

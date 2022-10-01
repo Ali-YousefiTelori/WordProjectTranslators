@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using Translators.Database.Contexts;
 using Translators.Database.Entities;
@@ -15,7 +16,7 @@ namespace Translators.Patches
             {
                 Console.WriteLine("Starting...");
                 await ConfigData.LoadAsync();
-                await UploadVoices();
+                await UpdateEnjilToAramicValues();
                 Console.WriteLine("Started!");
             }
             catch (Exception ex)
@@ -26,6 +27,64 @@ namespace Translators.Patches
             Console.ReadLine();
         }
 
+
+        static async Task UpdateEnjilToAramicValues()
+        {
+            var lines = await File.ReadAllLinesAsync(@"D:\Github\WordProjectTranslators\src\Resources\Holy-Bible---Aramaic---Aramaic-NT-Peshitta---Source-Edition.UNBOUND.txt");
+            using TranslatorContext translatorContext = new TranslatorContext();
+            //var languages = await translatorContext.Languages.ToListAsync();
+            var books = await translatorContext.Books.Where(x => x.CategoryId == 2).ToListAsync();
+            var catalogs = await translatorContext.Catalogs.ToListAsync();
+            var paragraphs = await translatorContext.Paragraphs.ToListAsync();
+            var words = await translatorContext.Words.ToListAsync();
+            var values = await translatorContext.Values.ToListAsync();
+            int count = lines.Count() - 1;
+            int index = 0;
+            foreach (var line in lines.Skip(1))
+            {
+                var split = line.Split('\t');
+                var bookNumber = new string(split[0].Where(x => char.IsDigit(x)).ToArray());
+                var SurahNumber = split[1];
+                var verseNumber = split[2];
+                var text = split[3].Replace("܀", "").Trim();
+
+                var book = books.FirstOrDefault(x => (x.Id - 2) == int.Parse(bookNumber) - 40);
+                var catalog = book.Catalogs.FirstOrDefault(x => x.StartPageNumber.ToString() == SurahNumber);
+                var verse = catalog.Paragraphs.FirstOrDefault(x => x.Number.ToString() == verseNumber);
+                var removedWords = verse.Words.Where(x => x.Values.Any(w => w.IsMain)).ToList();
+                foreach (var item in removedWords)
+                {
+                    verse.Words.Remove(item);
+                }
+                translatorContext.Words.RemoveRange(removedWords);
+                var createdWords = text.Replace("  ", "").Split(" ").ToArray();
+
+                for (int i = 0; i < createdWords.Length; i++)
+                {
+                    var word = new WordEntity()
+                    {
+                        Index = i,
+                        Values = new List<ValueEntity>()
+                        {
+                            new ValueEntity()
+                            {
+                                IsMain = true,
+                                LanguageId = 4,
+                                SearchValue = createdWords[i],
+                                Value = createdWords[i]
+                            }
+                        },
+                        ParagraphId = verse.Id,
+                    };
+                    verse.Words.Add(word);
+                    translatorContext.Words.Add(word);
+                }
+                index++;
+                await translatorContext.SaveChangesAsync();
+                Console.WriteLine($"Comepleted {index}/{count}");
+            }
+
+        }
 
         static async Task UploadVoices()
         {

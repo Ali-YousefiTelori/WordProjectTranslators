@@ -6,5 +6,6 @@
         public string Name { get; set; }
         public string Code { get; set; }
         public List<ValueEntity> Values { get; set; }
+        public List<AudioEntity> Audios { get; set; }
     }
 }

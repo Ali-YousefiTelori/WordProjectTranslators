@@ -33,8 +33,6 @@ namespace Translators.ViewModels.Pages
         {
             SelectedCategoryId = id;
             await LoadData();
-            if (string.IsNullOrEmpty(SelectedName))
-                OnSelected(SelectedCategoryId, 0);
         }
 
         public long SelectedCategoryId { get; set; }
@@ -51,6 +49,12 @@ namespace Translators.ViewModels.Pages
             {
                 InitialData(books.Result.Select(x => (CategoryModel)x));
             }
+        }
+
+        protected override void OnDataInitilized()
+        {
+            if (string.IsNullOrEmpty(SelectedName))
+                OnSelected(SelectedCategoryId, 0);
         }
 
         public override void Search()

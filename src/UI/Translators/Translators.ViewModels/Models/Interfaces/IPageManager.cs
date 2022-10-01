@@ -12,5 +12,6 @@ namespace Translators.Models.Interfaces
         void SwitchPage(PageType pageType);
         Task<object> PushPage(long id, long rootId, object data, PageType pageType, BaseViewModel fromBaseViewModel);
         Task Clean();
+        Task PopSettingPage();
     }
 }

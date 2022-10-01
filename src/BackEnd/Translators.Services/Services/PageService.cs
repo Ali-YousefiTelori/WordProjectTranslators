@@ -3,7 +3,6 @@ using SignalGo.Server.Models;
 using SignalGo.Shared.DataTypes;
 using SignalGo.Shared.Http;
 using SignalGo.Shared.Models;
-using System.Linq;
 using Translators.Attributes;
 using Translators.Contracts.Common;
 using Translators.Contracts.Requests;
@@ -40,6 +39,7 @@ namespace Translators.Services
                 }
                 page.CatalogNames = page.Paragraphs.SelectMany(p => catalogs.Result.FirstOrDefault(x => x.Id == p.CatalogId)?.Names).Distinct().ToList();
             }
+            CacheLogic.FixPageBookIds(result.Result);
             return result;
         }
 
@@ -62,6 +62,7 @@ namespace Translators.Services
         {
             var pageResult = await new LogicBase<TranslatorContext, PageContract, PageEntity>().GetAll(x =>
                        x.Where(q => q.Catalog.BookId == bookId));
+            CacheLogic.FixPageBookIds(pageResult.Result);
             return pageResult;
         }
 
@@ -195,6 +196,13 @@ namespace Translators.Services
                 context.HttpClient.Status = System.Net.HttpStatusCode.InternalServerError;
                 return new ActionResult(ex.ToString());
             }
+        }
+
+        public async Task<ActionResult> GetOfflineCache()
+        {
+            var context = OperationContext.Current;
+            var result = CacheLogic.Pages.Values.ToList();
+            return StreamHelper.GetOfflineCache(context, result, typeof(PageService));
         }
     }
 }

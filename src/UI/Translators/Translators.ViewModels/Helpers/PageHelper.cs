@@ -29,5 +29,10 @@ namespace Translators.Helpers
             ApplicationReadingData.IsSwitchingToNewReading = true;
             await Current.Clean();
         }
+
+        public async Task PopSettingPage()
+        {
+            await Current.PopSettingPage();
+        }
     }
 }

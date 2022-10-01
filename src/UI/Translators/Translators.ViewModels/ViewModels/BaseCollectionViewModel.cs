@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Translators.Helpers;
 
 namespace Translators.ViewModels
@@ -35,7 +36,7 @@ namespace Translators.ViewModels
         public List<T> OfflineItems { get; set; }
 
         public ObservableCollection<T> Items { get; set; } = new ObservableCollection<T>();
-
+        TaskCompletionSource<bool> OnFetchComepleted { get; set; } = new TaskCompletionSource<bool>();
         public void InitialData(IEnumerable<T> items)
         {
             AsyncHelper.RunOnUI(() =>
@@ -45,7 +46,20 @@ namespace Translators.ViewModels
                 {
                     Items.Add(category);
                 }
+                OnFetchComepleted.SetResult(true);
+                OnFetchComepleted = new TaskCompletionSource<bool>();
+                OnDataInitilized();
             });
+        }
+
+        public override Task WaitToFetchData()
+        {
+            return OnFetchComepleted.Task;
+        }
+
+        protected virtual void OnDataInitilized()
+        {
+
         }
 
         public virtual void Search()

@@ -20,7 +20,9 @@ namespace Translators.ServiceManagers
 
         public static string GetKey(string url, ParameterInfo[] parameterInfoes)
         {
-            return Sha1Hash($"{url.ToLower().Trim('/')}_{(parameterInfoes == null ? "Null" : string.Join("#", parameterInfoes.Select(p => $"{p.Name}_{p.Value}")))}");
+            if (Uri.TryCreate(url, UriKind.Absolute, out Uri uri))
+                url = uri.PathAndQuery;
+            return Sha1Hash($"{url.ToLower().Trim('/')}_{(parameterInfoes == null || parameterInfoes.Length == 0 ? "Empty" : string.Join("#", parameterInfoes.Select(p => $"{p.Name}_{p.Value}")))}");
         }
 
         private static SHA1 _sha1 = SHA1.Create();

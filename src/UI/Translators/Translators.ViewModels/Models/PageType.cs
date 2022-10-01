@@ -17,5 +17,6 @@
         ParagraphResult = 6,
         DoLinkPage = 7,
         PagesFastRead = 8,
+        OfflineDownloadPage = 9
     }
 }
