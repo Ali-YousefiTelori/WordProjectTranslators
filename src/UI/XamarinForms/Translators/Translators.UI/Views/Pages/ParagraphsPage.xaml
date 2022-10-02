@@ -14,9 +14,8 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <Grid Margin="10" FlowDirection="RightToLeft">
-            <ListView
-                ItemsSource="{Binding Items}" HasUnevenRows="True">
-                <ListView.ItemTemplate>
+            <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems">
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}">
@@ -37,8 +36,8 @@
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -13,22 +13,20 @@
         <ToolbarItem Icon="icon_add.png" Command="{Binding AddReadingCommand}"/>
     </ContentPage.ToolbarItems>
     <Grid FlowDirection="RightToLeft">
-        <ListView 
+        <CollectionView 
                 ItemsSource="{Binding Items}"
-                SelectionMode="Single" HasUnevenRows="True">
-            <ListView.ItemTemplate>
+                SelectionMode="Single" ItemSizingStrategy="MeasureAllItems">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Orientation="Vertical">
-                            <Label FontSize="{Binding FontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Name}"/>
-                            <Label FontSize="{Binding ReadingFontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Title}"/>
-                            <StackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ReadingPageViewModel}}" CommandParameter="{Binding}" />
-                            </StackLayout.GestureRecognizers>
-                        </StackLayout>
-                    </ViewCell>
+                    <StackLayout Orientation="Vertical">
+                        <Label FontSize="{Binding FontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Name}"/>
+                        <Label FontSize="{Binding ReadingFontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Title}"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ReadingPageViewModel}}" CommandParameter="{Binding}" />
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentPage>

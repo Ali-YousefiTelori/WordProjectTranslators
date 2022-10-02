@@ -41,22 +41,20 @@
                 <Label FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="جستجوی کل جمله"/>
             </StackLayout>
         </StackLayout>
-        <ListView Grid.Row="2"
+        <CollectionView Grid.Row="2"
                 ItemsSource="{Binding Items}"
-                SelectionMode="None" HasUnevenRows="True">
-            <ListView.ItemTemplate>
+                SelectionMode="None" ItemSizingStrategy="MeasureAllItems">
+            <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <Grid Margin="10">
-                            <StackLayout Orientation="Horizontal" Margin="{Binding Left,Converter={StaticResource ThicknessConverter}}">
-                                <CheckBox IsChecked="{Binding IsSelected}"/>
-                                <Label FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="{Binding Names, Converter={StaticResource LanguageValueConverter}}"/>
-                            </StackLayout>
-                        </Grid>
-                    </ViewCell>
+                    <Grid Margin="10">
+                        <StackLayout Orientation="Horizontal" Margin="{Binding Left,Converter={StaticResource ThicknessConverter}}">
+                            <CheckBox IsChecked="{Binding IsSelected}"/>
+                            <Label FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="{Binding Names, Converter={StaticResource LanguageValueConverter}}"/>
+                        </StackLayout>
+                    </Grid>
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
         <Button Text="جستجو" Grid.Row="3" Command="{Binding SearchCommand}"/>
         <ActivityIndicator IsRunning="{Binding IsLoading}" Grid.RowSpan="4" IsVisible="{Binding IsLoading}"/>
     </Grid>

@@ -113,7 +113,7 @@ namespace Translators.ViewModels.Pages
             CatalogId = catalogId;
             BookId = bookId;
             CatalogStartPageNumber = startPageNumber;
-            _ = Task.Run(async () =>
+            _ = Task.Factory.StartNew(async () =>
             {
                 await LoadData();
             });
@@ -123,12 +123,12 @@ namespace Translators.ViewModels.Pages
         {
             var pages = await FetchPage(isForce, CatalogStartPageNumber, BookId);
             //fetch next
-            _ = Task.Run(async () =>
+            _ = Task.Factory.StartNew(async () =>
             {
                 await FetchPage(isForce, CatalogStartPageNumber + 1, BookId);
             });
             //fetch prevoius
-            _ = Task.Run(async () =>
+            _ = Task.Factory.StartNew(async () =>
             {
                 await FetchPage(isForce, CatalogStartPageNumber - 1, BookId);
             });

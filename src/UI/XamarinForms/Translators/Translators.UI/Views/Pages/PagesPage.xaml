@@ -7,7 +7,7 @@
              xmlns:effect="clr-namespace:Xamarin.CommunityToolkit.Effects;assembly=Xamarin.CommunityToolkit"
              xmlns:xct="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
              Title="{Binding CatalogName}"
-             x:Name="thisPage">
+             x:Name="thisPage" FlowDirection="RightToLeft">
     <ContentPage.Resources>
         <viewmodels:PageViewModel x:Key="PageViewModel" />
         <conv:EvenColorConverter x:Key="EvenColorConverter"/>
@@ -18,7 +18,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="icon_add.png" Command="{Binding AddReadingCommand}"/>
     </ContentPage.ToolbarItems>
-    <Grid BackgroundColor="#01FFFFFF" FlowDirection="RightToLeft">
+    <Grid BackgroundColor="#01FFFFFF">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
@@ -35,10 +35,10 @@
                     <SwipeItem Text="Next Page" Command="{Binding SwipeRightCommand,Source={StaticResource PageViewModel}}" />
                 </SwipeItems>
             </SwipeView.LeftItems>
-            <ListView ItemsSource="{Binding Items}" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading,Mode=OneWay}" IsPullToRefreshEnabled="True" HasUnevenRows="True">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
+            <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading,Mode=OneWay}">
+                <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
                             <Grid effect:TouchEffect.Command="{Binding TouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.CommandParameter="{Binding}" effect:TouchEffect.LongPressCommand="{Binding LongTouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.LongPressCommandParameter="{Binding}" BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" VerticalOptions="Start">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -60,14 +60,33 @@
                                         <Image Source="icon_link.png"/>
                                     </Frame>
                                 </Grid>
-                                <!--<Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource PageViewModel}}" CommandParameter="{Binding}" />
-                                </Grid.GestureRecognizers>-->
                             </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                            <!--<Grid effect:TouchEffect.Command="{Binding TouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.CommandParameter="{Binding}" effect:TouchEffect.LongPressCommand="{Binding LongTouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.LongPressCommandParameter="{Binding}" BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" VerticalOptions="Start">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding MainValue}" Style="{DynamicResource MainParagraphLabel}" VerticalOptions="Start" Margin="10,0,10,0"/>
+                                    <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Grid.Row="1" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" Style="{DynamicResource TranslatedParagraphLabel}" Margin="10,0,10,20" />
+                                    <StackLayout Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalOptions="Center">
+                                        <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text=")" />
+                                        <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding Number}"/>
+                                        <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="("  />
+                                    </StackLayout>
+                                    <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" IsVisible="{Binding HasLink}" WidthRequest="24" HeightRequest="24" HorizontalOptions="End" VerticalOptions="End" Grid.RowSpan="2" Grid.Column="1">
+                                        <Frame CornerRadius="24"  BackgroundColor="{StaticResource LinkBackgroundColor}" Padding="5" Margin="5,0,0,5">
+                                            <Image Source="icon_link.png"/>
+                                        </Frame>
+                                    </Grid>
+                                </Grid>-->
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
         </SwipeView>
 
         <Grid Grid.Row="1">

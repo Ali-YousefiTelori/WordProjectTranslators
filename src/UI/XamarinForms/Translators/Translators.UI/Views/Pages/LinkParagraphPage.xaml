@@ -28,22 +28,20 @@
                 <Label Text="نام موضوع جهت لینک"/>
                 <Entry Text="{Binding SearchText}" Grid.Column="1"/>
             </Grid>
-            <ListView Grid.Row="2"
-                ItemsSource="{Binding Items}" HasUnevenRows="True">
-                <ListView.ItemTemplate>
+            <CollectionView Grid.Row="2"
+                ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems">
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <Grid>
-                                <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Contract.Title}" FontSize="{Binding FontSize,Source={StaticResource LinkParagraphPageViewModel}}" Margin="10,0,10,0">
-                                    <RadioButton.GestureRecognizers>
-                                        <TapGestureRecognizer Command="{Binding SelectedCommand,Source={StaticResource LinkParagraphPageViewModel}}" CommandParameter="{Binding}" />
-                                    </RadioButton.GestureRecognizers>
-                                </RadioButton>
-                            </Grid>
-                        </ViewCell>
+                        <Grid>
+                            <RadioButton IsChecked="{Binding IsSelected}" Content="{Binding Contract.Title}" FontSize="{Binding FontSize,Source={StaticResource LinkParagraphPageViewModel}}" Margin="10,0,10,0">
+                                <RadioButton.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectedCommand,Source={StaticResource LinkParagraphPageViewModel}}" CommandParameter="{Binding}" />
+                                </RadioButton.GestureRecognizers>
+                            </RadioButton>
+                        </Grid>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
             <Button Grid.Row="3" Text="ذخیره" Command="{Binding SaveCommand}"/>
         </Grid>
     </ContentPage.Content>
