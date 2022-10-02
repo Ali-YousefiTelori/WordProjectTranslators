@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Translators.UI.Views.Pages.SettingPage"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels">
+    <ContentPage.Resources>
+        <viewmodels:SettingPageViewModel x:Key="SettingPageViewModel" />
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <Binding Source="{StaticResource SettingPageViewModel}"/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid VerticalOptions="Start">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Text="اندازه‌ی فونت"
+                HorizontalOptions="CenterAndExpand" />
+            <Slider Value="{Binding FontSize}" Grid.Row="1" Maximum="60" Minimum="15" />
+            <StackLayout Grid.Row="2" Orientation="Horizontal" IsVisible="false">
+                <Label Text="پروتکل Duplex" VerticalOptions="Center"/>
+                <CheckBox IsChecked="{Binding UseDuplexProtocol}" VerticalOptions="Center"/>
+            </StackLayout>
+            <Button Text="حذف داده های کش شده" Command="{Binding RemoveCacheCommand}" Grid.Row="2"/>
+            <Button Text="دانلود آفلاین" Grid.Row="3" Command="{Binding DownloadOfflineCommand}"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

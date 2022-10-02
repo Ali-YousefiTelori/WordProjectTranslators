@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+             xmlns:conv="clr-namespace:Translators.UI.Converters"
+             x:Class="Translators.UI.Views.Pages.ChapterPage">
+    <ContentPage.Resources>
+        <viewmodels:ChapterViewModel x:Key="ChapterViewModel" />
+        <conv:LanguageValueConverter LanguageCode="fa-ir" x:Key="LanguageValueConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <Binding Source="{StaticResource ChapterViewModel}"/>
+    </ContentPage.BindingContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <SearchBar Text="{Binding SearchText}" />
+        <RefreshView Grid.Row="1" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading, Mode=OneWay}">
+            <CollectionView
+                ItemsSource="{Binding Items}"
+                SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="10" WidthRequest="200" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                <Label FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" Text="{Binding Names, Converter={StaticResource LanguageValueConverter}}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" Text=" -" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Label FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" Text="{Binding Number}" Margin="0,20,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                            </StackLayout>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ChapterViewModel}}" CommandParameter="{Binding}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translators.UI", "Translators.UI\Translators.UI.csproj", "{60BB6621-80D7-4700-9A6C-3D80D814B054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translators.ViewModels", "Translators.ViewModels\Translators.ViewModels.csproj", "{11609A67-C5B2-4C13-B921-C21EF40C2732}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translators.ViewModels", "Translators.ViewModels\Translators.ViewModels.csproj", "{11609A67-C5B2-4C13-B921-C21EF40C2732}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translators.SharedUI_MAUI", "Translators.SharedUI\Translators.SharedUI_MAUI.csproj", "{4315E81C-E00E-44C0-A9F8-A3DA19172E78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{11609A67-C5B2-4C13-B921-C21EF40C2732}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11609A67-C5B2-4C13-B921-C21EF40C2732}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11609A67-C5B2-4C13-B921-C21EF40C2732}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4315E81C-E00E-44C0-A9F8-A3DA19172E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4315E81C-E00E-44C0-A9F8-A3DA19172E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4315E81C-E00E-44C0-A9F8-A3DA19172E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4315E81C-E00E-44C0-A9F8-A3DA19172E78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

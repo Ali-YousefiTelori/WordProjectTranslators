@@ -49,19 +49,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Translators.ViewModels\Translators.ViewModels.csproj" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <MauiXaml Update="Views\Pages\CategoryPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Pages\ChapterPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\Pages\PagesPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
+  <ItemGroup>
+	  <ProjectReference Include="..\Translators.SharedUI\Translators.SharedUI_MAUI.csproj" />
+	  <ProjectReference Include="..\Translators.ViewModels\Translators.ViewModels.csproj" />
 	</ItemGroup>
 
 </Project>

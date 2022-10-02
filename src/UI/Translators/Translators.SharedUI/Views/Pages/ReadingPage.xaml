@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+             x:Class="Translators.UI.Views.Pages.ReadingPage">
+    <ContentPage.Resources>
+        <viewmodels:ReadingPageViewModel x:Key="ReadingPageViewModel" />
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <Binding Source="{StaticResource ReadingPageViewModel}"/>
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <!--<ToolbarItem Icon="icon_add.png" Command="{Binding AddReadingCommand}"/>-->
+        <ToolbarItem IconImageSource="icon_add.png" Command="{Binding AddReadingCommand}"/>
+    </ContentPage.ToolbarItems>
+    <Grid FlowDirection="RightToLeft">
+        <CollectionView 
+                ItemsSource="{Binding Items}"
+                SelectionMode="Single" ItemSizingStrategy="MeasureAllItems">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Vertical">
+                        <Label FontSize="{Binding FontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Name}"/>
+                        <Label FontSize="{Binding ReadingFontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Title}"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ReadingPageViewModel}}" CommandParameter="{Binding}" />
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

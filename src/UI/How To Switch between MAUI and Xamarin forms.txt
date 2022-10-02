@@ -1,0 +1,17 @@
+How To Switch between MAUI and Xamarin forms
+
+For MAUI Only replace:
+
+xmlns="http://xamarin.com/schemas/2014/forms"
+to
+xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+
+
+For Xamarin Forms Only replace:
+
+xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+to
+xmlns="http://xamarin.com/schemas/2014/forms"
+
+Note:
+Replace these only in Shared Project that have pages, not another.

@@ -46,8 +46,8 @@ namespace Translators.ViewModels
                 {
                     Items.Add(category);
                 }
-                OnFetchComepleted.SetResult(true);
-                OnFetchComepleted = new TaskCompletionSource<bool>();
+                OnFetchComepleted.TrySetResult(true);
+                //OnFetchComepleted = new TaskCompletionSource<bool>();
                 OnDataInitilized();
             });
         }

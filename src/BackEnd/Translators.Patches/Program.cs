@@ -80,7 +80,19 @@ namespace Translators.Patches
                     translatorContext.Words.Add(word);
                 }
                 index++;
-                await translatorContext.SaveChangesAsync();
+                while(true)
+                {
+                    try
+                    {
+                        await translatorContext.SaveChangesAsync();
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    await Task.Delay(1000);
+                }
                 Console.WriteLine($"Comepleted {index}/{count}");
             }
 
