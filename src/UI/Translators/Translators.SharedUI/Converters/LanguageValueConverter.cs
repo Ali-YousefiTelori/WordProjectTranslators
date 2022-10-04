@@ -1,6 +1,6 @@
 ﻿using Translators.Converters;
 
-namespace Translators.UI.Converters
+namespace Translators.SharedUI.Converters
 {
     public class LanguageValueConverter : LanguageValueBaseConverter, IValueConverter
     {

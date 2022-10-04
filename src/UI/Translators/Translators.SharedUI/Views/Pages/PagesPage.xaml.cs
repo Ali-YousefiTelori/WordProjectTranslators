@@ -11,8 +11,6 @@ namespace Translators.UI.Views.Pages
         {
             InitializeComponent();
             ApplicationReadingData.IsSwitchingToNewReading = false;
-            //var vm = BindingContext as PageViewModel;
-            //vm.PlayCommand.AfterRun = PlayCommand;
         }
 
         protected override async void OnParentSet()

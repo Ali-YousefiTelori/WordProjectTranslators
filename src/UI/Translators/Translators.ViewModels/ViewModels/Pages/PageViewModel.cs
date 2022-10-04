@@ -134,7 +134,13 @@ namespace Translators.ViewModels.Pages
             });
             if (pages.IsSuccess)
             {
-                InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => ParagraphModel.Map(i))));
+                bool isEven = false;
+                InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => ParagraphModel.Map(i))).Select(v =>
+                {
+                    v.IsEven = isEven;
+                    isEven = !isEven;
+                    return v;
+                }));
                 CatalogName = $"{GetSelectedTitleByType(typeof(BookViewModel))} / ";
                 CatalogName += string.Join(" - ", pages.Result.Select(x => x.CatalogNames.GetPersianValue()).Distinct());
                 if (!CatalogName.Any(x => char.IsDigit(x)))
@@ -180,20 +186,23 @@ namespace Translators.ViewModels.Pages
 
         private async Task Touch(ParagraphModel paragraph)
         {
-            string displayName = null;
-            try
+            if (!IsOnSelectionMode(paragraph))
             {
-                IsLoading = true;
-                var catalog = await TranslatorService.GetChapterService(false).GetChaptersAsync(paragraph.CatalogId);
-                if (catalog.IsSuccess)
-                    displayName = $"({LanguageValueBaseConverter.GetValue(catalog.Result.BookNames, false, "fa-ir")} {catalog.Result.Number}-{CleanArabicChars(LanguageValueBaseConverter.GetValue(catalog.Result.Names, false, "fa-ir"))} آیه‌ی {paragraph.Number})";
+                string displayName = null;
+                try
+                {
+                    IsLoading = true;
+                    var catalog = await TranslatorService.GetChapterService(false).GetChaptersAsync(paragraph.CatalogId);
+                    if (catalog.IsSuccess)
+                        displayName = $"({LanguageValueBaseConverter.GetValue(catalog.Result.BookNames, false, "fa-ir")} {catalog.Result.Number}-{CleanArabicChars(LanguageValueBaseConverter.GetValue(catalog.Result.Names, false, "fa-ir"))} آیه‌ی {paragraph.Number})";
+                }
+                finally
+                {
+                    IsLoading = false;
+                }
+                paragraph.DisplayName = displayName;
+                await TouchBase(paragraph, false);
             }
-            finally
-            {
-                IsLoading = false;
-            }
-            paragraph.DisplayName = displayName;
-            await TouchBase(paragraph, false);
         }
 
         private async Task RemoveReading()
@@ -317,9 +326,10 @@ namespace Translators.ViewModels.Pages
             }
         }
 
-        private async Task LongTouched(ParagraphModel paragraphModel)
+        private Task LongTouched(ParagraphModel paragraphModel)
         {
-
+            IsEnableMultipleSelection = !IsEnableMultipleSelection;
+            return Task.CompletedTask;
         }
     }
 }

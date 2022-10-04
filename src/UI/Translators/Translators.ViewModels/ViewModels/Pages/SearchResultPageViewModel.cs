@@ -11,7 +11,7 @@ namespace Translators.ViewModels.Pages
 {
     public class SearchResultModel : ParagraphBaseModel
     {
-        public bool IsEven { get; set; }
+
     }
 
     public class SearchResultPageViewModel : ParagraphBaseViewModel<SearchResultModel>
@@ -38,7 +38,8 @@ namespace Translators.ViewModels.Pages
 
         private async Task Touch(SearchResultModel paragraph)
         {
-            await TouchBase(paragraph, true);
+            if (!IsOnSelectionMode(paragraph))
+                await TouchBase(paragraph, true);
         }
     }
 }

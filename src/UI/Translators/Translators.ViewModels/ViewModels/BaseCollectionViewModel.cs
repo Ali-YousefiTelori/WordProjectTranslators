@@ -33,10 +33,32 @@ namespace Translators.ViewModels
             }
         }
 
+        bool _IsEnableMultipleSelection = false;
+        public bool IsEnableMultipleSelection
+        {
+            get
+            {
+                return _IsEnableMultipleSelection;
+            }
+            set
+            {
+                _IsEnableMultipleSelection = value;
+                OnPropertyChanged(nameof(IsEnableMultipleSelection));
+                OnIsEnableMultipleSelectionChanged();
+            }
+        }
+
+        protected virtual void OnIsEnableMultipleSelectionChanged()
+        {
+
+        }
+
         public List<T> OfflineItems { get; set; }
 
         public ObservableCollection<T> Items { get; set; } = new ObservableCollection<T>();
+
         TaskCompletionSource<bool> OnFetchComepleted { get; set; } = new TaskCompletionSource<bool>();
+
         public void InitialData(IEnumerable<T> items)
         {
             AsyncHelper.RunOnUI(() =>

@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Translators.UI.Converters
+namespace Translators.SharedUI.Converters
 {
     public class ThicknessConverter : IValueConverter
     {

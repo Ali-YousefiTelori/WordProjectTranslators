@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using Translators.SharedUI.Helpers;
 
-namespace Translators.UI.Converters
+namespace Translators.SharedUI.Converters
 {
     public class EvenColorConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var isDarkTheme = ApplicationSharedHelper.IsDarkTheme();
             if (value is bool b && b)

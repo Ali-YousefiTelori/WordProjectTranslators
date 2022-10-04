@@ -21,15 +21,16 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToMultipleSelectionConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EvenColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\LanguageValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ParagraphConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ParagraphEvenColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ThicknessConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\AlertManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ApplicationSharedHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ClipboardManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CommandManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\FlexLayoutItemTappedBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\NavigationManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\RelayCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StartUp.cs" />

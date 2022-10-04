@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using SignalGo.Shared.Models;
+using System.Linq;
 using Translators.Contracts.Common;
 
 namespace Translators.Models
 {
-    public class ParagraphBaseModel
+    public class ParagraphBaseModel : NotifyPropertyChangedBase
     {
         public long Id { get; set; }
         public string DisplayName { get; set; }
@@ -13,18 +14,31 @@ namespace Translators.Models
         public long BookId { get; set; }
         public long PageNumber { get; set; }
         public long CatalogId { get; set; }
+        public bool IsEven { get; set; }
+
+        bool _IsSelected;
+        public bool IsSelected
+        {
+            get => _IsSelected;
+            set
+            {
+                _IsSelected = value;
+                OnPropertyChanged(nameof(IsSelected));
+                OnPropertyChanged(nameof(MeOnChanged));
+            }
+        }
+
+        public ParagraphBaseModel MeOnChanged
+        {
+            get
+            {
+                return this;
+            }
+        }
     }
 
     public class ParagraphModel : ParagraphBaseModel
     {
-        public bool IsEven
-        {
-            get
-            {
-                return Number % 2 == 0;
-            }
-        }
-
         public long Number { get; set; }
         public static ParagraphModel Map(ParagraphContract paragraphContract)
         {

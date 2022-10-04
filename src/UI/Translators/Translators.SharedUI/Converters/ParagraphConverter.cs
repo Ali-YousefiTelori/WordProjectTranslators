@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using Translators.Contracts.Common;
 
-namespace Translators.UI.Converters
+namespace Translators.SharedUI.Converters
 {
     public class ParagraphConverter : IValueConverter
     {

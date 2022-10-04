@@ -12,8 +12,27 @@ using Translators.ServiceManagers;
 namespace Translators.ViewModels.Pages
 {
     public class ParagraphBaseViewModel<T> : BaseCollectionViewModel<T>
+        where T : ParagraphBaseModel
     {
-        public async Task TouchBase(ParagraphBaseModel paragraphBaseModel, bool hasGoToPage, bool hasGoToLink = true)
+        public bool IsOnSelectionMode(T paragraphBaseModel)
+        {
+            if (IsEnableMultipleSelection)
+            {
+                paragraphBaseModel.IsSelected = !paragraphBaseModel.IsSelected;
+                return true;
+            }
+            return false;
+        }
+
+        protected override void OnIsEnableMultipleSelectionChanged()
+        {
+            foreach (var item in Items)
+            {
+                item.IsSelected = false;
+            }
+        }
+
+        public async Task TouchBase(T paragraphBaseModel, bool hasGoToPage, bool hasGoToLink = true)
         {
             List<string> menus = new List<string> { "کپی همه", "کپی آیه", "کپی ترجمه", hasGoToPage ? "رفتن به صفحه..." : "", TranslatorService.IsAdmin ? "کپی جهت لینک دادن" : "" };
             menus.Add((TranslatorService.ParagraphForLink != null && TranslatorService.IsAdmin) ? "آیه‌ی کپی شده را لینک کن" : "");

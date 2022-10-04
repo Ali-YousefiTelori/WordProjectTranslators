@@ -30,7 +30,8 @@ namespace Translators.ViewModels.Pages
 
         private async Task Touch(SearchResultModel paragraph)
         {
-            await TouchBase(paragraph, true, false);
+            if (!IsOnSelectionMode(paragraph))
+                await TouchBase(paragraph, true, false);
         }
     }
 }
