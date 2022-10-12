@@ -59,7 +59,7 @@ namespace Translators.ServiceManagers
         public static bool IsAdmin { get; set; }
         public static bool IsDuplexProtocol { get; set; }
         static bool IsForce { get; set; }
-        public static ParagraphBaseModel ParagraphForLink { get; set; }
+        public static ParagraphBaseModel[] ParagraphsForLink { get; set; }
         public static IBookServiceAsync GetBookService(bool isForce)
         {
             IsForce = isForce;

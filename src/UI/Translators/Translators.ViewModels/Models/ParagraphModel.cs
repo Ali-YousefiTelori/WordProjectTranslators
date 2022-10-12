@@ -15,6 +15,7 @@ namespace Translators.Models
         public long PageNumber { get; set; }
         public long CatalogId { get; set; }
         public bool IsEven { get; set; }
+        public long Number { get; set; }
 
         bool _IsSelected;
         public bool IsSelected
@@ -39,7 +40,6 @@ namespace Translators.Models
 
     public class ParagraphModel : ParagraphBaseModel
     {
-        public long Number { get; set; }
         public static ParagraphModel Map(ParagraphContract paragraphContract)
         {
             return new ParagraphModel()

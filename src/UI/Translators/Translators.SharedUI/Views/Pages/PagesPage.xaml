@@ -18,12 +18,12 @@
         <Binding Source="{StaticResource PageViewModel}"/>
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Command="{Binding AddReadingCommand}">
+        <ToolbarItem Command="{Binding MultipleSelectOrUnSelectCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="icomoon" Glyph=""/>
             </ToolbarItem.IconImageSource>
         </ToolbarItem>
-        <ToolbarItem Command="{Binding AddReadingCommand}">
+        <ToolbarItem Command="{Binding MultipleSelectionMenuCommand}">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="icomoon" Glyph=""/>
             </ToolbarItem.IconImageSource>

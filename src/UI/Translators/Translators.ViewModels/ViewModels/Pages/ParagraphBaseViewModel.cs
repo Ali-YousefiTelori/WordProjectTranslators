@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Translators.ViewModels.Pages
     {
         public bool IsOnSelectionMode(T paragraphBaseModel)
         {
-            if (IsEnableMultipleSelection)
+            if (IsEnableMultipleSelection && paragraphBaseModel != null)
             {
                 paragraphBaseModel.IsSelected = !paragraphBaseModel.IsSelected;
                 return true;
@@ -34,9 +35,58 @@ namespace Translators.ViewModels.Pages
 
         public async Task TouchBase(T paragraphBaseModel, bool hasGoToPage, bool hasGoToLink = true)
         {
+            if (paragraphBaseModel == null)
+            {
+                await TouchMultipleBase();
+                return;
+            }
+            await DoBusinessItems(hasGoToPage, hasGoToLink, paragraphBaseModel);
+        }
+
+        async Task TouchMultipleBase()
+        {
+            var selectedItems = Items.Where(x => x.IsSelected).ToArray();
+            await DoBusinessItems(false, true, selectedItems);
+        }
+
+        async Task DoBusinessItems(bool hasGoToPage, bool hasGoToLink, params T[] items)
+        {
+            if (items == null || items.Length == 0)
+            {
+                //display alert
+                return;
+            }
+            bool hasOne = items.Length == 1;
+            bool hasMany = !hasOne;
+            var first = items.First();
+            CatalogContract catalogResult = default;
+            try
+            {
+                IsLoading = true;
+                var catalog = await TranslatorService.GetChapterService(false).GetChaptersAsync(first.CatalogId);
+                if (catalog.IsSuccess)
+                    catalogResult = catalog.Result;
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+            if (hasOne)
+            {
+                string displayName = first.DisplayName;
+                displayName = $"({LanguageValueBaseConverter.GetValue(catalogResult?.BookNames, false, "fa-ir")} {catalogResult?.Number}-{CleanArabicChars(LanguageValueBaseConverter.GetValue(catalogResult?.Names, false, "fa-ir"))} آیه‌ی {first.Number})";
+                first.DisplayName = displayName;
+            }
+            else
+            {
+                string displayName = first.DisplayName;
+                displayName = $"({LanguageValueBaseConverter.GetValue(catalogResult?.BookNames, false, "fa-ir")} {catalogResult?.Number}-{CleanArabicChars(LanguageValueBaseConverter.GetValue(catalogResult?.Names, false, "fa-ir"))} صفحه‌ی {first.PageNumber})";
+                first.DisplayName = displayName;
+            }
+
             List<string> menus = new List<string> { "کپی همه", "کپی آیه", "کپی ترجمه", hasGoToPage ? "رفتن به صفحه..." : "", TranslatorService.IsAdmin ? "کپی جهت لینک دادن" : "" };
-            menus.Add((TranslatorService.ParagraphForLink != null && TranslatorService.IsAdmin) ? "آیه‌ی کپی شده را لینک کن" : "");
-            menus.Add(hasGoToLink && paragraphBaseModel.HasLink ? "مشاهده‌ی لینک ها" : "");
+            menus.Add((TranslatorService.ParagraphsForLink?.Length > 0 && TranslatorService.IsAdmin) ? "آیه‌ی کپی شده را لینک کن" : "");
+            menus.Add(hasGoToLink && (hasOne && first.HasLink) ? "مشاهده‌ی لینک ها" : "");
 
             var selectedType = await AlertHelper.Display<VerseRightClickType>("عملیات", "انصراف", menus.ToArray());
             switch (selectedType)
@@ -44,44 +94,62 @@ namespace Translators.ViewModels.Pages
                 case VerseRightClickType.CopyAll:
                     {
                         StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.AppendLine(paragraphBaseModel.MainValue);
-                        stringBuilder.Append(paragraphBaseModel.TranslatedValue);
-                        if (!string.IsNullOrEmpty(paragraphBaseModel.DisplayName))
-                            stringBuilder.Append(paragraphBaseModel.DisplayName);
+                        foreach (var item in items)
+                        {
+                            stringBuilder.AppendLineBefore(item.MainValue);
+                            if (hasMany)
+                                stringBuilder.Append($"({item.Number})");
+                            stringBuilder.AppendLineBefore(item.TranslatedValue);
+                            if (hasMany)
+                                stringBuilder.Append($"({item.Number})");
+                        }
+
+                        if (!string.IsNullOrEmpty(first.DisplayName))
+                            stringBuilder.Append(first.DisplayName);
                         await ClipboardHelper.CopyText(stringBuilder.ToString());
                         break;
                     }
                 case VerseRightClickType.CopyVerse:
                     {
                         StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.Append(paragraphBaseModel.MainValue);
-                        if (!string.IsNullOrEmpty(paragraphBaseModel.DisplayName))
-                            stringBuilder.Append(paragraphBaseModel.DisplayName);
+                        foreach (var item in items)
+                        {
+                            stringBuilder.AppendLineBefore(item.MainValue);
+                            if (hasMany)
+                                stringBuilder.Append($"({item.Number})");
+                        }
+                        if (!string.IsNullOrEmpty(first.DisplayName))
+                            stringBuilder.Append(first.DisplayName);
                         await ClipboardHelper.CopyText(stringBuilder.ToString());
                         break;
                     }
                 case VerseRightClickType.CopyTranslate:
                     {
                         StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.Append(paragraphBaseModel.TranslatedValue);
-                        if (!string.IsNullOrEmpty(paragraphBaseModel.DisplayName))
-                            stringBuilder.Append(paragraphBaseModel.DisplayName);
+                        foreach (var item in items)
+                        {
+                            stringBuilder.AppendLineBefore(item.TranslatedValue);
+                            if (hasMany)
+                                stringBuilder.Append($"({item.Number})");
+                        }
+                        if (!string.IsNullOrEmpty(first.DisplayName))
+                            stringBuilder.Append(first.DisplayName);
                         await ClipboardHelper.CopyText(stringBuilder.ToString());
-                        break;
-                    }
-                case VerseRightClickType.GoToPage:
-                    {
-                        await PageHelper.PushPage(paragraphBaseModel.PageNumber, paragraphBaseModel.BookId, paragraphBaseModel.CatalogId, PageType.PagesFastRead, this);
                         break;
                     }
                 case VerseRightClickType.CopyForLink:
                     {
-                        TranslatorService.ParagraphForLink = paragraphBaseModel;
+                        TranslatorService.ParagraphsForLink = items;
                         break;
                     }
                 case VerseRightClickType.PasteForLink:
                     {
-                        await PageHelper.PushPage(0, 0, paragraphBaseModel, PageType.DoLinkPage, this);
+                        await PageHelper.PushPage(0, 0, items, PageType.DoLinkPage, this);
+                        break;
+                    }
+                case VerseRightClickType.GoToPage:
+                    {
+                        await PageHelper.PushPage(first.PageNumber, first.BookId, first.CatalogId, PageType.PagesFastRead, this);
                         break;
                     }
                 case VerseRightClickType.ShowLinks:
@@ -89,7 +157,7 @@ namespace Translators.ViewModels.Pages
                         try
                         {
                             IsLoading = true;
-                            var result = await TranslatorService.GetParagraphService(true).GetLinkedParagraphsAsync(paragraphBaseModel.Id);
+                            var result = await TranslatorService.GetParagraphService(true).GetLinkedParagraphsAsync(first.Id);
                             if (result.IsSuccess)
                                 await PageHelper.PushPage(0, 0, result.Result, PageType.ParagraphResult, this);
                             else
@@ -117,7 +185,8 @@ namespace Translators.ViewModels.Pages
                 MainValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => x.IsMain).Select(x => x.Value)) + displayName,
                 CatalogId = value.CatalogId,
                 BookId = value.BookId,
-                PageNumber = value.PageNumber
+                PageNumber = value.PageNumber,
+                Number = value.Number,
             };
             return result;
         }

@@ -25,10 +25,14 @@ namespace Translators.ViewModels.Pages
             SelectPageCommand = CommandHelper.Create(SelectPage);
             SelectVerseCommand = CommandHelper.Create(SelectVerse);
             PlayCommand = CommandHelper.Create(Play);
+            MultipleSelectOrUnSelectCommand = CommandHelper.Create(MultipleSelectOrUnSelect);
+            MultipleSelectionMenuCommand = CommandHelper.Create(MultipleSelectionMenu);
         }
 
         public ICommand<ParagraphModel> TouchedCommand { get; set; }
         public ICommand<ParagraphModel> LongTouchedCommand { get; set; }
+        public ICommand MultipleSelectOrUnSelectCommand { get; set; }
+        public ICommand MultipleSelectionMenuCommand { get; set; }
         public ICommand SwipeLeftCommand { get; set; }
         public ICommand SwipeRightCommand { get; set; }
         public ICommand RemoveReadingCommand { get; set; }
@@ -188,19 +192,6 @@ namespace Translators.ViewModels.Pages
         {
             if (!IsOnSelectionMode(paragraph))
             {
-                string displayName = null;
-                try
-                {
-                    IsLoading = true;
-                    var catalog = await TranslatorService.GetChapterService(false).GetChaptersAsync(paragraph.CatalogId);
-                    if (catalog.IsSuccess)
-                        displayName = $"({LanguageValueBaseConverter.GetValue(catalog.Result.BookNames, false, "fa-ir")} {catalog.Result.Number}-{CleanArabicChars(LanguageValueBaseConverter.GetValue(catalog.Result.Names, false, "fa-ir"))} آیه‌ی {paragraph.Number})";
-                }
-                finally
-                {
-                    IsLoading = false;
-                }
-                paragraph.DisplayName = displayName;
                 await TouchBase(paragraph, false);
             }
         }
@@ -330,6 +321,26 @@ namespace Translators.ViewModels.Pages
         {
             IsEnableMultipleSelection = !IsEnableMultipleSelection;
             return Task.CompletedTask;
+        }
+
+        private Task MultipleSelectOrUnSelect()
+        {
+            if (!IsEnableMultipleSelection)
+                IsEnableMultipleSelection = true;
+            var hasSelected = Items.Any(x => x.IsSelected);
+            foreach (var item in Items)
+            {
+                item.IsSelected = !hasSelected;
+            }
+            return Task.CompletedTask;
+        }  
+        
+        private async Task MultipleSelectionMenu()
+        {
+            if (!IsEnableMultipleSelection)
+                await AlertHelper.Display("برای فعال سازی انتخاب چندتایی روی یکی از آیات انگشت خود را نگه دارید.", "باشه");
+            else
+                await Touch(null);
         }
     }
 }

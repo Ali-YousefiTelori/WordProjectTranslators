@@ -58,9 +58,9 @@ namespace Translators.ViewModels.Pages
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("آیا می‌خواهید");
             builder.AppendLine();
-            builder.AppendLine(TranslatorService.ParagraphForLink.TranslatedValue);
-            if (!string.IsNullOrEmpty(TranslatorService.ParagraphForLink.DisplayName))
-                builder.AppendLine(TranslatorService.ParagraphForLink.DisplayName);
+            builder.AppendLine(TranslatorService.ParagraphsForLink.First().TranslatedValue);
+            if (!string.IsNullOrEmpty(TranslatorService.ParagraphsForLink.First().DisplayName))
+                builder.AppendLine(TranslatorService.ParagraphsForLink.First().DisplayName);
             builder.AppendLine();
             builder.AppendLine("را به");
             builder.AppendLine();
@@ -109,7 +109,7 @@ namespace Translators.ViewModels.Pages
                 var result = await TranslatorService.GetParagraphService(true).LinkParagraphAsync(new Contracts.Requests.LinkParagraphRequestContract()
                 {
                     Title = title,
-                    FromParagraphId = TranslatorService.ParagraphForLink.Id,
+                    //FromParagraphId = TranslatorService.ParagraphForLink.Id,
                     ToParagraphId = LinkToParagraphBaseModel.Id
                 });
                 if (result.IsSuccess)
