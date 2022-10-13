@@ -49,12 +49,13 @@ namespace Translators.Engines.OfflineDownloaders
                 {
                     foreach (var paragraph in page.SelectMany(x => x.Paragraphs))
                     {
+                        var findPage = page.FirstOrDefault(x => x.Id == paragraph.PageId);
                         await ClientConnectionManager.SaveLocal("page/GetPageNumberByVerseNumber",
                         new SignalGo.Shared.Models.ParameterInfo[]
                         {
                             new SignalGo.Shared.Models.ParameterInfo() { Name = "verseNumber", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(paragraph.Number) },
-                            new SignalGo.Shared.Models.ParameterInfo() { Name = "catalogId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(page.First().CatalogId) }
-                        }, JsonConvert.SerializeObject(ToMessageContract(page.First().Number)));
+                            new SignalGo.Shared.Models.ParameterInfo() { Name = "catalogId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(page.Key) }
+                        }, JsonConvert.SerializeObject(ToMessageContract(findPage.Number)));
                     }
                     AddProgress();
                 }
