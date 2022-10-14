@@ -234,7 +234,7 @@ namespace CompileTimeGoMapper
                 Id = toMap.Id,
                 Number = toMap.Number,
                 AnotherValue = toMap.AnotherValue,
-                HasLink = toMap.ToLinkParagraphs?.Count > 0 || toMap.FromLinkParagraphs?.Count > 0,
+                HasLink = toMap.LinkParagraphs?.Count > 0 || toMap.LinkParagraphs?.Count > 0,
                 PageId = toMap.PageId,
                 CatalogId = toMap.CatalogId,
                 Words = toMap.Words?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),

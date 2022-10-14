@@ -103,7 +103,7 @@ namespace Translators.UI.Helpers
                 case PageType.DoLinkPage:
                     {
                         page = new LinkParagraphPage();
-                        (page.BindingContext as LinkParagraphPageViewModel).Initialize(data as ParagraphBaseModel);
+                        (page.BindingContext as LinkParagraphPageViewModel).Initialize(data as ParagraphBaseModel[]);
                         break;
                     }
                 case PageType.PagesFastRead:

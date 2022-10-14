@@ -78,6 +78,19 @@ namespace Translators.ServiceManagers
             _ = ClientConnectionManager.SaveLocal(url, parameterInfoes, result);
             return result;
         }
+
+        public override T Deserialize<T>(HttpClientDataResponse data)
+        {
+            var contract =  base.Deserialize<T>(data);
+            if (contract is MessageContract messageContract)
+            {
+                if (!messageContract.IsSuccess && messageContract.Error?.FailedReasonType == FailedReasonType.SessionAccessDenied)
+                {
+                    _ = ApplicationProfileData.Login(ApplicationProfileData.Current.Value.Session);
+                }
+            }
+            return contract;
+        }
     }
 
     public class TranslatorHttpClient : TranslatorNoCacheHttpClient

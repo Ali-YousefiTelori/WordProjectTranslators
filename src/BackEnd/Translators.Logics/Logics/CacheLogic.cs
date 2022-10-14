@@ -53,7 +53,7 @@ namespace Translators.Logics
 
             FixPageBookIds(Pages.Values.ToList());
 
-            var paragraphs = await context.Paragraphs.Include(x => x.ToLinkParagraphs).Include(x => x.FromLinkParagraphs).AsNoTracking().ToListAsync();
+            var paragraphs = await context.Paragraphs.Include(x => x.LinkParagraphs).AsNoTracking().ToListAsync();
             foreach (var item in paragraphs)
             {
                 Paragraphs.TryAdd(item.Id, item.Map<ParagraphContract>());

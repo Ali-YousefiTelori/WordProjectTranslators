@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SignalGo.Server.Models;
 using SignalGo.Shared.DataTypes;
+using SignalGo.Shared.Http;
 using Translators.Contracts.Common;
 using Translators.Contracts.Common.Authentications;
+using Translators.Contracts.Responses;
 using Translators.Database.Contexts;
+using Translators.Database.Entities;
 using Translators.Database.Entities.Authentications;
 using Translators.Logics;
 

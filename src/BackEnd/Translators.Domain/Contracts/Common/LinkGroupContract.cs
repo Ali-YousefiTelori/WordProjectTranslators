@@ -8,6 +8,7 @@ namespace Translators.Contracts.Common
 {
     public class LinkGroupContract
     {
+        public long Id { get; set; }
         public string Title { get; set; }
     }
 }

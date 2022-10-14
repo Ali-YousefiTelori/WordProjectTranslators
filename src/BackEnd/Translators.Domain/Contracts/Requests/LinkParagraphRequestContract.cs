@@ -7,8 +7,8 @@ namespace Translators.Contracts.Requests
         [NumberValidation]
         public string Title { get; set; }
         [NumberValidation]
-        public long FromParagraphId { get; set; }
+        public List<long> FromParagraphIds { get; set; }
         [NumberValidation]
-        public long ToParagraphId { get; set; }
+        public List<long> ToParagraphIds { get; set; }
     }
 }

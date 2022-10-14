@@ -185,16 +185,11 @@ namespace Translators.Database.Contexts
 
             modelBuilder.Entity<LinkParagraphEntity>(x =>
             {
-                x.HasKey(r => new { r.FromParagraphId, r.ToParagraphId });
+                x.HasKey(r => new { r.LinkGroupId, r.ParagraphId });
 
-                x.HasOne(x => x.ToParagraph)
-                 .WithMany(x => x.ToLinkParagraphs)
-                 .HasForeignKey(x => x.ToParagraphId)
-                 .OnDelete(DeleteBehavior.Restrict);
-
-                x.HasOne(x => x.FromParagraph)
-                 .WithMany(x => x.FromLinkParagraphs)
-                 .HasForeignKey(x => x.FromParagraphId)
+                x.HasOne(x => x.Paragraph)
+                 .WithMany(x => x.LinkParagraphs)
+                 .HasForeignKey(x => x.ParagraphId)
                  .OnDelete(DeleteBehavior.Restrict);
 
                 x.HasOne(x => x.LinkGroup)

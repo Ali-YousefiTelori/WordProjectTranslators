@@ -51,22 +51,31 @@ namespace Translators.ViewModels.Pages
             }
         }
 
-        ParagraphBaseModel LinkToParagraphBaseModel { get; set; }
-        public void Initialize(ParagraphBaseModel paragraphBaseModel)
+        ParagraphBaseModel[] LinkToParagraphsBaseModel { get; set; }
+        public void Initialize(ParagraphBaseModel[] paragraphsBaseModel)
         {
-            LinkToParagraphBaseModel = paragraphBaseModel;
+            LinkToParagraphsBaseModel = paragraphsBaseModel;
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("آیا می‌خواهید");
             builder.AppendLine();
-            builder.AppendLine(TranslatorService.ParagraphsForLink.First().TranslatedValue);
-            if (!string.IsNullOrEmpty(TranslatorService.ParagraphsForLink.First().DisplayName))
-                builder.AppendLine(TranslatorService.ParagraphsForLink.First().DisplayName);
+
+            foreach (var paragraph in TranslatorService.ParagraphsForLink)
+            {
+                builder.AppendLine(paragraph.TranslatedValue);
+                if (!string.IsNullOrEmpty(paragraph.DisplayName))
+                    builder.AppendLine(paragraph.DisplayName);
+            }
+
             builder.AppendLine();
             builder.AppendLine("را به");
             builder.AppendLine();
-            builder.AppendLine(paragraphBaseModel.TranslatedValue);
-            if (!string.IsNullOrEmpty(paragraphBaseModel.DisplayName))
-                builder.AppendLine(paragraphBaseModel.DisplayName);
+
+            foreach (var paragraph in paragraphsBaseModel)
+            {
+                builder.AppendLine(paragraph.TranslatedValue);
+                if (!string.IsNullOrEmpty(paragraph.DisplayName))
+                    builder.AppendLine(paragraph.DisplayName);
+            }
             builder.AppendLine();
             builder.AppendLine("لینک کنید؟");
             ContentToLink = builder.ToString();
@@ -109,8 +118,8 @@ namespace Translators.ViewModels.Pages
                 var result = await TranslatorService.GetParagraphService(true).LinkParagraphAsync(new Contracts.Requests.LinkParagraphRequestContract()
                 {
                     Title = title,
-                    //FromParagraphId = TranslatorService.ParagraphForLink.Id,
-                    ToParagraphId = LinkToParagraphBaseModel.Id
+                    FromParagraphIds = TranslatorService.ParagraphsForLink.Select(x => x.Id).ToList(),
+                    ToParagraphIds = LinkToParagraphsBaseModel.Select(x => x.Id).ToList()
                 });
                 if (result.IsSuccess)
                 {

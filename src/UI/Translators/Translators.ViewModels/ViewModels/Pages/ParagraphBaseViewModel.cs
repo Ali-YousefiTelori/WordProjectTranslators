@@ -157,11 +157,25 @@ namespace Translators.ViewModels.Pages
                         try
                         {
                             IsLoading = true;
-                            var result = await TranslatorService.GetParagraphService(true).GetLinkedParagraphsAsync(first.Id);
-                            if (result.IsSuccess)
-                                await PageHelper.PushPage(0, 0, result.Result, PageType.ParagraphResult, this);
+                            var groupResult = await TranslatorService.GetParagraphService(true).GetLinkedParagraphsGroupsAsync(first.Id);
+                            if (groupResult.IsSuccess)
+                            {
+                                long groupId  = groupResult.Result.First().Id;
+                                if (groupResult.Result.Count > 1)
+                                {
+                                    var groupTitle = await AlertHelper.Display("انتخاب گروه", "انصراف", groupResult.Result.Select(x => x.Title).ToArray());
+                                    if (groupTitle == "انصراف" || string.IsNullOrEmpty(groupTitle))
+                                        return;
+                                    groupId = groupResult.Result.FirstOrDefault(x => x.Title == groupTitle).Id;
+                                }
+                                var result = await TranslatorService.GetParagraphService(true).GetLinkedParagraphsAsync(groupId);
+                                if (result.IsSuccess)
+                                    await PageHelper.PushPage(0, 0, result.Result, PageType.ParagraphResult, this);
+                                else
+                                    await AlertContract(result);
+                            }
                             else
-                                await AlertContract(result);
+                                await AlertContract(groupResult);
                         }
                         finally
                         {
