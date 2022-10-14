@@ -20,6 +20,7 @@ namespace Translators.UI.Helpers
             AlertHelper.Current = new AlertManager();
             PageHelper.Initialize(NavigationManager.Current);
             CommandHelper.Current = new CommandManager();
+            ApplicationHelper.Current = new ApplicationManager();
             TranslatorService.Initialize();
         }
     }

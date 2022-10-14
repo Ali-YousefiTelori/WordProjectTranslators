@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ParagraphEvenColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ThicknessConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\AlertManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ApplicationManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ApplicationSharedHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ClipboardManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CommandManager.cs" />

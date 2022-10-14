@@ -6,7 +6,9 @@
         SessionAccessDenied = 1,
         AccessDenied = 2,
         InternalError = 3,
-        Dupplicate = 4
+        Dupplicate = 4,
+        Empty = 5,
+        NotFound = 6
     }
 
     public class ErrorContract
@@ -64,6 +66,11 @@
     {
         public T Result { get; set; }
 
+        public bool HasResult()
+        {
+            return IsSuccess && Result is not null;
+        }
+
         public static implicit operator MessageContract<T>(T contract)
         {
             return new MessageContract<T>()
@@ -79,6 +86,34 @@
             {
                 IsSuccess = IsSuccess,
                 Error = Error
+            };
+        }
+
+        public static implicit operator MessageContract<T>((FailedReasonType FailedReasonType, string Message) details)
+        {
+            return new MessageContract<T>()
+            {
+                IsSuccess = false,
+                Error = new ErrorContract()
+                {
+                    FailedReasonType = details.FailedReasonType,
+                    StackTrace = Environment.StackTrace,
+                    Message = details.Message
+                }
+            };
+        }
+
+        public static implicit operator MessageContract<T>(FailedReasonType failedReasonType)
+        {
+            return new MessageContract<T>()
+            {
+                IsSuccess = false,
+                Error = new ErrorContract()
+                {
+                    FailedReasonType = failedReasonType,
+                    StackTrace = Environment.StackTrace,
+                    Message = failedReasonType.ToString()
+                }
             };
         }
 

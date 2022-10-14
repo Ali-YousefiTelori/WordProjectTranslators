@@ -53,6 +53,18 @@ namespace Translators.Logics
             return entities.Select(x => x.Map<TContract>()).ToList();
         }
 
+        async Task<TContract> GetFirstOrDefaultFromDatabase(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery)
+        {
+            TContext context = new TContext();
+            var query = context.Set<TEntity>().AsQueryable();
+            if (getQuery != null)
+                query = getQuery(query);
+            var entity = await query.FirstOrDefaultAsync();
+            if (entity == default)
+                return default;
+            return entity.Map<TContract>();
+        }
+
         async Task<TContract> FindFromDatabase(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery)
         {
             TContext context = new TContext();
@@ -88,6 +100,14 @@ namespace Translators.Logics
         public async Task<MessageContract<List<TContract>>> GetAll(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery = null)
         {
             return await GetAllFromDatabase(getQuery);
+        }
+
+        public async Task<MessageContract<TContract>> FirstOrDefault(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery = null)
+        {
+            var contract = await GetFirstOrDefaultFromDatabase(getQuery);
+            if (contract is null)
+                return FailedReasonType.NotFound;
+            return contract;
         }
 
         public async Task<MessageContract<TContract>> Find(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery = null)

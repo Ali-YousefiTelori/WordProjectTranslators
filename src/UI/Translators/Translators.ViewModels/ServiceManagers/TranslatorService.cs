@@ -18,6 +18,7 @@ namespace Translators.ServiceManagers
             DuplexHealthService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.HealthService>(clientProvider);
             DuplexAuthenticationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.AuthenticationService>(clientProvider);
             DuplexParagraphService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ParagraphService>(clientProvider);
+            DuplexApplicationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ApplicationService>(clientProvider);
 
             clientProvider.OnSendRequestToServer = async (serviceName, methodName, parameters) =>
             {
@@ -45,7 +46,7 @@ namespace Translators.ServiceManagers
             });
         }
 
-        public static string ServiceAddress { get; set; } = "http://api.noorpod.ir";//"http://localhost:9341"; "http://api.noorpod.ir";
+        public static string ServiceAddress { get; set; } = "http://192.168.55.22:9341";//"http://localhost:9341"; "http://api.noorpod.ir"; "http://192.168.55.22:9341";
         static TranslatorNoCacheHttpClient NoCacheHttpClient { get; set; } = new TranslatorNoCacheHttpClient();
         static TranslatorHttpClient CacheHttpClient { get; set; } = new TranslatorHttpClient();
 
@@ -54,6 +55,7 @@ namespace Translators.ServiceManagers
         static IPageServiceAsync DuplexPageService { get; set; }
         static IHealthService DuplexHealthService { get; set; }
         static IAuthenticationServiceAsync DuplexAuthenticationService { get; set; }
+        static IApplicationServiceAsync DuplexApplicationService { get; set; }
         static IParagraphServiceAsync DuplexParagraphService { get; set; }
 
         public static bool IsAdmin { get; set; }
@@ -113,6 +115,17 @@ namespace Translators.ServiceManagers
                 return new TranslatorsServices.HttpServices.AuthenticationService(ServiceAddress, NoCacheHttpClient);
             else
                 return new TranslatorsServices.HttpServices.AuthenticationService(ServiceAddress, CacheHttpClient);
+        }
+
+        public static IApplicationServiceAsync GetApplicationService(bool isForce)
+        {
+            IsForce = isForce;
+            if (IsDuplexProtocol)
+                return DuplexApplicationService;
+            if (isForce)
+                return new TranslatorsServices.HttpServices.ApplicationService(ServiceAddress, NoCacheHttpClient);
+            else
+                return new TranslatorsServices.HttpServices.ApplicationService(ServiceAddress, CacheHttpClient);
         }
 
         public static IParagraphServiceAsync GetParagraphService(bool isForce)

@@ -26,6 +26,8 @@ namespace Translators.ServerApplication
                 serverProvider.RegisterServerService<HealthService>(); 
                 serverProvider.RegisterServerService<AuthenticationService>();
                 serverProvider.RegisterServerService<ParagraphService>();
+                serverProvider.RegisterServerService<ApplicationService>();
+                
                 serverProvider.ErrorHandlingFunction = (ex, type, method, parameters, jsonParameter, client) =>
                 {
                     return new MessageContract()
