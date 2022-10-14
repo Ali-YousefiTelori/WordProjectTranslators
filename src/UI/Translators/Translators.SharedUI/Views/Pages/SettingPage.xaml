@@ -16,6 +16,7 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Label Text="اندازه‌ی فونت"
                 HorizontalOptions="CenterAndExpand" />
@@ -25,7 +26,8 @@
                 <CheckBox IsChecked="{Binding UseDuplexProtocol}" VerticalOptions="Center"/>
             </StackLayout>
             <Button Text="حذف داده های کش شده" Command="{Binding RemoveCacheCommand}" Grid.Row="2"/>
-            <Button Text="دانلود آفلاین" Grid.Row="3" Command="{Binding DownloadOfflineCommand}"/>
+            <Button Text="تنظیم سرعت پخش" Grid.Row="3" Command="{Binding PlaySpeedCommand}"/>
+            <Button Text="دانلود آفلاین" Grid.Row="4" Command="{Binding DownloadOfflineCommand}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

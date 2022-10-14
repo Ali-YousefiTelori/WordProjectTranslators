@@ -34,23 +34,22 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <SwipeView>
-            <SwipeView.RightItems>
-                <SwipeItems Mode="Execute">
-                    <SwipeItem Text="Previous Page" Command="{Binding SwipeLeftCommand,Source={StaticResource PageViewModel}}" />
-                </SwipeItems>
-            </SwipeView.RightItems>
+        <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading,Mode=OneWay}">
+            <SwipeView>
+                <SwipeView.RightItems>
+                    <SwipeItems Mode="Execute">
+                        <SwipeItem Text="Previous Page" Command="{Binding SwipeLeftCommand,Source={StaticResource PageViewModel}}" />
+                    </SwipeItems>
+                </SwipeView.RightItems>
 
-            <SwipeView.LeftItems>
-                <SwipeItems Mode="Execute">
-                    <SwipeItem Text="Next Page" Command="{Binding SwipeRightCommand,Source={StaticResource PageViewModel}}" />
-                </SwipeItems>
-            </SwipeView.LeftItems>
-            <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading,Mode=OneWay}">
+                <SwipeView.LeftItems>
+                    <SwipeItems Mode="Execute">
+                        <SwipeItem Text="Next Page" Command="{Binding SwipeRightCommand,Source={StaticResource PageViewModel}}" />
+                    </SwipeItems>
+                </SwipeView.LeftItems>
                 <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <!--<Grid BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" VerticalOptions="Start">-->
                             <Grid effect:TouchEffect.LongPressCommand="{Binding LongTouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.LongPressCommandParameter="{Binding}" BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" VerticalOptions="Start">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -79,8 +78,8 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-            </RefreshView>
-        </SwipeView>
+            </SwipeView>
+        </RefreshView>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

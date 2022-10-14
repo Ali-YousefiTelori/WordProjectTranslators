@@ -7,7 +7,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Xam.Plugin.SimpleAudioPlayer" Version="1.6.0" />
     <ProjectReference Include="..\..\..\..\..\SignalGo-full-net\SignalGo.Client\SignalGo.Client.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer\Plugin.SimpleAudioPlayer.csproj" />
   </ItemGroup>
 </Project>

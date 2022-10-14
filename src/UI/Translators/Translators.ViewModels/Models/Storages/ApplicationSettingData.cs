@@ -18,6 +18,7 @@ namespace Translators.Models.Storages
         public override async Task Load(ApplicationSetting value)
         {
             BaseViewModel._FontSize = value.FontSize;
+            BaseViewModel._PlaybackSpeedRato = value.PlaybackSpeedRato;
             TranslatorService.IsDuplexProtocol = BaseViewModel._UseDuplexProtocol = value.UseDuplexProtocol;
         }
 
@@ -25,6 +26,7 @@ namespace Translators.Models.Storages
         {
             Value.FontSize = BaseViewModel._FontSize;
             Value.UseDuplexProtocol = BaseViewModel._UseDuplexProtocol;
+            Value.PlaybackSpeedRato = BaseViewModel._PlaybackSpeedRato;
             _ = SaveFile();
         }
     }

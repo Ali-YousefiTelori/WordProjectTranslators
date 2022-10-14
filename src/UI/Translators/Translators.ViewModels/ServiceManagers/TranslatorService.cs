@@ -46,7 +46,7 @@ namespace Translators.ServiceManagers
             });
         }
 
-        public static string ServiceAddress { get; set; } = "http://192.168.55.22:9341";//"http://localhost:9341"; "http://api.noorpod.ir"; "http://192.168.55.22:9341";
+        public static string ServiceAddress { get; set; } = "http://api.noorpod.ir";//"http://localhost:9341"; "http://api.noorpod.ir"; "http://192.168.55.22:9341";
         static TranslatorNoCacheHttpClient NoCacheHttpClient { get; set; } = new TranslatorNoCacheHttpClient();
         static TranslatorHttpClient CacheHttpClient { get; set; } = new TranslatorHttpClient();
 
@@ -141,11 +141,12 @@ namespace Translators.ServiceManagers
 
         public static Func<string> GetVersion { get; set; }
         public static Func<string> GetCurrentVersionNumber { get; set; }
+        public static Func<string> GetCurrentBuildNumber { get; set; }
         public static void LogException(string error)
         {
             try
             {
-                int.TryParse(GetCurrentVersionNumber(), out int version);
+                int.TryParse(GetCurrentBuildNumber(), out int version);
                 GetHealthService(true).AddLog(new Contracts.Common.LogContract()
                 {
                     LogTrace = error,

@@ -14,6 +14,7 @@ namespace Translators.UI
         public App()
         {
             TranslatorService.GetCurrentVersionNumber = () => VersionTracking.CurrentVersion;
+            TranslatorService.GetCurrentBuildNumber = () => VersionTracking.CurrentBuild;
             TranslatorService.GetVersion = GetVersion;
             TaskScheduler.UnobservedTaskException += (o, e) =>
             {

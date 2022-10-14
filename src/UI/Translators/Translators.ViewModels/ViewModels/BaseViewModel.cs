@@ -26,6 +26,7 @@ namespace Translators.ViewModels
         bool _IsLoading;
         public static int _FontSize = 15;
         public static bool _UseDuplexProtocol = false;
+        public static double _PlaybackSpeedRato = 1.0;
 
         bool isFirstTime = true;
 

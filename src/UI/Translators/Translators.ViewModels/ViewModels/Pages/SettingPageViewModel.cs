@@ -13,11 +13,13 @@ namespace Translators.ViewModels.Pages
         {
             RemoveCacheCommand = CommandHelper.Create(RemoveCache);
             DownloadOfflineCommand = CommandHelper.Create(DownloadOffline);
+            PlaySpeedCommand = CommandHelper.Create(PlaySpeed);
             _ = CheckForUpdate();
         }
 
         public ICommand RemoveCacheCommand { get; set; }
         public ICommand DownloadOfflineCommand { get; set; }
+        public ICommand PlaySpeedCommand { get; set; }
 
         private async Task RemoveCache()
         {
@@ -59,6 +61,25 @@ namespace Translators.ViewModels.Pages
                     }
                 }
             }
+        }
+
+        private async Task PlaySpeed()
+        {
+            var speed = await AlertHelper.Display("لطفا سرعت مورد نظر را انتخاب کنید", "انصراف", "1x", "1.5x", "2x");
+            if (speed == "1x")
+            {
+                _PlaybackSpeedRato = 1;
+            }
+            else if (speed == "1.5x")
+            {
+                _PlaybackSpeedRato = 1.5;
+            }
+            else if (speed == "2x")
+            {
+                _PlaybackSpeedRato = 2;
+            }
+            Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.SetSpeed(_PlaybackSpeedRato);
+            ApplicationSettingData.Current.Save();
         }
     }
 }

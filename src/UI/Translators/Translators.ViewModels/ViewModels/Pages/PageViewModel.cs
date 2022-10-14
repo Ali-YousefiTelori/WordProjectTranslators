@@ -276,7 +276,7 @@ namespace Translators.ViewModels.Pages
                     using WebClient client = new WebClient();
                     var saver = new ApplicationBookAudioData();
                     saver.Initialize(key, ".mp3");
-                    var stream = await saver.DownloadFileStream($"http://api.noorpod.ir/Page/DownloadFile?pageId={key}");
+                    var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/Page/DownloadFile?pageId={key}");
                     var run = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Load(stream);
                     Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.PlaybackEnded -= Current_PlaybackEnded;
                     Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.PlaybackEnded += Current_PlaybackEnded;
@@ -285,7 +285,10 @@ namespace Translators.ViewModels.Pages
                 if (IsPlaying)
                     Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Pause();
                 else
+                {
+                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.SetSpeed(_PlaybackSpeedRato);
                     Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Play();
+                }
                 IsPlaying = !IsPlaying;
                 isLoaded = true;
             }
