@@ -264,6 +264,7 @@ namespace Translators.ViewModels.Pages
             }
         }
 
+        double _LastPlaybackSpeedRatoSet = 0;
         bool isLoaded = false;
         private async Task Play()
         {
@@ -273,7 +274,6 @@ namespace Translators.ViewModels.Pages
                 if (!isLoaded)
                 {
                     string key = PageId.ToString();
-                    using WebClient client = new WebClient();
                     var saver = new ApplicationBookAudioData();
                     saver.Initialize(key, ".mp3");
                     var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/Page/DownloadFile?pageId={key}");
@@ -286,7 +286,12 @@ namespace Translators.ViewModels.Pages
                     Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Pause();
                 else
                 {
-                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.SetSpeed(_PlaybackSpeedRato);
+                    //In Android it will stop instead of pause
+                    if (_LastPlaybackSpeedRatoSet != _PlaybackSpeedRato)
+                    {
+                        _LastPlaybackSpeedRatoSet = _PlaybackSpeedRato;
+                        Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.SetSpeed(_PlaybackSpeedRato);
+                    }
                     Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Play();
                 }
                 IsPlaying = !IsPlaying;
