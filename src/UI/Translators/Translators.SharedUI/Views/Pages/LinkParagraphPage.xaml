@@ -12,12 +12,12 @@
     <ContentPage.Content>
         <Grid Margin="10" FlowDirection="RightToLeft">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="200"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <ScrollView MinimumHeightRequest="200">
+            <ScrollView HorizontalScrollBarVisibility="Never">
                 <Label Text="{Binding ContentToLink}"/>
             </ScrollView>
             <Grid Grid.Row="1">

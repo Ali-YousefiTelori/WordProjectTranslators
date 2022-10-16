@@ -47,37 +47,39 @@
                         <SwipeItem Text="Next Page" Command="{Binding SwipeRightCommand,Source={StaticResource PageViewModel}}" />
                     </SwipeItems>
                 </SwipeView.LeftItems>
-                <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid effect:TouchEffect.LongPressCommand="{Binding LongTouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.LongPressCommandParameter="{Binding}" BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" VerticalOptions="Start">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding MainValue}" Style="{DynamicResource MainParagraphLabel}" VerticalOptions="Start" Margin="10,0,10,0"/>
-                                <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Grid.Row="1" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" Style="{DynamicResource TranslatedParagraphLabel}" Margin="10,0,10,20" />
-                                <StackLayout Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalOptions="Center">
-                                    <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text=")" />
-                                    <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding Number}"/>
-                                    <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="("  />
-                                </StackLayout>
-                                <Grid BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" IsVisible="{Binding HasLink}" WidthRequest="24" HeightRequest="24" HorizontalOptions="End" VerticalOptions="End" Grid.RowSpan="2" Grid.Column="1">
-                                    <Frame CornerRadius="24"  BackgroundColor="{StaticResource LinkBackgroundColor}" Padding="5" Margin="5,0,0,5">
-                                        <Image Source="icon_link.png"/>
-                                    </Frame>
+                <ScrollView HorizontalScrollBarVisibility="Never" VerticalScrollBarVisibility="Always">
+                    <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid effect:TouchEffect.LongPressCommand="{Binding LongTouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.LongPressCommandParameter="{Binding}" BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" VerticalOptions="Start">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding MainValue}" Style="{DynamicResource MainParagraphLabel}" VerticalOptions="Start" Margin="10,0,10,0"/>
+                                    <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Grid.Row="1" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" Style="{DynamicResource TranslatedParagraphLabel}" Margin="10,0,10,20" />
+                                    <StackLayout Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalOptions="Center">
+                                        <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text=")" />
+                                        <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding Number}"/>
+                                        <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="("  />
+                                    </StackLayout>
+                                    <Grid BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" IsVisible="{Binding HasLink}" WidthRequest="24" HeightRequest="24" HorizontalOptions="End" VerticalOptions="End" Grid.RowSpan="2" Grid.Column="1">
+                                        <Frame CornerRadius="24" BackgroundColor="{StaticResource LinkBackgroundColor}" Padding="5" Margin="5,0,0,5">
+                                            <Image Source="icon_link.png"/>
+                                        </Frame>
+                                    </Grid>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TouchedCommand, Source={StaticResource PageViewModel}}" CommandParameter="{Binding}" />
+                                    </Grid.GestureRecognizers>
                                 </Grid>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding TouchedCommand, Source={StaticResource PageViewModel}}" CommandParameter="{Binding}" />
-                                </Grid.GestureRecognizers>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
             </SwipeView>
         </RefreshView>
 

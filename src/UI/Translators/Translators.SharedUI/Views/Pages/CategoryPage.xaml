@@ -13,20 +13,20 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading, Mode=OneWay}">
-            <CollectionView
-                ItemsSource="{Binding Items}"
-                SelectionMode="Single">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Margin="20" WidthRequest="100" HeightRequest="100" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
-                            <Label FontSize="{Binding FontSize,Source={StaticResource CategoryViewModel}}" Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource CategoryViewModel}}" CommandParameter="{Binding}" />
-                            </Frame.GestureRecognizers>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <ScrollView HorizontalScrollBarVisibility="Never">
+                <CollectionView ItemsSource="{Binding Items}" SelectionMode="Single">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Margin="20" WidthRequest="100" HeightRequest="100" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
+                                <Label FontSize="{Binding FontSize,Source={StaticResource CategoryViewModel}}" Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource CategoryViewModel}}" CommandParameter="{Binding}" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
         </RefreshView>
     </ContentPage.Content>
 </ContentPage>

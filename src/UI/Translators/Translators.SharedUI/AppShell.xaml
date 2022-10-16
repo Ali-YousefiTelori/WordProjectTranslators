@@ -5,49 +5,6 @@
        Title="Translators.UI"
        x:Class="Translators.UI.AppShell">
 
-    <Shell.Resources>
-        <ResourceDictionary>
-            <Style TargetType="Page">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" />
-            </Style>
-            <Style TargetType="Grid">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" />
-            </Style>
-            <Style TargetType="Label">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}" />
-                <Setter Property="FontFamily" Value="Nasim" />
-            </Style>
-            <Style TargetType="Label" x:Key="MainParagraphLabel">
-                <Setter Property="FontFamily" Value="QuranTaha" />
-            </Style>
-            <Style TargetType="Label" x:Key="TranslatedParagraphLabel">
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={DynamicResource LightTranslateTextColor}, Dark={DynamicResource DarkTranslateColor}}" />
-            </Style>
-            <Style TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}" />
-            </Style>
-            <Style TargetType="Frame">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" />
-            </Style>
-            
-            <Style x:Key="BaseStyle" TargetType="Element">
-                <Setter Property="Shell.BackgroundColor" Value="{DynamicResource Primary}" />
-                <Setter Property="Shell.ForegroundColor" Value="White" />
-                <Setter Property="Shell.TitleColor" Value="White" />
-                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
-                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{DynamicResource Primary}" />
-                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
-            </Style>
-            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
-            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
-        </ResourceDictionary>
-    </Shell.Resources>
-
     <TabBar x:Name="MainTabBar">
         <ShellContent Title="کتب" ContentTemplate="{DataTemplate pages:CategoryPage}" >
             <ShellContent.Icon>
