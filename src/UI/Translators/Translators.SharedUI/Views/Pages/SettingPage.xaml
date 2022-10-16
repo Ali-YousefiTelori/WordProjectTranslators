@@ -20,7 +20,7 @@
             </Grid.RowDefinitions>
             <Label Text="اندازه‌ی فونت"
                 HorizontalOptions="CenterAndExpand" />
-            <Slider Value="{Binding FontSize}" Grid.Row="1" Maximum="60" Minimum="15" />
+            <Slider Value="{Binding FontSize}" Grid.Row="1" Maximum="60" Minimum="0" />
             <StackLayout Grid.Row="2" Orientation="Horizontal" IsVisible="false">
                 <Label Text="پروتکل Duplex" VerticalOptions="Center"/>
                 <CheckBox IsChecked="{Binding UseDuplexProtocol}" VerticalOptions="Center"/>

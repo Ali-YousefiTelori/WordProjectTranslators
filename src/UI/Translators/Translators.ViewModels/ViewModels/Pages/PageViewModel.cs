@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
-using Translators.Converters;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
@@ -13,7 +11,7 @@ using Translators.ServiceManagers;
 
 namespace Translators.ViewModels.Pages
 {
-    public class PageViewModel : ParagraphBaseViewModel<ParagraphModel>
+    public class PageViewModel : ParagraphBaseViewModel<ParagraphModel>, IDisposable
     {
         public PageViewModel()
         {
@@ -27,6 +25,10 @@ namespace Translators.ViewModels.Pages
             PlayCommand = CommandHelper.Create(Play);
             MultipleSelectOrUnSelectCommand = CommandHelper.Create(MultipleSelectOrUnSelect);
             MultipleSelectionMenuCommand = CommandHelper.Create(MultipleSelectionMenu);
+            Task.Factory.StartNew(async () =>
+            {
+                await PositionUpdater();
+            });
         }
 
         public ICommand<ParagraphModel> TouchedCommand { get; set; }
@@ -109,6 +111,26 @@ namespace Translators.ViewModels.Pages
             {
                 _catalogStartPageNumber = value;
                 OnPropertyChanged(nameof(CatalogStartPageNumber));
+            }
+        }
+
+        private double _PlaybackCurrentPosition;
+        public double PlaybackCurrentPosition
+        {
+            get
+            {
+                return _PlaybackCurrentPosition;
+            }
+            set
+            {
+                if (_PlaybackCurrentPosition == value)
+                    return;
+                _PlaybackCurrentPosition = value;
+                OnPropertyChanged(nameof(PlaybackCurrentPosition));
+                if (Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.CanSeek)
+                {
+                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Seek(value * Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Duration);
+                }
             }
         }
 
@@ -280,6 +302,7 @@ namespace Translators.ViewModels.Pages
                     var run = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Load(stream);
                     Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.PlaybackEnded -= Current_PlaybackEnded;
                     Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.PlaybackEnded += Current_PlaybackEnded;
+                    PlaybackCurrentPosition = 0;
                 }
 
                 if (IsPlaying)
@@ -303,11 +326,26 @@ namespace Translators.ViewModels.Pages
             }
         }
 
+        bool _canPositionUpdate = true;
+        async Task PositionUpdater()
+        {
+            while (_canPositionUpdate)
+            {
+                if (IsPlaying && Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.CanSeek)
+                {
+                    _PlaybackCurrentPosition = 1 * (Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.CurrentPosition / Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Duration);
+                    OnPropertyChanged(nameof(PlaybackCurrentPosition));
+                }
+                await Task.Delay(TimeSpan.FromSeconds(1));
+            }
+        }
+
         void ResetPlayBack()
         {
             isLoaded = false;
             IsPlaying = false;
             Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Stop();
+            _LastPlaybackSpeedRatoSet = 0;
         }
 
         private async void Current_PlaybackEnded(object sender, EventArgs e)
@@ -341,14 +379,21 @@ namespace Translators.ViewModels.Pages
                 item.IsSelected = !hasSelected;
             }
             return Task.CompletedTask;
-        }  
-        
+        }
+
         private async Task MultipleSelectionMenu()
         {
             if (!IsEnableMultipleSelection)
                 await AlertHelper.Display("برای فعال سازی انتخاب چندتایی روی یکی از آیات انگشت خود را نگه دارید.", "باشه");
             else
                 await Touch(null);
+        }
+
+        public void Dispose()
+        {
+            _canPositionUpdate = false;
+            if (IsPlaying)
+                ResetPlayBack();
         }
     }
 }

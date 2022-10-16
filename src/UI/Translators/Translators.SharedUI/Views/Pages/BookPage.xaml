@@ -18,20 +18,18 @@
         </Grid.RowDefinitions>
         <SearchBar Text="{Binding SearchText}" />
         <RefreshView Grid.Row="1" Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading, Mode=OneWay}">
-            <ScrollView HorizontalScrollBarVisibility="Never">
-                <CollectionView ItemsSource="{Binding Items}" SelectionMode="Single">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame Margin="20" WidthRequest="100" HeightRequest="100" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
-                                <Label FontSize="{Binding FontSize,Source={StaticResource BookViewModel}}" Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource BookViewModel}}" CommandParameter="{Binding}" />
-                                </Frame.GestureRecognizers>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </ScrollView>
+            <CollectionView ItemsSource="{Binding Items}" SelectionMode="Single">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="20" WidthRequest="100" HeightRequest="100" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
+                            <Label FontSize="{Binding FontSize,Source={StaticResource BookViewModel}}" Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource BookViewModel}}" CommandParameter="{Binding}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </RefreshView>
     </Grid>
 </ContentPage>

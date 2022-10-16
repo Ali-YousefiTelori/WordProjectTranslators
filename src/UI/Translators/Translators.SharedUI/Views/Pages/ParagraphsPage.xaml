@@ -14,30 +14,28 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <Grid Margin="10" FlowDirection="RightToLeft">
-            <ScrollView HorizontalScrollBarVisibility="Never">
-                <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource ParagraphsPageViewModel}}" Text="{Binding MainValue}" Style="{DynamicResource MainParagraphLabel}" Margin="10,0,10,0"/>
-                                <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" Grid.Row="1" FontSize="{Binding FontSize,Source={StaticResource ParagraphsPageViewModel}}" Style="{DynamicResource TranslatedParagraphLabel}" Margin="10,0,10,20" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" />
-                                <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" WidthRequest="24" HeightRequest="24" HorizontalOptions="End" IsVisible="{Binding HasLink}" VerticalOptions="End" Grid.RowSpan="2">
-                                    <Frame CornerRadius="24" BackgroundColor="{StaticResource LinkBackgroundColor}" Padding="5" Margin="5,0,0,5">
-                                        <Image Source="icon_link.png"/>
-                                    </Frame>
-                                </Grid>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ParagraphsPageViewModel}}" CommandParameter="{Binding}" />
-                                </Grid.GestureRecognizers>
+            <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource ParagraphsPageViewModel}}" Text="{Binding MainValue}" Style="{DynamicResource MainParagraphLabel}" Margin="10,0,10,0"/>
+                            <Label BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" Grid.Row="1" FontSize="{Binding FontSize,Source={StaticResource ParagraphsPageViewModel}}" Style="{DynamicResource TranslatedParagraphLabel}" Margin="10,0,10,20" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" />
+                            <Grid BackgroundColor="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" WidthRequest="24" HeightRequest="24" HorizontalOptions="End" IsVisible="{Binding HasLink}" VerticalOptions="End" Grid.RowSpan="2">
+                                <Frame CornerRadius="24" BackgroundColor="{StaticResource LinkBackgroundColor}" Padding="5" Margin="5,0,0,5">
+                                    <Image Source="icon_link.png"/>
+                                </Frame>
                             </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </ScrollView>
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ParagraphsPageViewModel}}" CommandParameter="{Binding}" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
