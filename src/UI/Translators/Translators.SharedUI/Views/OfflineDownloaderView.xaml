@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Translators.SharedUI.Views.OfflineDownloaderView"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels">
+    <ContentView.Resources>
+        <viewmodels:OfflineDownloaderViewModel x:Key="OfflineDownloaderViewModel" />
+    </ContentView.Resources>
+    <ContentView.BindingContext>
+        <Binding Source="{StaticResource OfflineDownloaderViewModel}"/>
+    </ContentView.BindingContext>
+    <ContentView.Content>
+        <Grid VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Label Text="{Binding Title}"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" Margin="0,20,0,20"/>
+            <ProgressBar Progress="{Binding CompletePercent}" HorizontalOptions="FillAndExpand" HeightRequest="30" Grid.Row="1"/>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

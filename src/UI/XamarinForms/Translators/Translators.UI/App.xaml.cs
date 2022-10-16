@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Translators.ServiceManagers;
+using Translators.SharedUI;
 using Translators.UI.Helpers;
-using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace Translators.UI
 {
@@ -27,7 +23,8 @@ namespace Translators.UI
             InitializeComponent();
             StartUp.Initialize();
 
-            MainPage = new AppShell();
+            //MainPage = new AppShell();
+            MainPage = new NavigationPage(new MainTabbedPage());
         }
 
         private void UnhandleExceptionHappens(object sender, Exception e)

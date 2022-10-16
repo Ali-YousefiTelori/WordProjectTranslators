@@ -41,6 +41,11 @@
             </Style>
             <Style TargetType="Page">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackgroundColor}, Dark={StaticResource DarkBackgroundColor}}" />
+                <Setter Property="FlowDirection" Value="RightToLeft" />
+            </Style>
+            <Style TargetType="ContentView">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackgroundColor}, Dark={StaticResource DarkBackgroundColor}}" />
+                <Setter Property="FlowDirection" Value="RightToLeft" />
             </Style>
             <Style TargetType="Grid">
                 <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackgroundColor}, Dark={StaticResource DarkBackgroundColor}}" />

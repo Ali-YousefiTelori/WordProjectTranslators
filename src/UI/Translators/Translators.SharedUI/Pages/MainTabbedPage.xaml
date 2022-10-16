@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:Translators.SharedUI.Views"
+             x:Class="Translators.SharedUI.MainTabbedPage" >
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="HeightRequest" Value="25"/>
+        </Style>
+    </ContentPage.Resources>
+    <Grid BackgroundColor="Green">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button Text="کتب" Grid.Row="1" Clicked="Button_Clicked"/>
+        <Button Text="خوانش" Grid.Row="1" Grid.Column="1"/>
+        <Button Text="تنظیمات" Grid.Row="1" Grid.Column="2"/>
+        <Button Text="جستجو" Grid.Row="1" Grid.Column="3"/>
+        <Button Text="پروفایل" Grid.Row="1" Grid.Column="4"/>
+    </Grid>
+</ContentPage>

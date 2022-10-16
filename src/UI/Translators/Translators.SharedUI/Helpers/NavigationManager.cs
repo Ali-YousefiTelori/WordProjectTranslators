@@ -2,7 +2,8 @@
 using Translators.Models;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
-using Translators.UI.Views.Pages;
+using Translators.SharedUI.Pages;
+using Translators.SharedUI.Views;
 using Translators.ViewModels;
 using Translators.ViewModels.Pages;
 
@@ -61,6 +62,14 @@ namespace Translators.UI.Helpers
             }
         }
 
+        Page GetPage(ContentView content)
+        {
+            var page = new ContentPage();
+            page.BindingContext = content.BindingContext;
+            page.Content = content;
+            return page;
+        }
+
         public async Task<object> PushPage(long id, long rootId, object data, PageType pageType, BaseViewModel fromBaseViewModel)
         {
             Page page = null;
@@ -68,17 +77,16 @@ namespace Translators.UI.Helpers
             {
                 case PageType.Book:
                     {
-                        page = new BookPage();
+                        page = GetPage(new BookView());
                         ApplicationPagesData.Current.AddPageValue(pageType, id, 0, 0);
                         _ = (page.BindingContext as BookViewModel).Initialize(id);
                         break;
                     }
                 case PageType.Chapter:
                     {
-                        page = new ChapterPage();
+                        page = GetPage(new ChapterView());
                         ApplicationPagesData.Current.AddPageValue(pageType, id, 0, id);
                         _ = (page.BindingContext as ChapterViewModel).Initialize(id);
-                        await BookViewModel.OnSelectedTitleByType(typeof(BookViewModel), id, 0);
                         break;
                     }
                 case PageType.Pages:
@@ -90,19 +98,19 @@ namespace Translators.UI.Helpers
                     }
                 case PageType.SearchResult:
                     {
-                        page = new SearchResultPage();
+                        page = GetPage(new SearchResultView());
                         (page.BindingContext as SearchResultPageViewModel).Initialize(data as List<SearchValueContract>);
                         break;
                     }
                 case PageType.ParagraphResult:
                     {
-                        page = new ParagraphsPage();
+                        page = GetPage(new ParagraphsView());
                         (page.BindingContext as ParagraphsPageViewModel).Initialize(data as List<SearchValueContract>);
                         break;
                     }
                 case PageType.DoLinkPage:
                     {
-                        page = new LinkParagraphPage();
+                        page = GetPage(new LinkParagraphView());
                         (page.BindingContext as LinkParagraphPageViewModel).Initialize(data as ParagraphBaseModel[]);
                         break;
                     }
@@ -115,7 +123,7 @@ namespace Translators.UI.Helpers
                     }
                 case PageType.OfflineDownloadPage:
                     {
-                        page = new OfflineDownloaderPage();
+                        page = GetPage(new OfflineDownloaderView());
                         break;
                     }
             }

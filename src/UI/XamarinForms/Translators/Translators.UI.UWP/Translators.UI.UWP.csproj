@@ -186,14 +186,6 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\SignalGo-full-net\SignalGo.Client\SignalGo.Client.csproj">
-      <Project>{da4f99a9-69e4-48f1-8850-5298f7762ab9}</Project>
-      <Name>SignalGo.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\SignalGo-full-net\SignalGo.Shared\SignalGo.Shared.csproj">
-      <Project>{7f4319f4-8bc4-4613-b118-2b2fe6601cf4}</Project>
-      <Name>SignalGo.Shared</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.UWP\Plugin.SimpleAudioPlayer.UWP.csproj">
       <Project>{e34b516d-c0d8-450f-9db0-bb6a5b04aef1}</Project>
       <Name>Plugin.SimpleAudioPlayer.UWP</Name>

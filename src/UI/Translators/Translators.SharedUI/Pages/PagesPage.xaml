@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Translators.SharedUI.Pages.PagesPage"
+             xmlns:views="clr-namespace:Translators.SharedUI.Views"
+             Title="{Binding CatalogName}" BindingContext="{Binding BindingContext, Source={x:Reference PagesView}}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding MultipleSelectOrUnSelectCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="icomoon" Glyph=""/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem Command="{Binding MultipleSelectionMenuCommand}">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="icomoon" Glyph=""/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <views:PagesView x:Name="PagesView"/>
+    </ContentPage.Content>
+</ContentPage>

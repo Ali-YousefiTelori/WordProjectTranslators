@@ -32,15 +32,5 @@
     <ProjectReference Include="..\..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="MainTabbedPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
-
   <Import Project="..\..\..\Translators\Translators.SharedUI\Translators.SharedUI.projitems" Label="Shared" />
 </Project>

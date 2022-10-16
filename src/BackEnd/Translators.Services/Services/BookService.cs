@@ -23,9 +23,21 @@ namespace Translators.Services
         }
 
         [JsonCustomSerialization]
+        public async Task<MessageContract<CategoryContract>> GetCategoryByBookId(long bookId)
+        {
+            return await new LogicBase<TranslatorContext, CategoryContract, CategoryEntity>().Find(x => x.Include(q => q.Names).ThenInclude(n => n.Language).Include(q => q.Names).ThenInclude(n => n.Translator).Where(q => q.Books.Any(b => b.Id == bookId)));
+        }
+
+        [JsonCustomSerialization]
         public async Task<MessageContract<List<BookContract>>> GetBooks()
         {
             return await new LogicBase<TranslatorContext, BookContract, BookEntity>().GetAll(x => x.Include(q => q.Names).ThenInclude(n => n.Language).Include(q => q.Names).ThenInclude(n => n.Translator).Where(x => !x.IsHidden));
+        }
+
+        [JsonCustomSerialization]
+        public async Task<MessageContract<BookContract>> GetBookById(long bookId)
+        {
+            return await new LogicBase<TranslatorContext, BookContract, BookEntity>().Find(x => x.Include(q => q.Names).ThenInclude(n => n.Language).Include(q => q.Names).ThenInclude(n => n.Translator).Where(x => x.Id == bookId && !x.IsHidden));
         }
 
         [JsonCustomSerialization]

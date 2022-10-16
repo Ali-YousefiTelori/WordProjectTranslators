@@ -5,9 +5,11 @@
     <RootNamespace>Translators</RootNamespace>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SignalGo.Net.Client" Version="5.7.1" />
+  </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\SignalGo-full-net\SignalGo.Client\SignalGo.Client.csproj" />
     <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer\Plugin.SimpleAudioPlayer.csproj" />
   </ItemGroup>
 </Project>

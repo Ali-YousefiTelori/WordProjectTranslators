@@ -13,13 +13,12 @@ namespace Translators.ViewModels
 {
     public class BaseViewModel : BaseModel
     {
-        public static ConcurrentDictionary<Type, BaseViewModel> Pages { get; set; } = new ConcurrentDictionary<Type, BaseViewModel>();
         public BaseViewModel()
         {
             RefreshCommand = CommandHelper.Create(() => LoadData(true));
-            Pages.AddOrUpdate(this.GetType(), this, (t, vm) => this);
         }
 
+        public string MyProperty { get; set; }
         public ICommand RefreshCommand { get; set; }
         public string SelectedName { get; set; }
 
@@ -115,22 +114,6 @@ namespace Translators.ViewModels
             if (string.IsNullOrEmpty(text))
                 return text;
             return text.Replace("ۛ", "").Replace("ۖ", "").Replace("ۗ", "").Replace("ۚ", "").Replace("ۙ", "").Replace("ۘ", "").Replace("ۜ", "").Replace("ِ", "").Replace("ُ", "").Replace("َ", "").Replace("ً", "").Replace("ٌ", "").Replace("ٍ", "").Replace("ّ", "").Replace("ۡ", "");
-        }
-
-        public static string GetSelectedTitleByType(Type type)
-        {
-            if (Pages.TryGetValue(type, out var vm))
-                return vm.SelectedName;
-            return default;
-        }
-
-        public static async Task OnSelectedTitleByType(Type type, long id, long parentId)
-        {
-            if (Pages.TryGetValue(type, out var vm))
-            {
-                await vm.WaitToFetchData();
-                vm.OnSelected(id, parentId);
-            }
         }
 
         public virtual void OnSelected(long id, long parentId)

@@ -64,7 +64,7 @@ namespace Translators.ViewModels.Pages
             }
         }
 
-        string _CatalogName;
+        string _CatalogName = "";
         public string CatalogName
         {
             get => _CatalogName;
@@ -167,7 +167,19 @@ namespace Translators.ViewModels.Pages
                     isEven = !isEven;
                     return v;
                 }));
-                CatalogName = $"{GetSelectedTitleByType(typeof(BookViewModel))} / ";
+                var bookId = pages.Result.First().BookId;
+                var categoryResult = await TranslatorService.GetBookService(isForce).GetCategoryByBookIdAsync(bookId);
+                if (categoryResult.IsSuccess)
+                {
+                    CatalogName = $"{categoryResult.Result.Names.GetPersianValue()} / ";
+                }
+                var bookResult = await TranslatorService.GetBookService(isForce).GetBookByIdAsync(bookId);
+                if (bookResult.IsSuccess)
+                {
+                    var value = bookResult.Result.Names.GetPersianValue();
+                    if (!value.Contains(CatalogName.Trim().Trim('/').Trim()))
+                        CatalogName += $"{value} / ";
+                }
                 CatalogName += string.Join(" - ", pages.Result.Select(x => x.CatalogNames.GetPersianValue()).Distinct());
                 if (!CatalogName.Any(x => char.IsDigit(x)))
                 {

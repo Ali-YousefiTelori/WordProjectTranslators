@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+             x:Class="Translators.SharedUI.Views.ReadingView">
+    <ContentView.Resources>
+        <viewmodels:ReadingPageViewModel x:Key="ReadingPageViewModel" />
+    </ContentView.Resources>
+    <ContentView.BindingContext>
+        <Binding Source="{StaticResource ReadingPageViewModel}"/>
+    </ContentView.BindingContext>
+    <Grid FlowDirection="RightToLeft">
+        <CollectionView 
+                ItemsSource="{Binding Items}"
+                SelectionMode="Single" ItemSizingStrategy="MeasureAllItems">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Vertical">
+                        <Label FontSize="{Binding FontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Name}"/>
+                        <Label FontSize="{Binding ReadingFontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Title}"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource ReadingPageViewModel}}" CommandParameter="{Binding}" />
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentView>
