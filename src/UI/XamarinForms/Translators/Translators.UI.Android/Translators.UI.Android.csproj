@@ -88,6 +88,10 @@
     <AndroidResource Include="Resources\drawable\icon_feed.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.Abstractions\Plugin.SimpleAudioPlayer.Abstractions.csproj">
+      <Project>{7c8186f6-8f8f-402e-ba7c-1be962dbf00c}</Project>
+      <Name>Plugin.SimpleAudioPlayer.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.Android\Plugin.SimpleAudioPlayer.Android.csproj">
       <Project>{56a56f17-7de1-4ca1-9617-bf32e971ac84}</Project>
       <Name>Plugin.SimpleAudioPlayer.Android</Name>

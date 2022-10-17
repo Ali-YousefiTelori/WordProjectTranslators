@@ -8,8 +8,8 @@
   <ItemGroup>
     <PackageReference Include="SignalGo.Net.Client" Version="5.7.1" />
   </ItemGroup>
-  
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.Abstractions\Plugin.SimpleAudioPlayer.Abstractions.csproj" />
     <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer\Plugin.SimpleAudioPlayer.csproj" />
   </ItemGroup>
 </Project>

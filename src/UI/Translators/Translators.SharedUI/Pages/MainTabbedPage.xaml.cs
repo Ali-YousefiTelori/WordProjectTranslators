@@ -16,7 +16,7 @@ namespace Translators.SharedUI
         public MainTabbedPage ()
         {
             InitializeComponent();
-            Navigation.PushAsync(new SettingPage());
+            Navigation.PushAsync(new CategoryPage());
         }
 
         private void Button_Clicked(object sender, EventArgs e)

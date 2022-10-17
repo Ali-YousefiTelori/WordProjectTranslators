@@ -163,6 +163,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.Abstractions\Plugin.SimpleAudioPlayer.Abstractions.csproj">
+      <Project>{7c8186f6-8f8f-402e-ba7c-1be962dbf00c}</Project>
+      <Name>Plugin.SimpleAudioPlayer.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.WPF\Plugin.SimpleAudioPlayer.WPF.csproj">
+      <Project>{e39230fa-8b4b-4229-a847-eab0e3b53877}</Project>
+      <Name>Plugin.SimpleAudioPlayer.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Translators\Translators.UI\Translators.UI.csproj">
       <Project>{c37a8a89-a702-48f0-83eb-502d3279f253}</Project>
       <Name>Translators.UI</Name>

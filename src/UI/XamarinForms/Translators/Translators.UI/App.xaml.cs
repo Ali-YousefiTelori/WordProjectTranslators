@@ -23,8 +23,8 @@ namespace Translators.UI
             InitializeComponent();
             StartUp.Initialize();
 
-            //MainPage = new AppShell();
-            MainPage = new NavigationPage(new MainTabbedPage());
+            MainPage = new AppShell();
+            //MainPage = new NavigationPage(new MainTabbedPage());
         }
 
         private void UnhandleExceptionHappens(object sender, Exception e)

@@ -182,13 +182,21 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.12" />
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.14" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.Abstractions\Plugin.SimpleAudioPlayer.Abstractions.csproj">
+      <Project>{7c8186f6-8f8f-402e-ba7c-1be962dbf00c}</Project>
+      <Name>Plugin.SimpleAudioPlayer.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.UWP\Plugin.SimpleAudioPlayer.UWP.csproj">
       <Project>{e34b516d-c0d8-450f-9db0-bb6a5b04aef1}</Project>
       <Name>Plugin.SimpleAudioPlayer.UWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer\Plugin.SimpleAudioPlayer.csproj">
+      <Project>{4079808a-69b5-4bd8-9dee-4ddab01bb1f4}</Project>
+      <Name>Plugin.SimpleAudioPlayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj">
       <Project>{e7db95c7-edf8-4f9b-b5bd-4d13efeb98fc}</Project>

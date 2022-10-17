@@ -23,7 +23,7 @@ namespace Translators.Services
             var context = OperationContext.Current;
             try
             {
-                string path = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "Apploication", fileName);
+                string path = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName, "Application", fileName);
 
                 if (!File.Exists(path))
                 {
