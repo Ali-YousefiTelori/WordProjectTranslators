@@ -1,19 +1,18 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Models.Interfaces;
+using Translators.Models.Storages;
 
 namespace Translators.Engines.OfflineDownloaders
 {
-    public abstract class ServiceOfflineDownloaderBase : IDownloader
+    public abstract class ServiceOfflineDownloaderBase : StreamDownloaderBase,IDownloader
     {
-        static HttpClient HttpClient { get; set; } = new HttpClient();
-
         public string ServiceAddress { get; set; }
         public string SaveToFileAddress { get; set; }
         public Action<double> Progress { get; set; }
@@ -27,39 +26,16 @@ namespace Translators.Engines.OfflineDownloaders
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ServiceAddress);
-                using var response = await request.GetResponseAsync();
-                using var stream = response.GetResponseStream();
-                var fileInfo = new FileInfo(SaveToFileAddress);
-                //use cache downloaded
-                if (fileInfo.Exists && fileInfo.Length == response.ContentLength)
-                {
-                    CalculateProgress(fileInfo.Length, fileInfo.Length);
-                    return true;
-                }
-                using (var fileStream = fileInfo.OpenWrite())
-                {
-                    fileStream.Seek(0, SeekOrigin.Begin);
-                    var length = response.ContentLength;
-                    long downloadedSize = 0;
-                    while (downloadedSize < length)
-                    {
-                        byte[] buffer = new byte[1024 * 500];
-                        var readCount = await stream.ReadAsync(buffer, 0, buffer.Length);
-                        await fileStream.WriteAsync(buffer, 0, readCount);
-                        downloadedSize += readCount;
-                        CalculateProgress(downloadedSize, length);
-                    }
-                }
+                await DownloadFile(ServiceAddress, SaveToFileAddress);
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
         }
 
-        protected void CalculateProgress(double downloadedSize, double length)
+        protected override void CalculateProgress(double downloadedSize, double length)
         {
             Progress?.Invoke(downloadedSize / length);
         }

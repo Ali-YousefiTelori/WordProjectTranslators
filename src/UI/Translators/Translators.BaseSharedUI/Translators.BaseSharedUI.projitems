@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>b60a389b-284b-4569-b6b3-7fd932d5d059</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Translators.UI</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToMultipleSelectionConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\EvenColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\LanguageValueConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ParagraphConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ParagraphEvenColorConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\ThicknessConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CrossPlatform\Device.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CrossPlatform\Share.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\AlertManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ApplicationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ApplicationSharedHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ClipboardManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\CommandManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Extentions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\NavigationManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\RelayCommand.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\StartUp.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\**" />
+  </ItemGroup>
+</Project>

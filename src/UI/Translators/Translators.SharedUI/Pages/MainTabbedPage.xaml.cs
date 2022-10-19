@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Translators.Helpers;
-using Translators.SharedUI.Pages;
+using Translators.UI.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace Translators.SharedUI
+namespace Translators.UI
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainTabbedPage : ContentPage

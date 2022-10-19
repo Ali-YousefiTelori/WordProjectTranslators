@@ -2,8 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
-             xmlns:views="clr-namespace:Translators.SharedUI.Views"
-             x:Class="Translators.SharedUI.Pages.ReadingPage" BindingContext="{Binding BindingContext, Source={x:Reference ReadingView}}">
+             xmlns:views="clr-namespace:Translators.UI.Views"
+             x:Class="Translators.UI.Pages.ReadingPage" BindingContext="{Binding BindingContext, Source={x:Reference ReadingView}}">
     <ContentPage.ToolbarItems>
         <ToolbarItem Command="{Binding AddReadingCommand}">
             <ToolbarItem.IconImageSource>

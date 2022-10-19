@@ -2,8 +2,8 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
-             xmlns:conv="clr-namespace:Translators.SharedUI.Converters"
-             x:Class="Translators.SharedUI.Views.ChapterView">
+             xmlns:conv="clr-namespace:Translators.UI.Converters"
+             x:Class="Translators.UI.Views.ChapterView">
     <ContentView.Resources>
         <viewmodels:ChapterViewModel x:Key="ChapterViewModel" />
         <conv:LanguageValueConverter LanguageCode="fa-ir" x:Key="LanguageValueConverter"/>

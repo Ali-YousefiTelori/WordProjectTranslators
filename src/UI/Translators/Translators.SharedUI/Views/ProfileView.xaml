@@ -2,7 +2,7 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
-             x:Class="Translators.SharedUI.Views.ProfileView">
+             x:Class="Translators.UI.Views.ProfileView">
     <ContentView.Resources>
         <viewmodels:ProfilePageViewModel x:Key="ProfilePageViewModel" />
     </ContentView.Resources>

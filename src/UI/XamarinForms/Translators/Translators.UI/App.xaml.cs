@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Translators.ServiceManagers;
-using Translators.SharedUI;
 using Translators.UI.Helpers;
 
 namespace Translators.UI

@@ -1,7 +1,7 @@
 ﻿using Translators.Models.Storages;
 using Translators.UI.Helpers;
 
-namespace Translators.SharedUI.Views
+namespace Translators.UI.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CategoryView : ContentView

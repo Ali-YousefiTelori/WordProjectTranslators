@@ -32,5 +32,7 @@
     <ProjectReference Include="..\..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj" />
   </ItemGroup>
 
+  <Import Project="..\..\..\Translators\Translators.BaseSharedUI\Translators.BaseSharedUI.projitems" Label="Shared" />
+
   <Import Project="..\..\..\Translators\Translators.SharedUI\Translators.SharedUI.projitems" Label="Shared" />
 </Project>

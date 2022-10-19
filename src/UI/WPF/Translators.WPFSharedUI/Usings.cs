@@ -1,0 +1,11 @@
+﻿global using System.Windows.Data;
+global using System.Windows.Controls;
+global using System;
+global using System.Windows.Media;
+global using System.Windows;
+global using Translators.SharedUI.Helpers;
+global using System.Threading.Tasks;
+global using Translators.BaseSharedUI.CrossPlatform;
+global using System.Collections.Generic;
+global using System.Linq;
+global using MvvmGo.Commands;

@@ -1,1 +1,0 @@
-[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
