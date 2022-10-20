@@ -51,7 +51,7 @@ namespace Translators.Services
             var oldLinks = await new LogicBase<TranslatorContext, LinkParagraphEntity, LinkParagraphEntity>().GetAll(q => q.Where(x => x.LinkGroupId == findGroup.Result.Id));
             if (!oldLinks.IsSuccess)
                 return oldLinks;
-            var paragraphIds = linkParagraphRequest.ToParagraphIds.Union(linkParagraphRequest.FromParagraphIds).Union(oldLinks.Result.Select(r => r.ParagraphId)).ToList();
+            var paragraphIds = linkParagraphRequest.ToParagraphIds.Concat(linkParagraphRequest.FromParagraphIds).Except(oldLinks.Result.Select(r => r.ParagraphId)).Distinct().ToList();
             var result = await new LogicBase<TranslatorContext, LinkParagraphEntity>().AddRange(paragraphIds.Select(id => new LinkParagraphEntity
             {
                 LinkGroupId = findGroup.Result.Id,
