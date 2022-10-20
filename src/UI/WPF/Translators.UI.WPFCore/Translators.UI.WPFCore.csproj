@@ -21,6 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\MvvmGo\MvvmGo\MvvmGo.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.WPF\Plugin.SimpleAudioPlayer.WPF.csproj" />
+    <ProjectReference Include="..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ApplicationDefinition Update="App.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -44,5 +50,7 @@
   </ItemGroup>
 
   <Import Project="..\Translators.WPFSharedUI\Translators.WPFSharedUI.projitems" Label="Shared" />
+
+  <Import Project="..\..\Translators\Translators.BaseSharedUI\Translators.BaseSharedUI.projitems" Label="Shared" />
 
 </Project>

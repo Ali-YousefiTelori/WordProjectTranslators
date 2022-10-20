@@ -11,6 +11,9 @@ namespace Translators.UI.Helpers
         public async Task DownloadNewVersion()
         {
             string fileName = "";
+#if (WPF)
+
+#else
             if (Device.RuntimePlatform == Device.iOS)
             {
                 //iOS stuff
@@ -20,6 +23,7 @@ namespace Translators.UI.Helpers
                 fileName = "noorpod.ir.translators.apk";
             }
             await Share.RequestAsync($"{TranslatorService.ServiceAddress}/Application/DownloadLastVersion?fileName={fileName}"); 
+#endif
         }
 
         public Task<long> GetBuildNumber()

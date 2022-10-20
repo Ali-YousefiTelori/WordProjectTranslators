@@ -513,6 +513,7 @@ Global
 		SolutionGuid = {90B45D66-F2C2-49DE-9453-BEB27AF20460}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Translators\Translators.BaseSharedUI\Translators.BaseSharedUI.projitems*{1b6a8458-17a6-435e-bd29-7c4ca822bf65}*SharedItemsImports = 5
 		..\WPF\Translators.WPFSharedUI\Translators.WPFSharedUI.projitems*{1b6a8458-17a6-435e-bd29-7c4ca822bf65}*SharedItemsImports = 5
 		..\WPF\Translators.WPFSharedUI\Translators.WPFSharedUI.projitems*{5391b9bb-3425-4a1a-8382-b3a8166ee191}*SharedItemsImports = 13
 		..\WPF\Translators.WPFSharedUI\Translators.WPFSharedUI.projitems*{a1855f31-eb30-4d32-b7ef-019845c3042e}*SharedItemsImports = 4

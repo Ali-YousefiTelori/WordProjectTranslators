@@ -55,7 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Usings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,6 +93,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\MvvmGo\MvvmGo\MvvmGo.csproj">
+      <Project>{18b8799a-2e1c-4a3d-9be6-3d80c7605e5d}</Project>
+      <Name>MvvmGo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.WPF\Plugin.SimpleAudioPlayer.WPF.csproj">
+      <Project>{e39230fa-8b4b-4229-a847-eab0e3b53877}</Project>
+      <Name>Plugin.SimpleAudioPlayer.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj">
+      <Project>{e7db95c7-edf8-4f9b-b5bd-4d13efeb98fc}</Project>
+      <Name>Translators.ViewModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Translators.WPFSharedUI\Translators.WPFSharedUI.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

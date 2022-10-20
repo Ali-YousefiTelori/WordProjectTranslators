@@ -34,12 +34,14 @@ namespace Translators.UI.Helpers
         public static Func<Page> GetCurrentPageFunc { get; set; }
         public static Page GetCurrentPage()
         {
-#if (!SharedProject)
+#if (!SharedProject && !WPF)
             return App.Current.MainPage;//Navigation.NavigationStack.LastOrDefault();
 #else
             return GetCurrentPageFunc?.Invoke();
 #endif
         }
+
+
 
         public static async Task CleanPages()
         {
@@ -47,7 +49,7 @@ namespace Translators.UI.Helpers
             {
                 try
                 {
-                    await item.Navigation.PopAsync();
+                    await GetNavigation(item).PopAsync();
                 }
                 catch (Exception ex)
                 {
@@ -63,6 +65,38 @@ namespace Translators.UI.Helpers
             }
         }
 
+#if (WPF)
+        static INavigation GetNavigation(Page page)
+        {
+            return null;
+        }
+
+        Page GetPage(UserControl content)
+        {
+            var page = new Page();
+            page.DataContext = content.DataContext;
+            page.Content = content;
+            return page;
+        }
+
+        object GetDataContext(FrameworkElement framework)
+        {
+            return framework.DataContext;
+        }
+
+        public void SwitchPage(PageType pageType)
+        {
+            if (pageType == PageType.Category)
+            {
+
+            }
+        }
+#else
+        static INavigation GetNavigation(Page page)
+        {
+            return page.Navigation;
+        }
+
         Page GetPage(ContentView content)
         {
             var page = new ContentPage();
@@ -71,6 +105,19 @@ namespace Translators.UI.Helpers
             return page;
         }
 
+        object GetDataContext(BindableObject bindableObject)
+        {
+            return bindableObject.BindingContext;
+        }
+
+        public void SwitchPage(PageType pageType)
+        {
+            if (pageType == PageType.Category)
+            {
+                ((AppShell)Shell.Current).TabBar.CurrentItem = ((AppShell)Shell.Current).TabBar.Items.First();
+            }
+        }
+#endif
         public async Task<object> PushPage(long id, long rootId, object data, PageType pageType, BaseViewModel fromBaseViewModel)
         {
             Page page = null;
@@ -80,46 +127,46 @@ namespace Translators.UI.Helpers
                     {
                         page = GetPage(new BookView());
                         ApplicationPagesData.Current.AddPageValue(pageType, id, 0, 0);
-                        _ = (page.BindingContext as BookViewModel).Initialize(id);
+                        _ = (GetDataContext(page) as BookViewModel).Initialize(id);
                         break;
                     }
                 case PageType.Chapter:
                     {
                         page = GetPage(new ChapterView());
                         ApplicationPagesData.Current.AddPageValue(pageType, id, 0, id);
-                        _ = (page.BindingContext as ChapterViewModel).Initialize(id);
+                        _ = (GetDataContext(page) as ChapterViewModel).Initialize(id);
                         break;
                     }
                 case PageType.Pages:
                     {
                         page = new PagesPage();
                         ApplicationPagesData.Current.AddPageValue(pageType, id, rootId, (long)data);
-                        _ = (page.BindingContext as PageViewModel).Initialize(id, rootId, (long)data);
+                        _ = (GetDataContext(page) as PageViewModel).Initialize(id, rootId, (long)data);
                         break;
                     }
                 case PageType.SearchResult:
                     {
                         page = GetPage(new SearchResultView());
-                        (page.BindingContext as SearchResultPageViewModel).Initialize(data as List<SearchValueContract>);
+                        (GetDataContext(page) as SearchResultPageViewModel).Initialize(data as List<SearchValueContract>);
                         break;
                     }
                 case PageType.ParagraphResult:
                     {
                         page = GetPage(new ParagraphsView());
-                        (page.BindingContext as ParagraphsPageViewModel).Initialize(data as List<SearchValueContract>);
+                        (GetDataContext(page) as ParagraphsPageViewModel).Initialize(data as List<SearchValueContract>);
                         break;
                     }
                 case PageType.DoLinkPage:
                     {
                         page = GetPage(new LinkParagraphView());
-                        (page.BindingContext as LinkParagraphPageViewModel).Initialize(data as ParagraphBaseModel[]);
+                        (GetDataContext(page) as LinkParagraphPageViewModel).Initialize(data as ParagraphBaseModel[]);
                         break;
                     }
                 case PageType.PagesFastRead:
                     {
                         page = new PagesPage();
-                        (page.BindingContext as PageViewModel).SetIsOutsideOfBookTab();
-                        _ = (page.BindingContext as PageViewModel).Initialize(id, rootId, (long)data);
+                        (GetDataContext(page) as PageViewModel).SetIsOutsideOfBookTab();
+                        _ = (GetDataContext(page) as PageViewModel).Initialize(id, rootId, (long)data);
                         break;
                     }
                 case PageType.OfflineDownloadPage:
@@ -138,7 +185,7 @@ namespace Translators.UI.Helpers
                 }
                 else
                 {
-                    if (page.BindingContext is BaseViewModel baseViewModel)
+                    if (GetDataContext(page) is BaseViewModel baseViewModel)
                     {
                         if (fromBaseViewModel != null)
                             baseViewModel.IsInSearchTab = fromBaseViewModel.IsInSearchTab;
@@ -155,14 +202,6 @@ namespace Translators.UI.Helpers
         public async Task Clean()
         {
             await CleanPages();
-        }
-
-        public void SwitchPage(PageType pageType)
-        {
-            if (pageType == PageType.Category)
-            {
-                ((AppShell)Shell.Current).TabBar.CurrentItem = ((AppShell)Shell.Current).TabBar.Items.First();
-            }
         }
 
         public async Task PopSettingPage()

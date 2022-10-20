@@ -4,10 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Translators.UI.WPFCore"
-        xmlns:controls="clr-namespace:Translators.UI.Views"
+        xmlns:pages="clr-namespace:Translators.UI.Pages"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <controls:BookView/>
+        <!--<TabControl TabStripPlacement="Bottom">
+            <TabItem Header="Book">
+                <Frame>
+                    <pages:CategoryPage/>
+                </Frame>
+            </TabItem>
+            <TabItem Header="Reader"/>
+            <TabItem Header="Search"/>
+            <TabItem Header="Profile"/>
+            <TabItem Header="Settings"/>
+        </TabControl>-->
     </Grid>
 </Window>
