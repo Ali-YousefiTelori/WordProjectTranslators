@@ -5,11 +5,105 @@
     xmlns:local="using:Translators.UI.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+    xmlns:conv="clr-namespace:Translators.UI.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
+    <UserControl.Resources>
+        <viewmodels:PageViewModel x:Key="PageViewModel" />
+        <conv:EvenColorConverter x:Key="EvenColorConverter"/>
+        <conv:BooleanToMultipleSelectionConverter x:Key="BooleanToMultipleSelectionConverter"/>
+        <conv:ParagraphEvenColorConverter x:Key="ParagraphEvenColorConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource PageViewModel}"/>
+    </UserControl.DataContext>
+    <Grid Background="#01FFFFFF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <ListBox ItemsSource="{Binding Items}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding TouchedCommand, Source={StaticResource PageViewModel}}" CommandParameter="{Binding}">
+                        <Grid Background="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Background="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding MainValue}" Style="{StaticResource MainParagraphTextBlock}" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <TextBlock Background="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Grid.Row="1" TextWrapping="Wrap" Text="{Binding TranslatedValue}" Style="{StaticResource TranslatedParagraphTextBlock}" Margin="10,0,10,20" />
+                            <StackPanel Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Background="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text=")" />
+                                <TextBlock Background="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding Number}"/>
+                                <TextBlock Background="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="("  />
+                            </StackPanel>
+                            <Grid Background="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" Visibility="{Binding HasLink}" Width="24" Height="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.RowSpan="2" Grid.Column="1">
+                                <Border CornerRadius="24" Background="{StaticResource LinkBackgroundColor}" Padding="5" Margin="5,0,0,5">
+                                    <Image Source="icon_link.png"/>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Slider Grid.ColumnSpan="3" Value="{Binding PlaybackCurrentPosition}" FlowDirection="LeftToRight"/>
+            <Button HorizontalAlignment="Left" Content="{Binding ReadingName}" Command="{Binding RemoveReadingCommand}" Grid.Row="1"/>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+                <Button Content="{Binding CatalogStartPageNumber}" Command="{Binding SelectPageCommand}"/>
+                <Button Content="آیه" Command="{Binding SelectVerseCommand}"/>
+                <Button FontFamily="icomoon" Content="" Width="40" Command="{Binding PlayCommand}">
+                    <!--<Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsPlaying}" Value="False">
+                            <Setter Property="Text" Value="" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsPlaying}" Value="True">
+                            <Setter Property="Text" Value="" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsLoadingPlayStream}" Value="True">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsLoadingPlayStream}" Value="False">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Button.Triggers>-->
+                </Button>
+                <!--<ActivityIndicator IsRunning="{Binding IsLoadingPlayStream}" WidthRequest="40" Grid.Row="1">
+                    <ActivityIndicator.Triggers>
+                        <DataTrigger TargetType="ActivityIndicator" Binding="{Binding IsLoadingPlayStream}" Value="False">
+                            <Setter Property="IsVisible" Value="False" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="ActivityIndicator" Binding="{Binding IsLoadingPlayStream}" Value="True">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </ActivityIndicator.Triggers>
+                </ActivityIndicator>-->
+            </StackPanel>
+            <!--<ActivityIndicator IsRunning="{Binding IsLoading}" Grid.Column="2" HorizontalOptions="End" Grid.Row="1"/>-->
+        </Grid>
+        <!--<Grid.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Left" Command="{Binding SwipeLeftCommand}"/>
+            <SwipeGestureRecognizer Direction="Right" Command="{Binding SwipeRightCommand}"/>
+        </Grid.GestureRecognizers>-->
     </Grid>
 </UserControl>

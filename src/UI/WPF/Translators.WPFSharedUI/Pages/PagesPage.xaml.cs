@@ -10,6 +10,7 @@ namespace Translators.UI.Pages
         public PagesPage()
         {
             this.InitializeComponent();
+            DataContext =  pagesView.DataContext;
         }
     }
 }

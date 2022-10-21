@@ -6,9 +6,9 @@ namespace Translators.BaseSharedUI.CrossPlatform
 {
     public class Share
     {
-        internal static Task RequestAsync(string v)
+        internal static async Task RequestAsync(string v)
         {
-            return Task.CompletedTask;
+
         }
     }
 }

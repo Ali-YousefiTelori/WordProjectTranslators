@@ -13,5 +13,10 @@ namespace Translators.UI.WPF
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            StartUp.Initialize();
+            base.OnStartup(e);
+        }
     }
 }

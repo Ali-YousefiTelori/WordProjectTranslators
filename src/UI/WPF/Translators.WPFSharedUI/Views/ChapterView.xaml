@@ -6,10 +6,37 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+    xmlns:conv="clr-namespace:Translators.UI.Converters"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
+    <UserControl.Resources>
+        <viewmodels:ChapterViewModel x:Key="ChapterViewModel" />
+        <conv:LanguageValueConverter LanguageCode="fa-ir" x:Key="LanguageValueConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource ChapterViewModel}"/>
+    </UserControl.DataContext>
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBox Text="{Binding SearchText}" />
+        <ListBox Grid.Row="1" ItemsSource="{Binding Items}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding TouchedCommand,Source={StaticResource ChapterViewModel}}" CommandParameter="{Binding}" >
+                        <Border Margin="10" MinWidth="100" MinHeight="100" BorderBrush="#C49B33" CornerRadius="40">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" Text="{Binding Names, Converter={StaticResource LanguageValueConverter}}" Margin="0,20,0,20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <TextBlock FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" Text=" -" Margin="0,20,0,20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <TextBlock FontSize="{Binding FontSize,Source={StaticResource ChapterViewModel}}" Text="{Binding Number}" Margin="0,20,0,20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </StackPanel>
+                        </Border>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

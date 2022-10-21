@@ -132,7 +132,7 @@ namespace Translators.ViewModels.Pages
             }
         }
 
-        private Task SelectedChanged(LinkGroup link)
+        private async Task SelectedChanged(LinkGroup link)
         {
             if (link.IsSelected && DateTime.Now - link.SelectedDateTime > TimeSpan.FromMilliseconds(500))
                 link.IsSelected = false;
@@ -140,7 +140,6 @@ namespace Translators.ViewModels.Pages
             {
                 item.IsSelected = false;
             }
-            return Task.CompletedTask;
         }
     }
 }

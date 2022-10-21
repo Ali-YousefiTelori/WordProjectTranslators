@@ -375,13 +375,12 @@ namespace Translators.ViewModels.Pages
             }
         }
 
-        private Task LongTouched(ParagraphModel paragraphModel)
+        private async Task LongTouched(ParagraphModel paragraphModel)
         {
             IsEnableMultipleSelection = !IsEnableMultipleSelection;
-            return Task.CompletedTask;
         }
 
-        private Task MultipleSelectOrUnSelect()
+        private async Task MultipleSelectOrUnSelect()
         {
             if (!IsEnableMultipleSelection)
                 IsEnableMultipleSelection = true;
@@ -390,7 +389,6 @@ namespace Translators.ViewModels.Pages
             {
                 item.IsSelected = !hasSelected;
             }
-            return Task.CompletedTask;
         }
 
         private async Task MultipleSelectionMenu()

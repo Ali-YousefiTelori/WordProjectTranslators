@@ -10,6 +10,7 @@ namespace Translators.UI.Pages
         public MainTabbedPage()
         {
             this.InitializeComponent();
+            NavigationManager.Initialize(new WPFNavigationManager(MainFrame));
         }
     }
 }

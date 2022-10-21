@@ -34,10 +34,9 @@ namespace Translators.ServiceManagers
                 return ("", false);
             };
 
-            clientProvider.OnGetResponseFromServer = (serviceName, methodName, parameters, result) =>
+            clientProvider.OnGetResponseFromServer = async (serviceName, methodName, parameters, result) =>
             {
                 _ = ClientConnectionManager.SaveLocal(ClientConnectionManager.GetUrl(serviceName, methodName), parameters, result);
-                return Task.CompletedTask;
             };
 
             clientProvider.ConnectAsyncAutoReconnect(ServiceAddress, (isConnected) =>

@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Translators.UI.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="/Resources/Themes/Styles.xaml" />
     </Application.Resources>
 </Application>

@@ -17,18 +17,15 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource CategoryViewModel}"/>
     </UserControl.DataContext>
-        <!--<RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsLoading, Mode=OneWay}">
-            <CollectionView ItemsSource="{Binding Items}" SelectionMode="Single">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Margin="20" WidthRequest="100" HeightRequest="100" BorderColor="#C49B33" HasShadow="True" CornerRadius="40">
-                            <Label FontSize="{Binding FontSize,Source={StaticResource CategoryViewModel}}" Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding TouchedCommand,Source={StaticResource CategoryViewModel}}" CommandParameter="{Binding}" />
-                            </Frame.GestureRecognizers>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </RefreshView>-->
+    <ListBox ItemsSource="{Binding Items}">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Button Command="{Binding TouchedCommand,Source={StaticResource CategoryViewModel}}" CommandParameter="{Binding}" >
+                    <Border Margin="20" MinWidth="100" MinHeight="100" BorderBrush="#C49B33" CornerRadius="40">
+                        <TextBlock FontSize="{Binding FontSize,Source={StaticResource CategoryViewModel}}" Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    </Border>
+                </Button>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
 </UserControl>

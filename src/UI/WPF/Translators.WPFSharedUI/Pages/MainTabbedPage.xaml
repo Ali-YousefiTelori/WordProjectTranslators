@@ -5,8 +5,19 @@
     xmlns:local="using:Translators.UI.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:pages="clr-namespace:Translators.UI.Pages"
+    mc:Ignorable="d" FlowDirection="RightToLeft">
     <Grid>
-        
+        <TabControl TabStripPlacement="Bottom">
+            <TabItem Header="Book">
+                <Frame x:Name="MainFrame" Source="/Pages/CategoryPage.xaml">
+                    
+                </Frame>
+            </TabItem>
+            <TabItem Header="Reader"/>
+            <TabItem Header="Search"/>
+            <TabItem Header="Profile"/>
+            <TabItem Header="Settings"/>
+        </TabControl>
     </Grid>
 </Page>

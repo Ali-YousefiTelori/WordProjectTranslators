@@ -10,12 +10,12 @@ namespace Translators.Helpers
 
         public static ICommand<T> Create<T>(Func<T, Task> func)
         {
-            return Current.Create<T>(func);
+            return Current?.Create<T>(func);
         }
 
         public static ICommand Create(Func<Task> func)
         {
-            return Current.Create(func);
+            return Current?.Create(func);
         }
     }
 }

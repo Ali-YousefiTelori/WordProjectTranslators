@@ -89,14 +89,14 @@ namespace Translators.ViewModels
             }
         }
 
-        public virtual Task WaitToFetchData()
+        public virtual async Task WaitToFetchData()
         {
-            return Task.CompletedTask;
+
         }
 
-        public virtual Task FetchData(bool isForce = false)
+        public virtual async Task FetchData(bool isForce = false)
         {
-            return Task.CompletedTask;
+
         }
 
         public static string FixArabicForSearch(string text)

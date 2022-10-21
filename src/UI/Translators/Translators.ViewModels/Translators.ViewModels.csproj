@@ -1,15 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0;net45</TargetFrameworks>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <RootNamespace>Translators</RootNamespace>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SignalGo.Net.Client" Version="5.7.1" />
+    <PackageReference Include="SignalGo.Net.Client" Version="5.7.1.1" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.Abstractions\Plugin.SimpleAudioPlayer.Abstractions.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer\Plugin.SimpleAudioPlayer.csproj" />
-  </ItemGroup>
+  <Import Project="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer.projitems" Label="Shared" />
 </Project>
