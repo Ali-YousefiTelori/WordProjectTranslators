@@ -139,7 +139,7 @@ namespace Translators.ServiceManagers
         }
 
         public static Func<string> GetVersion { get; set; }
-        public static Func<string> GetCurrentVersionNumber { get; set; }
+        public static Func<string> GetCurrentVersion { get; set; }
         public static Func<string> GetCurrentBuildNumber { get; set; }
         public static void LogException(string error)
         {

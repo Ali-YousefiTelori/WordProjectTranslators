@@ -127,9 +127,9 @@ namespace Translators.ViewModels.Pages
                     return;
                 _PlaybackCurrentPosition = value;
                 OnPropertyChanged(nameof(PlaybackCurrentPosition));
-                if (Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.CanSeek)
+                if (AudioPlayerBaseHelper.CurrentBase.CanSeek)
                 {
-                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Seek(value * Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Duration);
+                    AudioPlayerBaseHelper.CurrentBase.Seek(value * AudioPlayerBaseHelper.CurrentBase.Duration);
                 }
             }
         }
@@ -311,23 +311,22 @@ namespace Translators.ViewModels.Pages
                     var saver = new ApplicationBookAudioData();
                     saver.Initialize(key, ".mp3");
                     var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/Page/DownloadFile?pageId={key}");
-                    var run = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Load(stream);
-                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.PlaybackEnded -= Current_PlaybackEnded;
-                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.PlaybackEnded += Current_PlaybackEnded;
+                    var run = AudioPlayerBaseHelper.CurrentBase.Load(stream);
+                    AudioPlayerBaseHelper.CurrentBase.PlaybackEnded = Current_PlaybackEnded;
                     PlaybackCurrentPosition = 0;
                 }
 
                 if (IsPlaying)
-                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Pause();
+                    AudioPlayerBaseHelper.CurrentBase.Pause();
                 else
                 {
                     //In Android it will stop instead of pause
                     if (_LastPlaybackSpeedRatoSet != _PlaybackSpeedRato)
                     {
                         _LastPlaybackSpeedRatoSet = _PlaybackSpeedRato;
-                        Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.SetSpeed(_PlaybackSpeedRato);
+                        AudioPlayerBaseHelper.CurrentBase.SetSpeed(_PlaybackSpeedRato);
                     }
-                    Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Play();
+                    AudioPlayerBaseHelper.CurrentBase.Play();
                 }
                 IsPlaying = !IsPlaying;
                 isLoaded = true;
@@ -343,9 +342,9 @@ namespace Translators.ViewModels.Pages
         {
             while (_canPositionUpdate)
             {
-                if (IsPlaying && Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.CanSeek)
+                if (IsPlaying && AudioPlayerBaseHelper.CurrentBase.CanSeek)
                 {
-                    _PlaybackCurrentPosition = 1 * (Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.CurrentPosition / Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Duration);
+                    _PlaybackCurrentPosition = 1 * (AudioPlayerBaseHelper.CurrentBase.CurrentPosition / AudioPlayerBaseHelper.CurrentBase.Duration);
                     OnPropertyChanged(nameof(PlaybackCurrentPosition));
                 }
                 await Task.Delay(TimeSpan.FromSeconds(1));
@@ -356,11 +355,11 @@ namespace Translators.ViewModels.Pages
         {
             isLoaded = false;
             IsPlaying = false;
-            Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.Stop();
+            AudioPlayerBaseHelper.CurrentBase.Stop();
             _LastPlaybackSpeedRatoSet = 0;
         }
 
-        private async void Current_PlaybackEnded(object sender, EventArgs e)
+        private async Task Current_PlaybackEnded()
         {
             if (!IsPlaying)
                 return;

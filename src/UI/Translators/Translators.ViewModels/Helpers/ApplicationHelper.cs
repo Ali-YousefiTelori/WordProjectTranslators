@@ -13,9 +13,7 @@ namespace Translators.Helpers
 
         public static Task<long> GetBuildNumber()
         {
-            if (long.TryParse(TranslatorService.GetCurrentBuildNumber(), out long number))
-                return Task.FromResult(number);
-            return Task.FromResult(0L);
+            return Current.GetBuildNumber();
         }
     }
 }

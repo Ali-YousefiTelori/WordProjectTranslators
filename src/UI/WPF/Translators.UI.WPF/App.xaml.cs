@@ -15,7 +15,7 @@ namespace Translators.UI.WPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            StartUp.Initialize();
+            AppStartup.Initialize();
             base.OnStartup(e);
         }
     }

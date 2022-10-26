@@ -5,11 +5,28 @@
     xmlns:local="using:Translators.UI.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
-    <Grid>
-
+    <UserControl.Resources>
+        <viewmodels:ReadingPageViewModel x:Key="ReadingPageViewModel" />
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource ReadingPageViewModel}"/>
+    </UserControl.DataContext>
+    <Grid FlowDirection="RightToLeft">
+        <ListBox ItemsSource="{Binding Items}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="{Binding TouchedCommand,Source={StaticResource ReadingPageViewModel}}" CommandParameter="{Binding}">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock FontSize="{Binding FontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Name}"/>
+                            <TextBlock FontSize="{Binding ReadingFontSize,Source={StaticResource ReadingPageViewModel}}" Text="{Binding Title}"/>
+                        </StackPanel>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

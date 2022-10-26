@@ -26,7 +26,7 @@
         <ListBox ItemsSource="{Binding Items}" Grid.Row="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding TouchedCommand,Source={StaticResource BookViewModel}}" CommandParameter="{Binding}" >
+                    <Button Command="{Binding TouchedCommand,Source={StaticResource BookViewModel}}" CommandParameter="{Binding}" Style="{StaticResource ListItemButton}">
                         <Border Margin="20" MinWidth="100" MinHeight="100" BorderBrush="#C49B33" CornerRadius="40">
                             <TextBlock FontSize="{Binding FontSize,Source={StaticResource BookViewModel}}" Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                         </Border>

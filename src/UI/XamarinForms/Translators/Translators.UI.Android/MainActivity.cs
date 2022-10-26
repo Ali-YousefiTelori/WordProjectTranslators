@@ -15,7 +15,7 @@ namespace Translators.UI.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+            LoadApplication(new Translators.UI.MyApp());
             if (TranslatorsService.This == null)
                 StartForegroundServiceCompat<TranslatorsService>(this);
         }

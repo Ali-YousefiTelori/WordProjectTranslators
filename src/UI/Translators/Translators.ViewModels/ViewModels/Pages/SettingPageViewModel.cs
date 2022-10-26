@@ -78,7 +78,7 @@ namespace Translators.ViewModels.Pages
             {
                 _PlaybackSpeedRato = 2;
             }
-            Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current.SetSpeed(_PlaybackSpeedRato);
+            AudioPlayerBaseHelper.CurrentBase.SetSpeed(_PlaybackSpeedRato);
             ApplicationSettingData.Current.Save();
         }
     }

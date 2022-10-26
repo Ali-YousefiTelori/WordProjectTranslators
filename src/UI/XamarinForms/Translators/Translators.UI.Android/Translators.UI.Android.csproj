@@ -23,13 +23,14 @@
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;Xamarin</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
@@ -55,8 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2515" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
+    <PackageReference Include="Xamarin.CommunityToolkit">
+      <Version>2.0.5</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
@@ -88,16 +90,16 @@
     <AndroidResource Include="Resources\drawable\icon_feed.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.Abstractions\Plugin.SimpleAudioPlayer.Abstractions.csproj">
-      <Project>{7c8186f6-8f8f-402e-ba7c-1be962dbf00c}</Project>
-      <Name>Plugin.SimpleAudioPlayer.Abstractions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.Android\Plugin.SimpleAudioPlayer.Android.csproj">
       <Project>{56a56f17-7de1-4ca1-9617-bf32e971ac84}</Project>
       <Name>Plugin.SimpleAudioPlayer.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj">
+      <Project>{e7db95c7-edf8-4f9b-b5bd-4d13efeb98fc}</Project>
+      <Name>Translators.ViewModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Translators.UI\Translators.UI.csproj">
-      <Project>{4D105305-0752-4341-B358-E28E09A6A816}</Project>
+      <Project>{c37a8a89-a702-48f0-83eb-502d3279f253}</Project>
       <Name>Translators.UI</Name>
     </ProjectReference>
   </ItemGroup>
@@ -126,6 +128,8 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
   </ItemGroup>
+  <Import Project="..\..\..\Translators\Translators.SharedUI\Translators.SharedUI.projitems" Label="Shared" />
+  <Import Project="..\..\..\Translators\Translators.BaseSharedUI\Translators.BaseSharedUI.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>PowerShell -File "$(SolutionDir)Update-PackageName.ps1" $(ProjectDir) $(ConfigurationName)</PreBuildEvent>

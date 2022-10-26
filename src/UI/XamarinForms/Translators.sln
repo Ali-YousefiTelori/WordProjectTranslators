@@ -31,12 +31,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleAudioPLayer", "Simple
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.SimpleAudioPlayer.Android", "..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.Android\Plugin.SimpleAudioPlayer.Android.csproj", "{56A56F17-7DE1-4CA1-9617-BF32E971AC84}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.SimpleAudioPlayer.WPF", "..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.WPF\Plugin.SimpleAudioPlayer.WPF.csproj", "{E39230FA-8B4B-4229-A847-EAB0E3B53877}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.SimpleAudioPlayer.Abstractions", "..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.Abstractions\Plugin.SimpleAudioPlayer.Abstractions.csproj", "{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.SimpleAudioPlayer", "..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer\Plugin.SimpleAudioPlayer.csproj", "{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.SimpleAudioPlayer.UWP", "..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.UWP\Plugin.SimpleAudioPlayer.UWP.csproj", "{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Translators.BaseSharedUI", "..\Translators\Translators.BaseSharedUI\Translators.BaseSharedUI.shproj", "{B60A389B-284B-4569-B6B3-7FD932D5D059}"
@@ -44,6 +38,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvvmGo", "..\..\..\..\MvvmGo\MvvmGo\MvvmGo.csproj", "{18B8799A-2E1C-4A3D-9BE6-3D80C7605E5D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvvmGo.WindowsWPF", "..\..\..\..\MvvmGo\MvvmGo.WindowsWPF\MvvmGo.WindowsWPF.csproj", "{FF3031D6-CE87-409A-B9AE-85A869702E35}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Plugin.SharedSimpleAudioPlayer", "..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer.shproj", "{1C626FE9-901E-495A-B28E-7772D4BC397B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -277,78 +273,6 @@ Global
 		{56A56F17-7DE1-4CA1-9617-BF32E971AC84}.Release|x64.Build.0 = Release|Any CPU
 		{56A56F17-7DE1-4CA1-9617-BF32E971AC84}.Release|x86.ActiveCfg = Release|Any CPU
 		{56A56F17-7DE1-4CA1-9617-BF32E971AC84}.Release|x86.Build.0 = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|ARM.Build.0 = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|x64.Build.0 = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Debug|x86.Build.0 = Debug|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|ARM.ActiveCfg = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|ARM.Build.0 = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|iPhone.Build.0 = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|x64.ActiveCfg = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|x64.Build.0 = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|x86.ActiveCfg = Release|Any CPU
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877}.Release|x86.Build.0 = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|ARM.Build.0 = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|x64.Build.0 = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Debug|x86.Build.0 = Debug|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|ARM.ActiveCfg = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|ARM.Build.0 = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|iPhone.Build.0 = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|x64.ActiveCfg = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|x64.Build.0 = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|x86.ActiveCfg = Release|Any CPU
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C}.Release|x86.Build.0 = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|ARM.Build.0 = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|x64.Build.0 = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Debug|x86.Build.0 = Debug|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|ARM.ActiveCfg = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|ARM.Build.0 = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|iPhone.Build.0 = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|x64.ActiveCfg = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|x64.Build.0 = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|x86.ActiveCfg = Release|Any CPU
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4}.Release|x86.Build.0 = Release|Any CPU
 		{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1}.Debug|ARM.ActiveCfg = Debug|ARM
@@ -438,24 +362,24 @@ Global
 		{B0C95026-5BB0-4945-9DE3-81D1A7EA84A0} = {5ABE14AA-CC85-4D8A-A98B-DB2F13DC6F2F}
 		{A397B30A-B24F-4D9D-A4EA-6E5E0EA104E5} = {395B7EC2-23C9-450C-BDB5-2FB98304A79E}
 		{56A56F17-7DE1-4CA1-9617-BF32E971AC84} = {A397B30A-B24F-4D9D-A4EA-6E5E0EA104E5}
-		{E39230FA-8B4B-4229-A847-EAB0E3B53877} = {A397B30A-B24F-4D9D-A4EA-6E5E0EA104E5}
-		{7C8186F6-8F8F-402E-BA7C-1BE962DBF00C} = {A397B30A-B24F-4D9D-A4EA-6E5E0EA104E5}
-		{4079808A-69B5-4BD8-9DEE-4DDAB01BB1F4} = {A397B30A-B24F-4D9D-A4EA-6E5E0EA104E5}
 		{E34B516D-C0D8-450F-9DB0-BB6A5B04AEF1} = {A397B30A-B24F-4D9D-A4EA-6E5E0EA104E5}
 		{B60A389B-284B-4569-B6B3-7FD932D5D059} = {5ABE14AA-CC85-4D8A-A98B-DB2F13DC6F2F}
 		{18B8799A-2E1C-4A3D-9BE6-3D80C7605E5D} = {395B7EC2-23C9-450C-BDB5-2FB98304A79E}
 		{FF3031D6-CE87-409A-B9AE-85A869702E35} = {395B7EC2-23C9-450C-BDB5-2FB98304A79E}
+		{1C626FE9-901E-495A-B28E-7772D4BC397B} = {A397B30A-B24F-4D9D-A4EA-6E5E0EA104E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {90B45D66-F2C2-49DE-9453-BEB27AF20460}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer.projitems*{1c626fe9-901e-495a-b28e-7772d4bc397b}*SharedItemsImports = 13
+		..\Translators\Translators.BaseSharedUI\Translators.BaseSharedUI.projitems*{3dfa0e09-322c-4d38-b507-6205cbf7e9b9}*SharedItemsImports = 4
+		..\Translators\Translators.SharedUI\Translators.SharedUI.projitems*{3dfa0e09-322c-4d38-b507-6205cbf7e9b9}*SharedItemsImports = 4
 		..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer.projitems*{56a56f17-7de1-4ca1-9617-bf32e971ac84}*SharedItemsImports = 4
 		..\Translators\Translators.SharedUI\Translators.SharedUI.projitems*{b0c95026-5bb0-4945-9de3-81d1a7ea84a0}*SharedItemsImports = 13
 		..\Translators\Translators.BaseSharedUI\Translators.BaseSharedUI.projitems*{b60a389b-284b-4569-b6b3-7fd932d5d059}*SharedItemsImports = 13
-		..\Translators\Translators.BaseSharedUI\Translators.BaseSharedUI.projitems*{c37a8a89-a702-48f0-83eb-502d3279f253}*SharedItemsImports = 5
-		..\Translators\Translators.SharedUI\Translators.SharedUI.projitems*{c37a8a89-a702-48f0-83eb-502d3279f253}*SharedItemsImports = 5
 		..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer.projitems*{e34b516d-c0d8-450f-9db0-bb6a5b04aef1}*SharedItemsImports = 4
-		..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer.projitems*{e7db95c7-edf8-4f9b-b5bd-4d13efeb98fc}*SharedItemsImports = 5
+		..\Translators\Translators.BaseSharedUI\Translators.BaseSharedUI.projitems*{e878f00d-288c-4f0b-9c5a-901ebb104b0c}*SharedItemsImports = 4
+		..\Translators\Translators.SharedUI\Translators.SharedUI.projitems*{e878f00d-288c-4f0b-9c5a-901ebb104b0c}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

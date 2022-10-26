@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using Translators.Models.Interfaces;
 using Translators.ServiceManagers;
 
@@ -11,8 +13,12 @@ namespace Translators.UI.Helpers
         public async Task DownloadNewVersion()
         {
             string fileName = "";
-#if (WPF)
+#if (CSHTML5)
 
+#elif (WPFCore)
+            Process.Start($"{TranslatorService.ServiceAddress}/Application/DownloadLastVersion?fileName=wpfcore.zip");
+#elif (WPF)
+            Process.Start($"{TranslatorService.ServiceAddress}/Application/DownloadLastVersion?fileName=wpf.zip");
 #else
             if (Device.RuntimePlatform == Device.iOS)
             {
@@ -28,7 +34,7 @@ namespace Translators.UI.Helpers
 
         public Task<long> GetBuildNumber()
         {
-            if (long.TryParse(TranslatorService.GetCurrentVersionNumber(), out long result))
+            if (long.TryParse(TranslatorService.GetCurrentBuildNumber(), out long result))
                 return Task.FromResult(result);
             return Task.FromResult(0L);
         }

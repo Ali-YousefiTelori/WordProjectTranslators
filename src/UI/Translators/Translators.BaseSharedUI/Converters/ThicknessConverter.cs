@@ -1,15 +1,20 @@
 ﻿using System.Globalization;
 
+#if (CSHTML5)
+using System;
+using Windows.UI.Xaml;
+#endif
+
 namespace Translators.UI.Converters
 {
-    public class ThicknessConverter : IValueConverter
+    public class ThicknessConverter : BaseConverter
     {
         public bool IsLeft { get; set; } = true;
         public bool IsRight { get; set; } = true;
         public bool IsTop { get; set; } = true;
         public bool IsBottom { get; set; } = true;
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is int number)
             {
@@ -23,7 +28,7 @@ namespace Translators.UI.Converters
             return new Thickness(0);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

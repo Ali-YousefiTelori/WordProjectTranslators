@@ -20,7 +20,7 @@
     <ListBox ItemsSource="{Binding Items}">
         <ListBox.ItemTemplate>
             <DataTemplate>
-                <Button Command="{Binding TouchedCommand,Source={StaticResource CategoryViewModel}}" CommandParameter="{Binding}" >
+                <Button Command="{Binding TouchedCommand,Source={StaticResource CategoryViewModel}}" CommandParameter="{Binding}" Style="{StaticResource ListItemButton}">
                     <Border Margin="20" MinWidth="100" MinHeight="100" BorderBrush="#C49B33" CornerRadius="40">
                         <TextBlock FontSize="{Binding FontSize,Source={StaticResource CategoryViewModel}}" Text="{Binding Names,Converter={StaticResource LanguageValueConverter}}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>

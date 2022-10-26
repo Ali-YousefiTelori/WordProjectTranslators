@@ -2,6 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <FontFamily x:Key="Nasim">pack://application:,,,/Translators.UI.WPFCore;component/Resources/Fonts/#Nasim</FontFamily>
+    <FontFamily x:Key="QuranTaha">pack://application:,,,/Translators.UI.WPFCore;component/Resources/Fonts/#QuranTaha</FontFamily>
+    <FontFamily x:Key="icomoon">pack://application:,,,/Translators.UI.WPFCore;component/Resources/Fonts/#icomoon</FontFamily>
     <!-- Light colors -->
     <SolidColorBrush x:Key="LightTextColor">Black</SolidColorBrush>
     <SolidColorBrush x:Key="LightBackgroundColor">White</SolidColorBrush>
@@ -17,47 +20,132 @@
     <SolidColorBrush x:Key="Primary">#2196F3</SolidColorBrush>
     <Style TargetType="Button">
         <Setter Property="Foreground" Value="White"></Setter>
-        <!--<Setter Property="VisualStateManager.VisualStateGroups">
-                <VisualStateGroupList>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Disabled">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="#332196F3" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateGroupList>
-            </Setter>-->
+        <Setter Property="Background" Value="{StaticResource Primary}"/>
+    </Style>
+    <Style TargetType="Button" x:Key="ListItemButton">
+        <Setter Property="BorderThickness" Value="0"></Setter>
+        <Setter Property="Background" Value="#01FFFFFF"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+        <Setter Property="FlowDirection" Value="RightToLeft"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border TextBlock.Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" x:Name="Border" CornerRadius="2" BorderThickness="1">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.5" />
+                                    <VisualTransition GeneratedDuration="0" To="Pressed" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter Margin="2"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            RecognizesAccessKey="True" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style TargetType="Page">
         <Setter Property="Background" Value="{StaticResource LightBackgroundColor}" />
         <Setter Property="FlowDirection" Value="RightToLeft" />
+    </Style>
+    <Style TargetType="ListBoxItem">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+        <Setter Property="FlowDirection" Value="RightToLeft"></Setter>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+                  Padding="{TemplateBinding Control.Padding}"
+                  BorderBrush="{TemplateBinding Border.BorderBrush}"
+                  Background="{TemplateBinding Panel.Background}"
+                  Name="Bd"
+                  SnapsToDevicePixels="True">
+                        <ContentPresenter Content="{TemplateBinding ContentControl.Content}"
+                               ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                               ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                               HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                               VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                               SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                <Condition Property="Selector.IsSelected" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Panel.Background" TargetName="Bd" Value="Transparent"/>
+                            <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                <Setter.Value>
+                                    <SolidColorBrush>#FFDADADA</SolidColorBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                <Condition Property="Selector.IsSelected" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Panel.Background" TargetName="Bd" Value="Transparent"/>
+                            <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                <Setter.Value>
+                                    <SolidColorBrush>#FF26A0DA</SolidColorBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </MultiTrigger>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Property="Panel.Background" TargetName="Bd" Value="{StaticResource Primary}"/>
+                            <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                <Setter.Value>
+                                    <SolidColorBrush>#A826A0DA</SolidColorBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" TargetName="Bd">
+                                <Setter.Value>
+                                    <DynamicResource ResourceKey="{x:Static SystemColors.GrayTextBrushKey}" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     <!--<Style TargetType="ContentView">
             <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource LightBackgroundColor}, Dark={StaticResource DarkBackgroundColor}}" />
             <Setter Property="FlowDirection" Value="RightToLeft" />
         </Style>-->
     <Style TargetType="Grid">
-        <Setter Property="Background" Value="{StaticResource LightBackgroundColor}" />
+        
     </Style>
     <Style TargetType="TextBlock">
-        <Setter Property="Background" Value="{StaticResource LightBackgroundColor}" />
         <Setter Property="Foreground" Value="{StaticResource LightTextColor}" />
-        <Setter Property="FontFamily" Value="Nasim" />
+        <Setter Property="FontFamily" Value="{DynamicResource Nasim}" />
     </Style>
     <Style TargetType="TextBlock" x:Key="MainParagraphTextBlock">
-        <Setter Property="FontFamily" Value="QuranTaha" />
+        <Setter Property="FontFamily" Value="{DynamicResource QuranTaha}" />
     </Style>
     <Style TargetType="TextBlock" x:Key="TranslatedParagraphTextBlock">
         <Setter Property="Foreground" Value="{StaticResource LightTranslateTextColor}" />
     </Style>
     <Style TargetType="Frame">
-        <Setter Property="Background" Value="{StaticResource LightBackgroundColor}" />
+        
     </Style>
     <Style TargetType="Slider">
         <Setter Property="Background" Value="LightGray" />

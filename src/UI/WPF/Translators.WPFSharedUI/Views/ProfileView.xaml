@@ -5,11 +5,25 @@
     xmlns:local="using:Translators.UI.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+    xmlns:conv="clr-namespace:Translators.UI.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
-    <Grid>
-
-    </Grid>
+    <UserControl.Resources>
+        <viewmodels:ProfilePageViewModel x:Key="ProfilePageViewModel" />
+        <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource ProfilePageViewModel}"/>
+    </UserControl.DataContext>
+    <UserControl.Content>
+        <Grid>
+            <StackPanel VerticalAlignment="Center">
+                <TextBlock Text="خوش آمدید" VerticalAlignment="Center"  HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding UserName}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <Button Content="ثبت نام" Visibility="{Binding CanRegister,Converter={StaticResource BooleanToVisibilityConverter}}" Command="{Binding RegisterCommand}"/>
+            </StackPanel>
+        </Grid>
+    </UserControl.Content>
 </UserControl>

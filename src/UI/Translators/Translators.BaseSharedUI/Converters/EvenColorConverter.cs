@@ -1,11 +1,17 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using Translators.UI.Helpers;
+
+#if (CSHTML5)
+using Windows.UI.Xaml;
+using Windows.UI;
+#endif
 
 namespace Translators.UI.Converters
 {
-    public class EvenColorConverter : IValueConverter
+    public class EvenColorConverter : BaseConverter
     {
-        public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var isDarkTheme = ApplicationSharedHelper.IsDarkTheme();
             if (value is bool b && b)
@@ -23,23 +29,29 @@ namespace Translators.UI.Converters
             {
                 if (isDarkTheme)
                 {
-                    if (Application.Current.Resources.TryGetValue("DarkBackgroundColor", out object color) && color is Color darkBackgroundColor)
+                    if (Application.Current.Resources.TryGetValue("DarkBackgroundColor", out object color))
                     {
-                        return darkBackgroundColor;
+                        if (color is Color darkBackgroundColor)
+                            return darkBackgroundColor;
+                        else if (color is Brush darkBackgroundBrush)
+                            return darkBackgroundBrush;
                     }
                 }
                 else
                 {
-                    if (Application.Current.Resources.TryGetValue("LightBackgroundColor", out object color) && color is Color darkBackgroundColor)
+                    if (Application.Current.Resources.TryGetValue("LightBackgroundColor", out object color))
                     {
-                        return darkBackgroundColor;
+                        if (color is Color lightBackgroundColor)
+                            return lightBackgroundColor;
+                        else if (color is Brush lightBackgroundBrush)
+                            return lightBackgroundBrush;
                     }
                 }
             }
             return ApplicationSharedHelper.GetTransparentColor();
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

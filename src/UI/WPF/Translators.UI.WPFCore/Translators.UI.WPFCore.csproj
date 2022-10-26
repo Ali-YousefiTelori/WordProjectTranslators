@@ -2,18 +2,18 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net45;</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <LangVersion>latest</LangVersion>
     <StartupObject>Translators.UI.WPFCore.App</StartupObject>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants);WPF</DefineConstants>
+    <DefineConstants>$(DefineConstants);WPF;WPFCore</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>$(DefineConstants);WPF</DefineConstants>
+    <DefineConstants>$(DefineConstants);WPF;WPFCore</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,8 +21,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="..\..\Translators\Translators.BaseSharedUI\Resources\Fonts\icomoon.ttf" Link="Resources\Fonts\icomoon.ttf" >
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="..\..\Translators\Translators.BaseSharedUI\Resources\Fonts\Nasim.ttf" Link="Resources\Fonts\Nasim.ttf" >
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="..\..\Translators\Translators.BaseSharedUI\Resources\Fonts\QuranTaha.ttf" Link="Resources\Fonts\QuranTaha.ttf" >
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\MvvmGo\MvvmGo\MvvmGo.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.WPFCore\Plugin.SimpleAudioPlayer.WPFCore.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.WPFCore\Plugin.SimpleAudioPlayer.WPF45.csproj" />
     <ProjectReference Include="..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj" />
   </ItemGroup>
 
@@ -47,6 +59,10 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Fonts\" />
   </ItemGroup>
 
   <Import Project="..\Translators.WPFSharedUI\Translators.WPFSharedUI.projitems" Label="Shared" />

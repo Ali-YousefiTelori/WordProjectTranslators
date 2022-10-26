@@ -9,8 +9,11 @@ namespace Translators.UI.Helpers
     {
         public static void Initialize()
         {
+            AudioPlayerHelper.Current = new Plugin.SimpleAudioPlayer.SimpleAudioPlayerImplementation();
+            Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.GetSimpleAudioPlayer = () => AudioPlayerHelper.Current;
+
 #if (WPF)
-AsyncHelper.RunOnUAction  = Application.Current.Dispatcher.Invoke;
+            AsyncHelper.RunOnUAction = Application.Current.Dispatcher.Invoke;
             AsyncHelper.RunOnUIFunc = async (obj) =>
             {
                 await Application.Current.Dispatcher.InvokeAsync(async () =>

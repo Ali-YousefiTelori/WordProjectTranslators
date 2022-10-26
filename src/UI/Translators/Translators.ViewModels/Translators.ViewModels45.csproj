@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{21C46AC6-1A9F-4C9E-8A92-43E648DDFC38}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Translators.ViewModels</RootNamespace>
+    <AssemblyName>Translators.ViewModels45</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Connected Services\TranslatorsServices\Reference.cs" />
+    <Compile Include="Converters\LanguageValueBaseConverter.cs" />
+    <Compile Include="Engines\OfflineDownloaders\BookServiceOfflineDownloader.cs" />
+    <Compile Include="Engines\OfflineDownloaders\ChapterServiceOfflineDownloader.cs" />
+    <Compile Include="Engines\OfflineDownloaders\PageServiceOfflineDownloader.cs" />
+    <Compile Include="Engines\OfflineDownloaders\ParagraphServiceOfflineDownloader.cs" />
+    <Compile Include="Engines\OfflineDownloaders\ServiceOfflineDownloaderBase.cs" />
+    <Compile Include="Helpers\AlertHelper.cs" />
+    <Compile Include="Helpers\ApplicationHelper.cs" />
+    <Compile Include="Helpers\AsyncHelper.cs" />
+    <Compile Include="Helpers\ClipboardHelper.cs" />
+    <Compile Include="Helpers\CommandHelper.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\OfflineDownloaderHelper.cs" />
+    <Compile Include="Helpers\PageHelper.cs" />
+    <Compile Include="Helpers\StorageManager.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\Contracts\BookServiceModelsContract.cs" />
+    <Compile Include="Models\DataTypes\DeleteRightClickType.cs" />
+    <Compile Include="Models\DataTypes\ReadingRightClickType.cs" />
+    <Compile Include="Models\DataTypes\VerseRightClickType.cs" />
+    <Compile Include="Models\Interfaces\IAlertManager.cs" />
+    <Compile Include="Models\Interfaces\IApplicationManager.cs" />
+    <Compile Include="Models\Interfaces\IClipboardManager.cs" />
+    <Compile Include="Models\Interfaces\ICommand.cs" />
+    <Compile Include="Models\Interfaces\ICommandManager.cs" />
+    <Compile Include="Models\Interfaces\IDownloader.cs" />
+    <Compile Include="Models\Interfaces\IPageManager.cs" />
+    <Compile Include="Models\PageType.cs" />
+    <Compile Include="Models\ParagraphModel.cs" />
+    <Compile Include="Models\Storages\ApplicationBookAudioData.cs" />
+    <Compile Include="Models\Storages\ApplicationBookData.cs" />
+    <Compile Include="Models\Storages\ApplicationPagesData.cs" />
+    <Compile Include="Models\Storages\ApplicationProfileData.cs" />
+    <Compile Include="Models\Storages\ApplicationReadingData.cs" />
+    <Compile Include="Models\Storages\ApplicationSettingData.cs" />
+    <Compile Include="Models\Storages\ApplicationStorageBase.cs" />
+    <Compile Include="Models\Storages\Models\ApplicationProfile.cs" />
+    <Compile Include="Models\Storages\Models\ApplicationSetting.cs" />
+    <Compile Include="Models\Storages\Models\LocalStorageData.cs" />
+    <Compile Include="Models\Storages\Models\PageData.cs" />
+    <Compile Include="Models\Storages\StreamDownloaderBase.cs" />
+    <Compile Include="ServiceManagers\TranslatorHttpClient.cs" />
+    <Compile Include="ServiceManagers\TranslatorService.cs" />
+    <Compile Include="ViewModels\BaseCollectionViewModel.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Pages\BookViewModel.cs" />
+    <Compile Include="ViewModels\Pages\CategoryViewModel.cs" />
+    <Compile Include="ViewModels\Pages\ChapterViewModel.cs" />
+    <Compile Include="ViewModels\Pages\LinkParagraphPageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\OfflineDownloaderViewModel.cs" />
+    <Compile Include="ViewModels\Pages\PageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\ParagraphBaseViewModel.cs" />
+    <Compile Include="ViewModels\Pages\ParagraphsPageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\ProfilePageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\ReadingPageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\SearchPageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\SearchResultPageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\SettingPageViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Dynamitey, Version=2.0.9.136, Culture=neutral, PublicKeyToken=cbf53ea3aeb972c6, processorArchitecture=MSIL">
+      <HintPath>..\..\Web\CSHtml5\Translators\packages\Dynamitey.2.0.9.136\lib\net40\Dynamitey.dll</HintPath>
+    </Reference>
+    <Reference Include="ImpromptuInterface, Version=7.0.1.0, Culture=neutral, PublicKeyToken=0b1781c923b2975b, processorArchitecture=MSIL">
+      <HintPath>..\..\Web\CSHtml5\Translators\packages\ImpromptuInterface.7.0.1\lib\net40\ImpromptuInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\Web\CSHtml5\Translators\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalGo.Client, Version=5.7.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Web\CSHtml5\Translators\packages\SignalGo.Net.Client.5.7.1.1\lib\net45\SignalGo.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="SignalGo.Shared, Version=5.7.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Web\CSHtml5\Translators\packages\SignalGo.Net.Shared.5.7.1.1\lib\net45\SignalGo.Shared.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\Web\CSHtml5\Translators\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\TranslatorsServices\setting.signalgo" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\MvvmGo\MvvmGo\MvvmGo45.csproj">
+      <Project>{f9b998e6-0076-4cc8-bb7c-02ef5ebc6db1}</Project>
+      <Name>MvvmGo45</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer45\Plugin.SimpleAudioPlayer.csproj">
+      <Project>{6dba8ca7-cb2c-4d70-8c5d-faaa10ce2e0d}</Project>
+      <Name>Plugin.SimpleAudioPlayer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

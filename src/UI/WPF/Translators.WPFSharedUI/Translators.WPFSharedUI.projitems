@@ -91,7 +91,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\AlertExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\AppStartup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\WPFNavigationManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\INavigation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pages\CategoryPage.xaml.cs">

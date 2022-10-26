@@ -7,7 +7,12 @@ using Translators.UI.Pages;
 using Translators.UI.Views;
 using Translators.ViewModels;
 using Translators.ViewModels.Pages;
-
+#if (CSHTML5)
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml;
+using System;
+using System.Threading.Tasks;
+#endif
 namespace Translators.UI.Helpers
 {
     public class NavigationManager : IPageManager
@@ -35,7 +40,7 @@ namespace Translators.UI.Helpers
         public static Page GetCurrentPage()
         {
 #if (!SharedProject && !WPF)
-            return App.Current.MainPage;//Navigation.NavigationStack.LastOrDefault();
+            return MyApp.Current.MainPage;//Navigation.NavigationStack.LastOrDefault();
 #else
             return GetCurrentPageFunc?.Invoke();
 #endif

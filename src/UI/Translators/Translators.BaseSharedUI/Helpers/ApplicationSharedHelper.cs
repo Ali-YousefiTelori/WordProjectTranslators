@@ -1,4 +1,7 @@
-﻿namespace Translators.UI.Helpers
+﻿#if (CSHTML5)
+using Windows.UI;
+#endif
+namespace Translators.UI.Helpers
 {
     public class ApplicationSharedHelper
     {
@@ -17,21 +20,24 @@
             return false;
 #endif
         }
-
+        
+#if (CSHTML5)
+            
+#elif (WPF)
+        public static Brush GetColorFromHex(string hex)
+        {
+            return (Brush)new BrushConverter().ConvertFromString(hex);
+        }
+#else
         public static Color GetColorFromHex(string hex)
         {
-#if (!WPF)
-{
 #if (Xamarin)
             return Color.FromHex(hex);
 #else
             return Color.FromArgb(hex);
 #endif
-}
-#else
-            return (Color)ColorConverter.ConvertFromString(hex);
-#endif
         }
+#endif
 
         public static Color GetTransparentColor()
         {

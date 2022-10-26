@@ -5,11 +5,63 @@
     xmlns:local="using:Translators.UI.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+    xmlns:conv="clr-namespace:Translators.UI.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
-
+    <UserControl.Resources>
+        <viewmodels:SearchPageViewModel x:Key="SearchPageViewModel" />
+        <conv:LanguageValueConverter LanguageCode="fa-ir" x:Key="LanguageValueConverter"/>
+        <conv:ThicknessConverter IsLeft="False" IsBottom="False" IsRight="True" IsTop="False" x:Key="ThicknessConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource SearchPageViewModel}"/>
+    </UserControl.DataContext>
+    <Grid FlowDirection="RightToLeft">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="متن جستجو:" VerticalAlignment="Center"/>
+            <TextBox Text="{Binding SearchText}" Grid.Column="1" Margin="10,0,0,0"/>
+        </Grid>
+        <StackPanel Grid.Row="1" Margin="10">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSearchInMainText}"/>
+                <TextBlock FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="جستجو در متن اصلی"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSearchInTranslateText}"/>
+                <TextBlock FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="جستجو در ترجمه"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding DoFullWordsSearch}"/>
+                <TextBlock FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="جستجوی کل جمله"/>
+            </StackPanel>
+        </StackPanel>
+        <ListBox Grid.Row="2"
+                ItemsSource="{Binding Items}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="10">
+                        <StackPanel Orientation="Horizontal" Margin="{Binding Left,Converter={StaticResource ThicknessConverter}}">
+                            <CheckBox IsChecked="{Binding IsSelected}"/>
+                            <TextBlock FontSize="{Binding FontSize,Source={StaticResource SearchPageViewModel}}" Text="{Binding Names, Converter={StaticResource LanguageValueConverter}}"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Content="جستجو" Grid.Row="3" Command="{Binding SearchCommand}"/>
+        <!--<ActivityIndicator IsRunning="{Binding IsLoading}" Grid.RowSpan="4" IsVisible="{Binding IsLoading}"/>-->
     </Grid>
 </UserControl>

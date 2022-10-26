@@ -1,14 +1,17 @@
-﻿using System.Text;
+﻿using System;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Translators.ServiceManagers;
 using Translators.UI.Helpers;
 
 namespace Translators.UI
 {
-    public partial class App : Application
+    public partial class MyApp : Application
     {
-        public App()
+        public MyApp()
         {
-            TranslatorService.GetCurrentVersionNumber = () => VersionTracking.CurrentVersion;
+            TranslatorService.GetCurrentVersion = () => VersionTracking.CurrentVersion;
             TranslatorService.GetCurrentBuildNumber = () => VersionTracking.CurrentBuild;
             TranslatorService.GetVersion = GetVersion;
             TaskScheduler.UnobservedTaskException += (o, e) =>

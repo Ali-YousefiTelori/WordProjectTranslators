@@ -8,16 +8,32 @@
     xmlns:pages="clr-namespace:Translators.UI.Pages"
     mc:Ignorable="d" FlowDirection="RightToLeft">
     <Grid>
-        <TabControl TabStripPlacement="Bottom">
+        <TabControl>
             <TabItem Header="Book">
-                <Frame x:Name="MainFrame" Source="/Pages/CategoryPage.xaml">
+                <Frame x:Name="BookFrame" Source="/Pages/CategoryPage.xaml">
                     
                 </Frame>
             </TabItem>
-            <TabItem Header="Reader"/>
-            <TabItem Header="Search"/>
-            <TabItem Header="Profile"/>
-            <TabItem Header="Settings"/>
+            <TabItem Header="Reader">
+                <Frame x:Name="ReaderFrame" Source="/Pages/ReadingPage.xaml">
+
+                </Frame>
+            </TabItem>
+            <TabItem Header="Search">
+                <Frame x:Name="SearchFrame" Source="/Pages/SearchPage.xaml">
+
+                </Frame>
+            </TabItem>
+            <TabItem Header="Profile">
+                <Frame x:Name="ProfileFrame" Source="/Pages/ProfilePage.xaml">
+
+                </Frame>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Frame x:Name="SettingsFrame" Source="/Pages/SettingPage.xaml">
+
+                </Frame>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>

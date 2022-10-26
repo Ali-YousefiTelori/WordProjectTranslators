@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Translators.UI.WPFCore"
         xmlns:pages="clr-namespace:Translators.UI.Pages"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="600" Width="1024">
     <Frame Source="/Pages/MainTabbedPage.xaml" >
         
     </Frame>

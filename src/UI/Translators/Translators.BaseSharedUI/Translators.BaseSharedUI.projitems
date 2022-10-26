@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BaseConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToMultipleSelectionConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EvenColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\LanguageValueConverter.cs" />
@@ -21,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\AlertManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ApplicationManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ApplicationSharedHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\AudioPlayerHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ClipboardManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\CommandManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\Extentions.cs" />
@@ -29,6 +31,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StartUp.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Resources\**" />
+    <Folder Include="$(MSBuildThisFileDirectory)Resources\" />
   </ItemGroup>
 </Project>

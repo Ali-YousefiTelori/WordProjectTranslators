@@ -1,6 +1,11 @@
 ﻿using Translators.Models.Interfaces;
 using Translators.ViewModels;
 
+#if (CSHTML5)
+using System;
+using System.Threading.Tasks;
+#endif
+
 namespace Translators.UI.Helpers
 {
     public class CommandManager : ICommandManager

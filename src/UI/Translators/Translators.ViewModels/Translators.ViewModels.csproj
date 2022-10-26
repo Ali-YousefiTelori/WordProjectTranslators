@@ -8,5 +8,4 @@
   <ItemGroup>
     <PackageReference Include="SignalGo.Net.Client" Version="5.7.1.1" />
   </ItemGroup>
-  <Import Project="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer\Plugin.SharedSimpleAudioPlayer.projitems" Label="Shared" />
 </Project>

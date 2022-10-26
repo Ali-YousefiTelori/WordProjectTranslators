@@ -15,7 +15,7 @@ namespace Translators.UI.WPFCore
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            StartUp.Initialize();
+            AppStartup.Initialize();
             base.OnStartup(e);
         }
     }

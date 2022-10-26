@@ -5,11 +5,43 @@
     xmlns:local="using:Translators.UI.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+    xmlns:conv="clr-namespace:Translators.UI.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
-
-    <Grid>
-
-    </Grid>
+    <UserControl.Resources>
+        <viewmodels:ParagraphsPageViewModel x:Key="ParagraphsPageViewModel" />
+        <conv:LanguageValueConverter LanguageCode="fa-ir" x:Key="LanguageValueConverter"/>
+        <conv:EvenColorConverter x:Key="EvenColorConverter"/>
+        <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource ParagraphsPageViewModel}"/>
+    </UserControl.DataContext>
+    <UserControl.Content>
+        <Grid Margin="10" FlowDirection="RightToLeft">
+            <ListBox ItemsSource="{Binding Items}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Button Command="{Binding TouchedCommand,Source={StaticResource ParagraphsPageViewModel}}" CommandParameter="{Binding}">
+                            <Grid Background="{Binding IsEven,Converter={StaticResource EvenColorConverter}}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Background="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource ParagraphsPageViewModel}}" Text="{Binding MainValue}" Style="{DynamicResource MainParagraphLabel}" Margin="10,0,10,0"/>
+                                <TextBlock Background="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" Grid.Row="1" FontSize="{Binding FontSize,Source={StaticResource ParagraphsPageViewModel}}" Style="{DynamicResource TranslatedParagraphLabel}" Margin="10,0,10,20" TextWrapping="Wrap" Text="{Binding TranslatedValue}" />
+                                <Grid Background="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" Width="24" Height="24" HorizontalAlignment="Right" Visibility="{Binding HasLink,Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Bottom" Grid.RowSpan="2">
+                                    <Border CornerRadius="24" Background="{StaticResource LinkBackgroundColor}" Padding="5" Margin="5,0,0,5">
+                                        <Image Source="icon_link.png"/>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Button>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </UserControl.Content>
 </UserControl>
