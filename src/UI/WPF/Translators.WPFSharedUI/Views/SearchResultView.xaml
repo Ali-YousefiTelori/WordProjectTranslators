@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
     xmlns:conv="clr-namespace:Translators.UI.Converters"
+    xmlns:components="clr-namespace:Translators.UI.Views.Components"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -24,21 +25,7 @@
             <ListBox ItemsSource="{Binding Items}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Button Command="{Binding TouchedCommand,Source={StaticResource SearchResultPageViewModel}}" CommandParameter="{Binding}">
-                            <Grid Background="{Binding IsEven,Converter={StaticResource EvenColorConverter}}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Background="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource SearchResultPageViewModel}}" Text="{Binding MainValue}" Style="{StaticResource MainParagraphTextBlock}" Margin="10,0,10,0"/>
-                                <TextBlock Background="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" Grid.Row="1" FontSize="{Binding FontSize,Source={StaticResource SearchResultPageViewModel}}" Style="{StaticResource TranslatedParagraphTextBlock}" Margin="10,0,10,20" TextWrapping="Wrap" Text="{Binding TranslatedValue}" />
-                                <Grid Background="{Binding IsEven,Converter={StaticResource EvenColorConverter}}" Width="24" Height="24" HorizontalAlignment="Right" Visibility="{Binding HasLink,Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Bottom" Grid.RowSpan="2">
-                                    <Border CornerRadius="24"  Background="{StaticResource LinkBackgroundColor}" Padding="5" Margin="5,0,0,5">
-                                        <Image Source="icon_link.png"/>
-                                    </Border>
-                                </Grid>
-                            </Grid>
-                        </Button>
+                        <components:VerseComponentView SourceViewModel="{StaticResource SearchResultPageViewModel}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

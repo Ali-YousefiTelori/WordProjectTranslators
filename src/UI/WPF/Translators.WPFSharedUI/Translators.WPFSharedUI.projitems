@@ -53,6 +53,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\Components\BusyComponentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\Components\VerseComponentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Views\Dialogs\InputDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -138,6 +146,12 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\ChapterView.xaml.cs">
       <DependentUpon>ChapterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Components\BusyComponentView.xaml.cs">
+      <DependentUpon>BusyComponentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Components\VerseComponentView.xaml.cs">
+      <DependentUpon>VerseComponentView.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\DialogControl.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\InputDialogView.xaml.cs">

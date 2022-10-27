@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+    xmlns:components="clr-namespace:Translators.UI.Views.Components"
     xmlns:conv="clr-namespace:Translators.UI.Converters"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -62,6 +63,6 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Button Content="جستجو" Grid.Row="3" Command="{Binding SearchCommand}"/>
-        <!--<ActivityIndicator IsRunning="{Binding IsLoading}" Grid.RowSpan="4" IsVisible="{Binding IsLoading}"/>-->
+        <components:BusyComponentView IsRunning="{Binding IsLoading}" Grid.RowSpan="4"/>
     </Grid>
 </UserControl>

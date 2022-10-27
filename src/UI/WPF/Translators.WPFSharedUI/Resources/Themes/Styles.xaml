@@ -63,6 +63,9 @@
         <Setter Property="Background" Value="{StaticResource LightBackgroundColor}" />
         <Setter Property="FlowDirection" Value="RightToLeft" />
     </Style>
+    <Style TargetType="ListBox">
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+    </Style>
     <Style TargetType="ListBoxItem">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
         <Setter Property="FlowDirection" Value="RightToLeft"></Setter>
