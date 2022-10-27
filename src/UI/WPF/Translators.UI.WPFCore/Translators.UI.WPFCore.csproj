@@ -21,18 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="..\..\Translators\Translators.BaseSharedUI\Resources\Fonts\icomoon.ttf" Link="Resources\Fonts\icomoon.ttf" >
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="..\..\Translators\Translators.BaseSharedUI\Resources\Fonts\Nasim.ttf" Link="Resources\Fonts\Nasim.ttf" >
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="..\..\Translators\Translators.BaseSharedUI\Resources\Fonts\QuranTaha.ttf" Link="Resources\Fonts\QuranTaha.ttf" >
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\MvvmGo\MvvmGo\MvvmGo.csproj" />
     <ProjectReference Include="..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.WPFCore\Plugin.SimpleAudioPlayer.WPF45.csproj" />
     <ProjectReference Include="..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj" />
@@ -59,10 +47,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\Fonts\" />
   </ItemGroup>
 
   <Import Project="..\Translators.WPFSharedUI\Translators.WPFSharedUI.projitems" Label="Shared" />

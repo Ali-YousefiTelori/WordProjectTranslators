@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Models.Interfaces;
@@ -11,16 +9,11 @@ using Translators.Models.Storages;
 
 namespace Translators.Engines.OfflineDownloaders
 {
-    public abstract class ServiceOfflineDownloaderBase : StreamDownloaderBase,IDownloader
+    public abstract class ServiceOfflineDownloaderBase : StreamDownloaderBase, IDownloader
     {
         public string ServiceAddress { get; set; }
         public string SaveToFileAddress { get; set; }
         public Action<double> Progress { get; set; }
-
-        protected string GetFolderPath()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-        }
 
         public virtual async Task<bool> Download()
         {

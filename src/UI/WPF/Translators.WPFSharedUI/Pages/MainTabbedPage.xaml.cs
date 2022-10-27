@@ -11,6 +11,8 @@ namespace Translators.UI.Pages
         {
             this.InitializeComponent();
             NavigationManager.Initialize(new WPFNavigationManager(BookFrame));
+            NavigationManager.InitializeSearchNavigation(new WPFNavigationManager(SearchFrame));
+            NavigationManager.InitializeSettingNavigation(new WPFNavigationManager(SettingsFrame));
         }
     }
 }

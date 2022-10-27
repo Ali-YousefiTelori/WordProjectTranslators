@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Translators.Contracts.Common.DataTypes;
 
 namespace Translators.Database.Entities
 {
     public class AppVersionEntity
     {
         public long Id { get; set; }
+        /// <summary>
+        /// نوع نرم افزار
+        /// </summary>
+        public ApplicationType ApplicationType { get; set; }
         /// <summary>
         /// نسخه ی موجود اپ
         /// </summary>

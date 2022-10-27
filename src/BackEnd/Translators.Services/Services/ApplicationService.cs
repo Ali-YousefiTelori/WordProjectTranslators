@@ -2,6 +2,7 @@
 using SignalGo.Shared.DataTypes;
 using SignalGo.Shared.Http;
 using Translators.Contracts.Common;
+using Translators.Contracts.Common.DataTypes;
 using Translators.Contracts.Responses;
 using Translators.Database.Contexts;
 using Translators.Database.Entities;
@@ -13,9 +14,11 @@ namespace Translators.Services
     [ServiceContract("Application", ServiceType.ServerService, InstanceType.SingleInstance)]
     public class ApplicationService
     {
-        public async Task<MessageContract<AppVersionResponseContract>> GetAppVersion()
+        public async Task<MessageContract<AppVersionResponseContract>> GetAppVersion(ApplicationType applicationType)
         {
-            return await new LogicBase<TranslatorContext, AppVersionResponseContract, AppVersionEntity>().FirstOrDefault();
+            if (applicationType == ApplicationType.None)
+                applicationType = ApplicationType.Android;
+            return await new LogicBase<TranslatorContext, AppVersionResponseContract, AppVersionEntity>().FirstOrDefault(q => q.Where(x => x.ApplicationType == applicationType));
         }
 
         public ActionResult DownloadLastVersion(string fileName)

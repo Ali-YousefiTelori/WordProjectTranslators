@@ -8,7 +8,7 @@
     xmlns:pages="clr-namespace:Translators.UI.Pages"
     mc:Ignorable="d" FlowDirection="RightToLeft">
     <Grid>
-        <TabControl>
+        <TabControl TabStripPlacement="Bottom">
             <TabItem Header="Book">
                 <Frame x:Name="BookFrame" Source="/Pages/CategoryPage.xaml">
                     

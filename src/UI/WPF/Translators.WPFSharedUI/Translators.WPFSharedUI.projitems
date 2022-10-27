@@ -53,6 +53,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\Dialogs\InputDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\Dialogs\QuestionDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\Dialogs\SelectItemDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Views\LinkParagraphView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,6 +138,16 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\ChapterView.xaml.cs">
       <DependentUpon>ChapterView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\DialogControl.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\InputDialogView.xaml.cs">
+      <DependentUpon>InputDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\QuestionDialogView.xaml.cs">
+      <DependentUpon>QuestionDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\SelectItemDialogView.xaml.cs">
+      <DependentUpon>SelectItemDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\LinkParagraphView.xaml.cs">
       <DependentUpon>LinkParagraphView.xaml</DependentUpon>

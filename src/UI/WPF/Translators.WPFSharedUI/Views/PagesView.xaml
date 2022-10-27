@@ -26,10 +26,10 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <ListBox ItemsSource="{Binding Items}">
+        <ListBox ItemsSource="{Binding Items}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding LongTouchedCommand, Source={StaticResource PageViewModel}}" CommandParameter="{Binding}" Style="{StaticResource ListItemButton}" Background="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}">
+                    <Button Command="{Binding TouchedCommand, Source={StaticResource PageViewModel}}" CommandParameter="{Binding}" Style="{StaticResource ListItemButton}" Background="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
@@ -39,8 +39,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding MainValue}" Style="{StaticResource MainParagraphTextBlock}" VerticalAlignment="Top" Margin="10,0,10,0"/>
-                            <TextBlock FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Grid.Row="1" TextWrapping="Wrap" Text="{Binding TranslatedValue}" Style="{StaticResource TranslatedParagraphTextBlock}" Margin="10,0,10,20" />
+                            <TextBlock TextWrapping="Wrap" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding MainValue}" Style="{StaticResource MainParagraphTextBlock}" VerticalAlignment="Top" Margin="10,0,10,0"/>
+                            <TextBlock TextWrapping="Wrap" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Grid.Row="1" Text="{Binding TranslatedValue}" Style="{StaticResource TranslatedParagraphTextBlock}" Margin="10,0,10,20" />
                             <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="10,0,10,20">
                                 <TextBlock FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="(" VerticalAlignment="Center"/>
                                 <TextBlock FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding Number}" VerticalAlignment="Center"/>
@@ -73,7 +73,7 @@
             <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
                 <Button Content="{Binding CatalogStartPageNumber}" Command="{Binding SelectPageCommand}"/>
                 <Button Content="آیه" Command="{Binding SelectVerseCommand}"/>
-                <Button FontFamily="{DynamicResource icomoon}" Content="" Width="40" Command="{Binding PlayCommand}">
+                <Button FontFamily="icomoon" Content="" Width="40" Command="{Binding PlayCommand}">
                     <!--<Button.Triggers>
                         <DataTrigger TargetType="Button" Binding="{Binding IsPlaying}" Value="False">
                             <Setter Property="Text" Value="" />

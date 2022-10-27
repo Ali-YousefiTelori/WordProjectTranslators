@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Translators.Helpers;
+using Translators.Models.Storages;
 using Translators.ServiceManagers;
 
 namespace Translators.UI.Helpers
@@ -10,6 +12,8 @@ namespace Translators.UI.Helpers
     {
         public static void Initialize()
         {
+            ApplicationHelper.ApplicationType = Contracts.Common.DataTypes.ApplicationType.WPF;
+            StreamDownloaderBase.GetApplicationFolder = () => AppDomain.CurrentDomain.BaseDirectory;
             TranslatorService.GetCurrentVersion = () => GetVersion();
             TranslatorService.GetCurrentBuildNumber = () => GetVersionNumber();
             TranslatorService.GetVersion = GetVersion;

@@ -17,7 +17,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ParagraphConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ParagraphEvenColorConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\ThicknessConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CrossPlatform\Device.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CrossPlatform\Share.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\AlertManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\ApplicationManager.cs" />
@@ -31,6 +30,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StartUp.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Resources\" />
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Fonts\icomoon.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Fonts\Nasim.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)Resources\Fonts\QuranTaha.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

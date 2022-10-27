@@ -20,10 +20,6 @@ namespace Translators.Models.Storages
 
         protected bool IsLoading = false;
         bool DoSaveAfterLoad = false;
-        protected string GetFolderPath()
-        {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
-        }
 
         bool IsInitialized = false;
         public async Task BaseInitialize()

@@ -9,6 +9,14 @@ namespace Translators.Models.Storages
 {
     public abstract class StreamDownloaderBase
     {
+        public static Func<string> GetApplicationFolder { get; set; }
+        protected string GetFolderPath()
+        {
+            if (GetApplicationFolder == null)
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
+            return GetApplicationFolder();
+        }
+
         static HttpClient HttpClient { get; set; } = new HttpClient();
         public async Task<string> DownloadFile(string uri, string filePath)
         {

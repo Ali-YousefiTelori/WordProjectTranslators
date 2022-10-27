@@ -21,6 +21,7 @@
     <Style TargetType="Button">
         <Setter Property="Foreground" Value="White"></Setter>
         <Setter Property="Background" Value="{StaticResource Primary}"/>
+        <Setter Property="Padding" Value="20,10,20,10"></Setter>
     </Style>
     <Style TargetType="Button" x:Key="ListItemButton">
         <Setter Property="BorderThickness" Value="0"></Setter>
@@ -149,6 +150,10 @@
     </Style>
     <Style TargetType="Slider">
         <Setter Property="Background" Value="LightGray" />
+    </Style>
+    <Style TargetType="TabItem">
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Padding" Value="20,0,20,0" />
     </Style>
     <!--<Style x:Key="BaseStyle" TargetType="Element">
             <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />

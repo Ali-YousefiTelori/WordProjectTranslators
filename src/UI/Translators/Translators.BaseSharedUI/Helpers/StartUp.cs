@@ -46,6 +46,18 @@ namespace Translators.UI.Helpers
                 return result;
             };
 #else
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                ApplicationHelper.ApplicationType = Contracts.Common.DataTypes.ApplicationType.IOS;
+            }
+            else if (Device.RuntimePlatform == Device.Android)
+            {
+                ApplicationHelper.ApplicationType = Contracts.Common.DataTypes.ApplicationType.Android;
+            }
+            else if (Device.RuntimePlatform == Device.UWP)
+            {
+                ApplicationHelper.ApplicationType = Contracts.Common.DataTypes.ApplicationType.UWP;
+            }
             AsyncHelper.RunOnUAction = Device.BeginInvokeOnMainThread;
             AsyncHelper.RunOnUIFunc = Device.InvokeOnMainThreadAsync;
             AsyncHelper.RunOnUIResultFunc = Device.InvokeOnMainThreadAsync;

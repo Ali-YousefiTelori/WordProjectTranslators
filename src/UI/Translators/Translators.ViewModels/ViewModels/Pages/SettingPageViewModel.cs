@@ -42,7 +42,7 @@ namespace Translators.ViewModels.Pages
 
         public async Task CheckForUpdate()
         {
-            var appVersionResult = await TranslatorService.GetApplicationService(true).GetAppVersionAsync();
+            var appVersionResult = await TranslatorService.GetApplicationService(true).GetAppVersionAsync(ApplicationHelper.ApplicationType);
             if (appVersionResult.IsSuccess)
             {
                 var buildNumber = await ApplicationHelper.GetBuildNumber();
