@@ -24,6 +24,8 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock Text="اندازه‌ی فونت"
                 HorizontalAlignment="Center" />
@@ -33,9 +35,10 @@
                 <CheckBox IsChecked="{Binding UseDuplexProtocol}" VerticalAlignment="Center"/>
             </StackPanel>
             <CheckBox Content="اتوماتیک اسکرول زمان پخش صدا" IsChecked="{Binding HasAutoScrollInPlayback}" Grid.Row="2"/>
-            <Button Content="حذف داده های کش شده" Command="{Binding RemoveCacheCommand}" Grid.Row="3"/>
-            <Button Content="تنظیم سرعت پخش" Grid.Row="4" Command="{Binding PlaySpeedCommand}"/>
-            <Button Content="دانلود آفلاین" Grid.Row="5" Command="{Binding DownloadOfflineCommand}"/>
+            <CheckBox Content="نمایش برگردان فارسی برای عبری" IsChecked="{Binding ShowTransliteration}" Grid.Row="3"/>
+            <Button Content="حذف داده های کش شده" Command="{Binding RemoveCacheCommand}" Grid.Row="4"/>
+            <Button Content="تنظیم سرعت پخش" Command="{Binding PlaySpeedCommand}" Grid.Row="5"/>
+            <Button Content="دانلود آفلاین" Command="{Binding DownloadOfflineCommand}" Grid.Row="6"/>
         </Grid>
     </UserControl.Content>
 </UserControl>
