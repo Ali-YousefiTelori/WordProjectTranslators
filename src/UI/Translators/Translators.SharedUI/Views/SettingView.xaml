@@ -25,9 +25,13 @@
                 <Label Text="پروتکل Duplex" VerticalOptions="Center"/>
                 <CheckBox IsChecked="{Binding UseDuplexProtocol}" VerticalOptions="Center"/>
             </StackLayout>
-            <Button Text="حذف داده های کش شده" Command="{Binding RemoveCacheCommand}" Grid.Row="2"/>
-            <Button Text="تنظیم سرعت پخش" Grid.Row="3" Command="{Binding PlaySpeedCommand}"/>
-            <Button Text="دانلود آفلاین" Grid.Row="4" Command="{Binding DownloadOfflineCommand}"/>
+            <StackLayout Grid.Row="3" Orientation="Horizontal">
+                <Label Text="اتوماتیک اسکرول زمان پخش صدا" VerticalOptions="Center"/>
+                <CheckBox IsChecked="{Binding HasAutoScrollInPlayback}" VerticalOptions="Center"/>
+            </StackLayout>
+            <Button Text="حذف داده های کش شده" Command="{Binding RemoveCacheCommand}" Grid.Row="4"/>
+            <Button Text="تنظیم سرعت پخش" Command="{Binding PlaySpeedCommand}" Grid.Row="5"/>
+            <Button Text="دانلود آفلاین" Command="{Binding DownloadOfflineCommand}" Grid.Row="6"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

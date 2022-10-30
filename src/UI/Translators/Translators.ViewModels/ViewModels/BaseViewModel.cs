@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Helpers;
@@ -7,7 +6,6 @@ using Translators.Models;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
 using Translators.ServiceManagers;
-using Translators.ViewModels.Pages;
 
 namespace Translators.ViewModels
 {
@@ -26,6 +24,7 @@ namespace Translators.ViewModels
         public static int _FontSize = 15;
         public static bool _UseDuplexProtocol = false;
         public static double _PlaybackSpeedRato = 1.0;
+        public static bool _HasAutoScrollInPlayback = false;
 
         bool isFirstTime = true;
 
@@ -59,6 +58,17 @@ namespace Translators.ViewModels
                 _UseDuplexProtocol = value;
                 OnPropertyChanged(nameof(UseDuplexProtocol));
                 TranslatorService.IsDuplexProtocol = value;
+                ApplicationSettingData.Current.Save();
+            }
+        }
+
+        public bool HasAutoScrollInPlayback
+        {
+            get => _HasAutoScrollInPlayback;
+            set
+            {
+                _HasAutoScrollInPlayback = value;
+                OnPropertyChanged(nameof(HasAutoScrollInPlayback));
                 ApplicationSettingData.Current.Save();
             }
         }

@@ -8,6 +8,7 @@
     xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
     xmlns:conv="clr-namespace:Translators.UI.Converters"
     xmlns:components="clr-namespace:Translators.UI.Views.Components"
+    xmlns:effects="clr-namespace:Translators.UI.Effects"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -27,7 +28,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <ListBox ItemsSource="{Binding Items}">
+        <ListBox ItemsSource="{Binding Items}" effects:ListBoxViewAutoScroll.BindTo="{Binding ScrollToIndex}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <components:VerseComponentView SourceViewModel="{StaticResource PageViewModel}"/>
@@ -46,7 +47,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Slider Grid.ColumnSpan="3" Value="{Binding PlaybackCurrentPosition}" FlowDirection="LeftToRight"/>
+            <Slider Grid.ColumnSpan="3" Value="{Binding PlaybackCurrentPosition}" SmallChange="0.05" LargeChange="0.05" FlowDirection="LeftToRight" Maximum="1"/>
             <Button HorizontalAlignment="Left" Content="{Binding ReadingName}" Command="{Binding RemoveReadingCommand}" Grid.Row="1"/>
             <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
                 <Button Content="{Binding CatalogStartPageNumber}" Command="{Binding SelectPageCommand}"/>

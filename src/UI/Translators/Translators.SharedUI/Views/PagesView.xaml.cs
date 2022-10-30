@@ -10,7 +10,6 @@ namespace Translators.UI.Views
         public PagesView()
         {
             InitializeComponent();
-            //BindingContext = (this.Content as PagesView).BindingContext;
         }
     }
 }

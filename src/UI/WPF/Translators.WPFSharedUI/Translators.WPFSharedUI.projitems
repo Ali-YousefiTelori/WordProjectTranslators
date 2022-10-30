@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\ListBoxViewAutoScroll.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\AlertExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\AppStartup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\WPFNavigationManager.cs" />

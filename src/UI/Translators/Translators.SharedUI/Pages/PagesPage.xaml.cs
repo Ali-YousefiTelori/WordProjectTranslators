@@ -20,14 +20,14 @@ namespace Translators.UI.Pages
             ApplicationReadingData.IsSwitchingToNewReading = false;
         }
 
-        protected override void OnDisappearing()
-        {
-            if (this.BindingContext is PageViewModel vm)
-            {
-                vm.Dispose();
-            }
-            base.OnDisappearing();
-        }
+        //protected override void OnDisappearing()
+        //{
+        //    if (this.BindingContext is PageViewModel vm)
+        //    {
+        //        vm.Dispose();
+        //    }
+        //    base.OnDisappearing();
+        //}
 
         protected override async void OnParentSet()
         {

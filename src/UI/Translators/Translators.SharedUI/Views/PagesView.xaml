@@ -5,6 +5,7 @@
              xmlns:effect="clr-namespace:Xamarin.CommunityToolkit.Effects;assembly=Xamarin.CommunityToolkit"
              xmlns:conv="clr-namespace:Translators.UI.Converters"
              xmlns:viewmodels="clr-namespace:Translators.ViewModels.Pages;assembly=Translators.ViewModels"
+             xmlns:autoScroll="clr-namespace:Translators.UI.Effects"
              x:Name="thisPage" FlowDirection="RightToLeft">
     <!--xmlns:effect="clr-namespace:Xamarin.CommunityToolkit.Effects;assembly=Xamarin.CommunityToolkit"-->
     <ContentView.Resources>
@@ -34,7 +35,7 @@
                         <SwipeItem Text="Next Page" Command="{Binding SwipeRightCommand,Source={StaticResource PageViewModel}}" />
                     </SwipeItems>
                 </SwipeView.LeftItems>
-                <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems">
+                <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems" autoScroll:CollectionViewAutoScroll.BindTo="{Binding ScrollToIndex}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid effect:TouchEffect.LongPressCommand="{Binding LongTouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.LongPressCommandParameter="{Binding}" BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" VerticalOptions="Start">
@@ -78,7 +79,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Slider Grid.ColumnSpan="3" Value="{Binding PlaybackCurrentPosition}" FlowDirection="LeftToRight"/>
+            <Slider Grid.ColumnSpan="3" Value="{Binding PlaybackCurrentPosition,Mode=TwoWay}" FlowDirection="LeftToRight"/>
             <Button HorizontalOptions="Start" Text="{Binding ReadingName}" Command="{Binding RemoveReadingCommand}" Grid.Row="1"/>
             <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
                 <Button Text="{Binding CatalogStartPageNumber}" Command="{Binding SelectPageCommand}"/>

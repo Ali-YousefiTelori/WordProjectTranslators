@@ -114,6 +114,17 @@ namespace Translators.ViewModels.Pages
             }
         }
 
+        private int _ScrollToIndex;
+        public int ScrollToIndex
+        {
+            get => _ScrollToIndex;
+            set
+            {
+                _ScrollToIndex = value;
+                OnPropertyChanged(nameof(ScrollToIndex));
+            }
+        }
+
         private double _PlaybackCurrentPosition;
         public double PlaybackCurrentPosition
         {
@@ -208,8 +219,8 @@ namespace Translators.ViewModels.Pages
             if (CatalogStartPageNumber > 1)
             {
                 CatalogStartPageNumber--;
-                await LoadData();
                 ResetPlayBack();
+                await LoadData();
             }
         }
 
@@ -218,8 +229,8 @@ namespace Translators.ViewModels.Pages
             if (IsLoading)
                 return;
             CatalogStartPageNumber++;
-            await LoadData();
             ResetPlayBack();
+            await LoadData();
         }
 
         private async Task Touch(ParagraphModel paragraph)
@@ -342,11 +353,17 @@ namespace Translators.ViewModels.Pages
         {
             while (_canPositionUpdate)
             {
-                if (IsPlaying && AudioPlayerBaseHelper.CurrentBase.CanSeek)
+                AsyncHelper.RunOnUI(() =>
                 {
-                    _PlaybackCurrentPosition = 1 * (AudioPlayerBaseHelper.CurrentBase.CurrentPosition / AudioPlayerBaseHelper.CurrentBase.Duration);
-                    OnPropertyChanged(nameof(PlaybackCurrentPosition));
-                }
+                    if (IsPlaying && AudioPlayerBaseHelper.CurrentBase.CanSeek)
+                    {
+                        _PlaybackCurrentPosition = 1 * (AudioPlayerBaseHelper.CurrentBase.CurrentPosition / AudioPlayerBaseHelper.CurrentBase.Duration);
+
+                        if (HasAutoScrollInPlayback)
+                            ScrollToIndex = (int)(Items.Count * _PlaybackCurrentPosition);
+                        OnPropertyChanged(nameof(PlaybackCurrentPosition));
+                    }
+                });
                 await Task.Delay(TimeSpan.FromSeconds(1));
             }
         }

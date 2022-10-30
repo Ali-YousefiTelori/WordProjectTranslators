@@ -19,6 +19,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Effects\CollectionViewAutoScroll.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MyApp.xaml.cs">
       <SubType>Code</SubType>
       <DependentUpon>MyApp.xaml</DependentUpon>
