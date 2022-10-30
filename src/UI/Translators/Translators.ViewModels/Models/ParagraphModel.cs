@@ -13,7 +13,7 @@ namespace Translators.Models
         {
             get
             {
-                if (BaseViewModel._ShowTransliteration)
+                if (BaseViewModel._ShowTransliteration && !string.IsNullOrEmpty(MainTransliterationValue))
                     return MainTransliterationValue;
                 else
                     return MainValue;
