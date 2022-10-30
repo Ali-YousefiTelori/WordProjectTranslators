@@ -16,7 +16,7 @@ namespace Translators.Patches
             {
                 Console.WriteLine("Starting...");
                 await ConfigData.LoadAsync();
-                await UpdateEnjilToAramicValues();
+                await AddTransliterations();
                 Console.WriteLine("Started!");
             }
             catch (Exception ex)
@@ -27,6 +27,85 @@ namespace Translators.Patches
             Console.ReadLine();
         }
 
+        static async Task AddTransliterations()
+        {
+            var lines = await File.ReadAllLinesAsync(@"D:\Github\WordProjectTranslators\src\Resources\combined.txt");
+            using TranslatorContext translatorContext = new TranslatorContext();
+            var books = await translatorContext.Books.Where(x => x.CategoryId == 3 || x.CategoryId == 2).ToListAsync();
+            var catalogs = await translatorContext.Catalogs.ToListAsync();
+            var paragraphs = await translatorContext.Paragraphs.ToListAsync();
+            var words = await translatorContext.Words.ToListAsync();
+            //var values = await translatorContext.Values.ToListAsync();
+            int count = lines.Count() - 1;
+            int index = 0;
+            int findTransliterationLine = 0;
+            foreach (var line in lines)
+            {
+                if (line.Trim().Length == 0 || line.Trim().StartsWith("#"))
+                {
+                    findTransliterationLine = 0;
+                    continue;
+                }
+                else
+                {
+                    findTransliterationLine++;
+                    if (findTransliterationLine != 2)
+                        continue;
+                }
+                var split = line.Split('	');
+                var bookNumber = new string(split[0].Where(x => char.IsDigit(x)).ToArray());
+                
+                var SurahNumber = split[2];
+                var verseNumber = split[3];
+                var text = split[4].Replace("܀", "").Trim();
+                BookEntity book;
+                if (int.Parse(bookNumber) > 39)
+                    book = books.FirstOrDefault(x => x.Id == int.Parse(bookNumber) - 38);
+                else
+                    book = books.FirstOrDefault(x => x.Id == int.Parse(bookNumber) + 28);
+
+                var catalog = book.Catalogs.FirstOrDefault(x => x.StartPageNumber == int.Parse(SurahNumber));
+                var verse = catalog.Paragraphs.FirstOrDefault(x => x.Number == long.Parse(verseNumber));
+                var createdWords = text.Replace("  ", "").Split(" ").ToArray();
+
+                for (int i = 0; i < createdWords.Length; i++)
+                {
+                    var word = new WordEntity()
+                    {
+                        Index = i,
+                        Values = new List<ValueEntity>()
+                        {
+                            new ValueEntity()
+                            {
+                                IsMain = false,
+                                IsTransliteration = true,
+                                LanguageId = 2,
+                                SearchValue = createdWords[i],
+                                Value = createdWords[i]
+                            }
+                        },
+                        ParagraphId = verse.Id,
+                    };
+                    verse.Words.Add(word);
+                    translatorContext.Words.Add(word);
+                }
+                index++;
+                while (true)
+                {
+                    try
+                    {
+                        await translatorContext.SaveChangesAsync();
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    await Task.Delay(1000);
+                }
+                Console.WriteLine($"Comepleted {index}/{count}");
+            }
+        }
 
         static async Task UpdateEnjilToAramicValues()
         {
@@ -95,7 +174,6 @@ namespace Translators.Patches
                 }
                 Console.WriteLine($"Comepleted {index}/{count}");
             }
-
         }
 
         static async Task UploadVoices()

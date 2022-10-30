@@ -47,7 +47,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding MainValue}" Style="{StaticResource MainParagraphLabel}" VerticalOptions="Start" Margin="10,0,10,0"/>
+                                <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text="{Binding MainDisplayValue}" Style="{StaticResource MainParagraphLabel}" VerticalOptions="Start" Margin="10,0,10,0"/>
                                 <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Grid.Row="1" LineBreakMode="WordWrap" Text="{Binding TranslatedValue}" Style="{StaticResource TranslatedParagraphLabel}" Margin="10,0,10,20" />
                                 <StackLayout Grid.Column="1" Grid.RowSpan="2" Orientation="Horizontal" VerticalOptions="Center">
                                     <Label BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" FontSize="{Binding FontSize,Source={StaticResource PageViewModel}}" Text=")" />

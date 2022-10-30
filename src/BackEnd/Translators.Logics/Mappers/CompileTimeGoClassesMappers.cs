@@ -44,6 +44,7 @@ namespace CompileTimeGoMapper
             {
                 Id = toMap.Id,
                 IsMain = toMap.IsMain,
+                IsTransliteration = toMap.IsTransliteration,
                 Value = toMap.Value,
                 SearchValue = toMap.SearchValue,
                 LanguageId = toMap.LanguageId,
@@ -67,6 +68,7 @@ namespace CompileTimeGoMapper
             {
                 Id = toMap.Id,
                 IsMain = toMap.IsMain,
+                IsTransliteration = toMap.IsTransliteration,
                 Value = toMap.Value,
                 SearchValue = toMap.SearchValue,
                 LanguageId = toMap.LanguageId,

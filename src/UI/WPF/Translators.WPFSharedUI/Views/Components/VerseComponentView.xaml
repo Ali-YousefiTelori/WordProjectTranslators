@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock TextWrapping="Wrap" FontSize="{Binding SourceViewModel.FontSize, ElementName=SelfControl}" Text="{Binding MainValue}" Style="{StaticResource MainParagraphTextBlock}" VerticalAlignment="Top" Margin="10,0,10,0"/>
+            <TextBlock TextWrapping="Wrap" FontSize="{Binding SourceViewModel.FontSize, ElementName=SelfControl}" Text="{Binding MainDisplayValue}" Style="{StaticResource MainParagraphTextBlock}" VerticalAlignment="Top" Margin="10,0,10,0"/>
             <TextBlock TextWrapping="Wrap" FontSize="{Binding SourceViewModel.FontSize, ElementName=SelfControl}" Grid.Row="1" Text="{Binding TranslatedValue}" Style="{StaticResource TranslatedParagraphTextBlock}" Margin="10,0,10,20" />
             <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="10,0,10,20">
                 <TextBlock FontSize="{Binding SourceViewModel.FontSize, ElementName=SelfControl}" Text="(" VerticalAlignment="Center"/>

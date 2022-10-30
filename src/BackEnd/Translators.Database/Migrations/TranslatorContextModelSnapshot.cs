@@ -389,6 +389,9 @@ namespace Translators.Migrations
                     b.Property<bool>("IsMain")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsTransliteration")
+                        .HasColumnType("bit");
+
                     b.Property<long>("LanguageId")
                         .HasColumnType("bigint");
 

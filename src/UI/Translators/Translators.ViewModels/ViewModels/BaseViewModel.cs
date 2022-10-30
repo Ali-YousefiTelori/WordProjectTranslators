@@ -25,7 +25,8 @@ namespace Translators.ViewModels
         public static bool _UseDuplexProtocol = false;
         public static double _PlaybackSpeedRato = 1.0;
         public static bool _HasAutoScrollInPlayback = false;
-
+        public static bool _ShowTransliteration = false;
+        
         bool isFirstTime = true;
 
         public bool IsLoading
@@ -69,6 +70,17 @@ namespace Translators.ViewModels
             {
                 _HasAutoScrollInPlayback = value;
                 OnPropertyChanged(nameof(HasAutoScrollInPlayback));
+                ApplicationSettingData.Current.Save();
+            }
+        }
+
+        public bool ShowTransliteration
+        {
+            get => _ShowTransliteration;
+            set
+            {
+                _ShowTransliteration = value;
+                OnPropertyChanged(nameof(ShowTransliteration));
                 ApplicationSettingData.Current.Save();
             }
         }

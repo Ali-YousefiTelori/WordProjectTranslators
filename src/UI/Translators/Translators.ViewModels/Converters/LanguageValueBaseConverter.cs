@@ -19,11 +19,15 @@ namespace Translators.Converters
             return $"Value {value?.GetType().Name} not found!";
         }
 
-        public static string GetValue(List<ValueContract> values, bool isMain, string languageCode)
+        public static string GetValue(List<ValueContract> values, bool isMain, string languageCode, bool isTransliteration = false)
         {
             if (values != null)
             {
-                var find = values.FirstOrDefault(x => x.IsMain == isMain || x.Language?.Code == languageCode);
+                ValueContract find;
+                if (isTransliteration)
+                    find = values.FirstOrDefault(x => x.IsTransliteration);
+                else
+                    find = values.FirstOrDefault(x => !x.IsTransliteration && (x.IsMain == isMain || x.Language?.Code == languageCode));
                 if (find == null)
                     return values.FirstOrDefault()?.Value;
                 return find.Value;

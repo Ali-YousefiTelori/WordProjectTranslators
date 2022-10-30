@@ -10,6 +10,10 @@
         /// is main of the value or false its translated
         /// </summary>
         public bool IsMain { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsTransliteration { get; set; }
         public string Value { get; set; }
         public string SearchValue { get; set; }
 

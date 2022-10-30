@@ -195,8 +195,9 @@ namespace Translators.ViewModels.Pages
             {
                 Id = value.ParagraphId,
                 HasLink = value.HasLink,
-                TranslatedValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && x.Language.Code == "fa-ir").Select(x => x.Value)) + displayName,
+                TranslatedValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && !x.IsTransliteration && x.Language.Code == "fa-ir").Select(x => x.Value)) + displayName,
                 MainValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => x.IsMain).Select(x => x.Value)) + displayName,
+                MainTransliterationValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && x.IsTransliteration && x.Language.Code == "fa-ir").Select(x => x.Value)) + displayName,
                 CatalogId = value.CatalogId,
                 BookId = value.BookId,
                 PageNumber = value.PageNumber,

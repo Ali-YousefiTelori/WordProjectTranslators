@@ -17,6 +17,8 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Label Text="اندازه‌ی فونت"
                 HorizontalOptions="CenterAndExpand" />
@@ -29,9 +31,13 @@
                 <Label Text="اتوماتیک اسکرول زمان پخش صدا" VerticalOptions="Center"/>
                 <CheckBox IsChecked="{Binding HasAutoScrollInPlayback}" VerticalOptions="Center"/>
             </StackLayout>
-            <Button Text="حذف داده های کش شده" Command="{Binding RemoveCacheCommand}" Grid.Row="4"/>
-            <Button Text="تنظیم سرعت پخش" Command="{Binding PlaySpeedCommand}" Grid.Row="5"/>
-            <Button Text="دانلود آفلاین" Command="{Binding DownloadOfflineCommand}" Grid.Row="6"/>
+            <StackLayout Grid.Row="4" Orientation="Horizontal">
+                <Label Text="نمایش برگردان فارسی برای عبری" VerticalOptions="Center"/>
+                <CheckBox IsChecked="{Binding ShowTransliteration}" VerticalOptions="Center"/>
+            </StackLayout>
+            <Button Text="حذف داده های کش شده" Command="{Binding RemoveCacheCommand}" Grid.Row="5"/>
+            <Button Text="تنظیم سرعت پخش" Command="{Binding PlaySpeedCommand}" Grid.Row="6"/>
+            <Button Text="دانلود آفلاین" Command="{Binding DownloadOfflineCommand}" Grid.Row="7"/>
         </Grid>
     </ContentView.Content>
 </ContentView>

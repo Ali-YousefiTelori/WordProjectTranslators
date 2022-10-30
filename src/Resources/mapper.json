@@ -68,7 +68,8 @@
           "ToNamespace": "Translators.Contracts.Common",
           "ToName": "LanguageContract",
           "ToSkipProperties": [
-            "Values"
+            "Values",
+            "Audios"
           ],
           "CustomPropertiesMap": []
         },
@@ -84,7 +85,9 @@
           "ToName": "PageContract",
           "ToSkipProperties": [
             "Catalog",
-            "CatalogNames"
+            "CatalogNames",
+            "Audioes",
+            "BookId"
           ],
           "CustomPropertiesMap": []
         },
@@ -114,13 +117,14 @@
           "ToSkipProperties": [
             "Page",
             "Catalog",
-            "FromLinkParagraphs",
-            "ToLinkParagraphs"
+            "LinkParagraphs",
+            "BookId",
+            "PageNumber"
           ],
           "CustomPropertiesMap": [
             {
               "From": "HasLink",
-              "To": "$toMap.ToLinkParagraphs?.Count > 0 || toMap.FromLinkParagraphs?.Count > 0",
+              "To": "$toMap.LinkParagraphs?.Count > 0 || toMap.LinkParagraphs?.Count > 0",
               "Type": 0
             }
           ]
@@ -181,7 +185,8 @@
           "ToNamespace": "Translators.Contracts.Common",
           "ToName": "TranslatorContract",
           "ToSkipProperties": [
-            "Values"
+            "Values",
+            "Audios"
           ],
           "CustomPropertiesMap": []
         },

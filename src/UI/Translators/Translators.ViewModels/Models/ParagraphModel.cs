@@ -1,6 +1,7 @@
 ﻿using SignalGo.Shared.Models;
 using System.Linq;
 using Translators.Contracts.Common;
+using Translators.ViewModels;
 
 namespace Translators.Models
 {
@@ -8,7 +9,19 @@ namespace Translators.Models
     {
         public long Id { get; set; }
         public string DisplayName { get; set; }
+        public string MainDisplayValue
+        {
+            get
+            {
+                if (BaseViewModel._ShowTransliteration)
+                    return MainTransliterationValue;
+                else
+                    return MainValue;
+            }
+        }
+
         public string MainValue { get; set; }
+        public string MainTransliterationValue { get; set; }
         public string TranslatedValue { get; set; }
         public bool HasLink { get; set; }
         public long BookId { get; set; }
@@ -49,7 +62,8 @@ namespace Translators.Models
                 CatalogId = paragraphContract.CatalogId,
                 Number = paragraphContract.Number,
                 MainValue = string.Join(" ", paragraphContract.Words.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => x.IsMain).Select(x => x.Value)),
-                TranslatedValue = string.Join(" ", paragraphContract.Words.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && x.Language.Code == "fa-ir").Select(x => x.Value)),
+                TranslatedValue = string.Join(" ", paragraphContract.Words.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && !x.IsTransliteration && x.Language.Code == "fa-ir").Select(x => x.Value)),
+                MainTransliterationValue = string.Join(" ", paragraphContract.Words.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && x.IsTransliteration && x.Language.Code == "fa-ir").Select(x => x.Value)),
                 BookId = paragraphContract.BookId,
                 PageNumber = paragraphContract.PageNumber
             };
