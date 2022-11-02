@@ -17,7 +17,7 @@ namespace Translators.Patches
                 Console.WriteLine("Starting...");
                 await ConfigData.LoadAsync();
                 await AddTransliterations();
-                Console.WriteLine("Started!");
+                Console.WriteLine("Finished!");
             }
             catch (Exception ex)
             {

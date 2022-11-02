@@ -35,7 +35,7 @@ namespace Translators.UI.Helpers
 
         static string GetVersionNumber()
         {
-            return "1";
+            return "2";
         }
 
         private static void UnhandleExceptionHappens(object sender, Exception e)
