@@ -160,7 +160,7 @@ namespace Translators.ViewModels.Pages
                             var groupResult = await TranslatorService.GetParagraphService(true).GetLinkedParagraphsGroupsAsync(first.Id);
                             if (groupResult.IsSuccess)
                             {
-                                long groupId  = groupResult.Result.First().Id;
+                                long groupId = groupResult.Result.First().Id;
                                 if (groupResult.Result.Count > 1)
                                 {
                                     var groupTitle = await AlertHelper.Display("انتخاب گروه", "انصراف", groupResult.Result.Select(x => x.Title).ToArray());
@@ -191,13 +191,14 @@ namespace Translators.ViewModels.Pages
         public SearchResultModel Map(SearchValueContract value)
         {
             var displayName = " " + $"({LanguageValueBaseConverter.GetValue(value.BookNames, false, "fa-ir")} - {LanguageValueBaseConverter.GetValue(value.CatalogNames, false, "fa-ir")} - آیه‌ی {value.Number})";
+            string mainTransliterationValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && x.IsTransliteration && x.Language.Code == "fa-ir").Select(x => x.Value));
             var result = new SearchResultModel()
             {
                 Id = value.ParagraphId,
                 HasLink = value.HasLink,
                 TranslatedValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && !x.IsTransliteration && x.Language.Code == "fa-ir").Select(x => x.Value)) + displayName,
                 MainValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => x.IsMain).Select(x => x.Value)) + displayName,
-                MainTransliterationValue = string.Join(" ", value.ParagraphWords.OrderBy(x => x.Index).SelectMany(x => x.Values).Where(x => !x.IsMain && x.IsTransliteration && x.Language.Code == "fa-ir").Select(x => x.Value)) + displayName,
+                MainTransliterationValue = string.IsNullOrEmpty(mainTransliterationValue) ? null : mainTransliterationValue + displayName,
                 CatalogId = value.CatalogId,
                 BookId = value.BookId,
                 PageNumber = value.PageNumber,
