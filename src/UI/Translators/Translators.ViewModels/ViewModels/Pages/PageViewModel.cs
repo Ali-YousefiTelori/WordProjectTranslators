@@ -165,6 +165,7 @@ namespace Translators.ViewModels.Pages
 
         public override async Task FetchData(bool isForce)
         {
+            ResetPlayBack();
             ScrollToTop();
             var pages = await FetchPage(isForce, CatalogStartPageNumber, BookId);
             //fetch next
@@ -227,7 +228,6 @@ namespace Translators.ViewModels.Pages
             if (CatalogStartPageNumber > 1)
             {
                 CatalogStartPageNumber--;
-                ResetPlayBack();
                 await LoadData();
             }
         }
@@ -237,7 +237,6 @@ namespace Translators.ViewModels.Pages
             if (IsLoading)
                 return;
             CatalogStartPageNumber++;
-            ResetPlayBack();
             await LoadData();
         }
 
@@ -367,13 +366,33 @@ namespace Translators.ViewModels.Pages
                     {
                         _PlaybackCurrentPosition = 1 * (AudioPlayerBaseHelper.CurrentBase.CurrentPosition / AudioPlayerBaseHelper.CurrentBase.Duration);
 
-                        if (HasAutoScrollInPlayback)
-                            ScrollToIndex = (int)(Items.Count * _PlaybackCurrentPosition);
+                        SetScrollByAudio();
                         OnPropertyChanged(nameof(PlaybackCurrentPosition));
                     }
                 });
                 await Task.Delay(TimeSpan.FromSeconds(1));
             }
+        }
+
+        void SetScrollByAudio()
+        {
+            if (HasAutoScrollInPlayback)
+            {
+                int index = 0;
+                var fullLength = Items.Sum(x => x.TranslatedValue.Length + x.MainDisplayValue.Length);
+                var itemsLengths = Items.Select(x => new { Length = x.TranslatedValue.Length + x.MainDisplayValue.Length }); ;
+                double from = 0;
+                List<(double from, double to, int index)> PositionItems = new List<(double from, double to, int index)>();
+                foreach (var item in Items)
+                {
+                    double to = from + (item.TranslatedValue.Length + item.MainDisplayValue.Length) / (double)fullLength;
+                    PositionItems.Add((from, to, index));
+                    from = to;
+                    index++;
+                }
+                ScrollToIndex = PositionItems.Where(x => _PlaybackCurrentPosition > x.from && _PlaybackCurrentPosition < x.to).Select(x => x.index).FirstOrDefault();
+            }
+
         }
 
         void ResetPlayBack()
