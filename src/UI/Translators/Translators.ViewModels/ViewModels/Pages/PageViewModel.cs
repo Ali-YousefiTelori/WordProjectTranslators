@@ -156,8 +156,15 @@ namespace Translators.ViewModels.Pages
             });
         }
 
+        void ScrollToTop()
+        {
+            ScrollToIndex = 1;
+            ScrollToIndex = 0;
+        }
+
         public override async Task FetchData(bool isForce)
         {
+            ScrollToTop();
             var pages = await FetchPage(isForce, CatalogStartPageNumber, BookId);
             //fetch next
             _ = Task.Factory.StartNew(async () =>
