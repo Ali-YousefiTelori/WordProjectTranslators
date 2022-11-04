@@ -38,5 +38,13 @@ namespace Translators.UI.Helpers
                 return Task.FromResult(result);
             return Task.FromResult(0L);
         }
+
+        public Task KeepScreenOn(bool isKeepScreenOn)
+        {
+#if (Xamarin)
+            DeviceDisplay.KeepScreenOn = isKeepScreenOn;
+#endif
+            return Task.CompletedTask;
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace Translators.Models.Interfaces
     {
         Task<long> GetBuildNumber();
         Task DownloadNewVersion();
+        Task KeepScreenOn(bool isKeepScreenOn);
     }
 }

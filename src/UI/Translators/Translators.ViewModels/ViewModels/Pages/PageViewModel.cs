@@ -61,6 +61,7 @@ namespace Translators.ViewModels.Pages
             {
                 _isPlaying = value;
                 OnPropertyChanged(nameof(IsPlaying));
+                ApplicationHelper.Current.KeepScreenOn(value);
             }
         }
 
