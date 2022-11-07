@@ -3,8 +3,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Translators.Helpers;
-using Translators.UI.Droid.Helpers;
 
 namespace Translators.UI.Droid
 {
@@ -35,8 +33,8 @@ namespace Translators.UI.Droid
             {
                 try
                 {
-                    TranslatorsService.This = null;
                     TranslatorsService.This.StopForeground(true);
+                    TranslatorsService.This = null;
                 }
                 catch (System.Exception ex)
                 {
