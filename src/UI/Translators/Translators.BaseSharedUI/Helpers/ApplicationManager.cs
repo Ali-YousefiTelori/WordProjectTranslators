@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
-using Translators.Models.Interfaces;
+﻿using Translators.Models.Interfaces;
 using Translators.ServiceManagers;
 
 namespace Translators.UI.Helpers
@@ -28,7 +23,7 @@ namespace Translators.UI.Helpers
             {
                 fileName = "noorpod.ir.translators.apk";
             }
-            await Share.RequestAsync($"{TranslatorService.ServiceAddress}/Application/DownloadLastVersion?fileName={fileName}"); 
+            await Share.RequestAsync($"{TranslatorService.ServiceAddress}/Application/DownloadLastVersion?fileName={fileName}");
 #endif
         }
 
@@ -39,10 +34,11 @@ namespace Translators.UI.Helpers
             return Task.FromResult(0L);
         }
 
-        public Task KeepScreenOn(bool isKeepScreenOn)
+        public virtual Task KeepScreenOn(bool isKeepScreenOn)
         {
 #if (Xamarin)
-            DeviceDisplay.KeepScreenOn = isKeepScreenOn;
+            if (isKeepScreenOn)
+                DeviceDisplay.KeepScreenOn = isKeepScreenOn;
 #endif
             return Task.CompletedTask;
         }
