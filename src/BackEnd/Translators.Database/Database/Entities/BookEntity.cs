@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Translators.Database.Entities.UserPersonalization;
 
 namespace Translators.Database.Entities
 {
@@ -20,5 +21,6 @@ namespace Translators.Database.Entities
         public CategoryEntity Category { get; set; }
 
         public List<CatalogEntity> Catalogs { get; set; }
+        public List<ReadingEntity> Readings { get; set; }
     }
 }

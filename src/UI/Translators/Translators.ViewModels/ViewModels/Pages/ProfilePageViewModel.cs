@@ -51,6 +51,7 @@ namespace Translators.ViewModels.Pages
                 await AlertHelper.Alert("خطا", "نام کاربری نمی تواند کمتر از سه حرف داشته باشد و فقط باید شامل حروف انگلیسی باشد.");
                 return;
             }
+            bool isLogin = false;
             try
             {
                 IsLoading = true;
@@ -63,12 +64,36 @@ namespace Translators.ViewModels.Pages
                     CanRegister = false;
                 }
                 else
-                    await AlertContract(result);
+                {
+                    if (result.Error.FailedReasonType == Contracts.Common.FailedReasonType.Dupplicate)
+                    {
+                        var session = await AlertHelper.DisplayPrompt("رمز", "لطفا رمز ورود را وارد کنید.");
+                        if (Guid.TryParse(session, out Guid guid))
+                        {
+                            var loginResult = await TranslatorService.GetAuthenticationService(true).LoginAsync(guid);
+                            if (loginResult.IsSuccess)
+                            {
+                                ApplicationProfileData.Current.Value.Session = guid;
+                                isLogin = true;
+                            }
+                            else
+                                await AlertContract(result);
+                        }
+                        else
+                        {
+                            await AlertHelper.Alert("خطا", "رمز عبور صحیح نیست!");
+                        }
+                    }
+                    else
+                        await AlertContract(result);
+                }
             }
             finally
             {
                 IsLoading = false;
             }
+            if (isLogin)
+                await LoadData();
         }
 
         public override async Task FetchData(bool isForce = false)
@@ -80,6 +105,7 @@ namespace Translators.ViewModels.Pages
                 {
                     UserName = result.Result.UserName;
                     ApplicationProfileData.Current.Save();
+                    CanRegister = false;
                 }
                 else
                 {

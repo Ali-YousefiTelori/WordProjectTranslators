@@ -39,6 +39,7 @@ namespace Translators.Models.Storages
                 {
                     Current.Value.Session = Guid.Parse(result.Result.Key);
                     TranslatorService.IsAdmin = result.Result.Permissions.Any(x => x == PermissionType.Admin);
+                    _ = ApplicationReadingData.SyncReading();
                 }
                 return result;
             }
@@ -51,5 +52,6 @@ namespace Translators.Models.Storages
                 }
             };
         }
+
     }
 }

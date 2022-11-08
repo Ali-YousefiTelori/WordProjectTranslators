@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SignalGo.Server.Models;
 using SignalGo.Shared.DataTypes;
-using SignalGo.Shared.Http;
 using Translators.Contracts.Common;
 using Translators.Contracts.Common.Authentications;
-using Translators.Contracts.Responses;
 using Translators.Database.Contexts;
-using Translators.Database.Entities;
 using Translators.Database.Entities.Authentications;
 using Translators.Logics;
 
@@ -24,7 +21,7 @@ namespace Translators.Services
                 return getOrCreateUser.ToContract<UserContract>();
             else if (getOrCreateUser.Result != null)
             {
-                return ("نام کاربری تکراری است!", "");
+                return (FailedReasonType.Dupplicate, "نام کاربری تکراری است!");
             }
             var key = Guid.NewGuid();
             var userResult = await new LogicBase<TranslatorContext, UserEntity>().Add(new UserEntity()

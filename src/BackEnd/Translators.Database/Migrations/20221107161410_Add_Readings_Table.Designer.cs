@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Translators.Database.Contexts;
 
@@ -11,9 +12,10 @@ using Translators.Database.Contexts;
 namespace Translators.Migrations
 {
     [DbContext(typeof(TranslatorContext))]
-    partial class TranslatorContextModelSnapshot : ModelSnapshot
+    [Migration("20221107161410_Add_Readings_Table")]
+    partial class Add_Readings_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -383,9 +385,6 @@ namespace Translators.Migrations
                     b.Property<long>("CatalogId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("CategoryId")
-                        .HasColumnType("bigint");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -394,9 +393,6 @@ namespace Translators.Migrations
 
                     b.Property<long>("PageId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("StartPageNumber")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -409,8 +405,6 @@ namespace Translators.Migrations
                     b.HasIndex("BookId");
 
                     b.HasIndex("CatalogId");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("IsDeleted");
 
@@ -680,12 +674,6 @@ namespace Translators.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Translators.Database.Entities.CategoryEntity", "Category")
-                        .WithMany("Readings")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Translators.Database.Entities.PageEntity", "Page")
                         .WithMany("Readings")
                         .HasForeignKey("PageId")
@@ -701,8 +689,6 @@ namespace Translators.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Catalog");
-
-                    b.Navigation("Category");
 
                     b.Navigation("Page");
 
@@ -823,8 +809,6 @@ namespace Translators.Migrations
                     b.Navigation("Books");
 
                     b.Navigation("Names");
-
-                    b.Navigation("Readings");
                 });
 
             modelBuilder.Entity("Translators.Database.Entities.LanguageEntity", b =>

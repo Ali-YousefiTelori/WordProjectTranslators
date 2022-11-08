@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Translators.Database.Entities.UserPersonalization;
 
 namespace Translators.Database.Entities
 {
@@ -19,5 +20,6 @@ namespace Translators.Database.Entities
 
         public List<ParagraphEntity> Paragraphs { get; set; }
         public List<AudioEntity> Audioes { get; set; }
+        public List<ReadingEntity> Readings { get; set; }
     }
 }

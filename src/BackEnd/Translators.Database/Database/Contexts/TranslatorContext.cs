@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Translators.Database.Entities;
 using Translators.Database.Entities.Authentications;
+using Translators.Database.Entities.UserPersonalization;
 using Translators.Models;
 
 namespace Translators.Database.Contexts
@@ -24,6 +25,7 @@ namespace Translators.Database.Contexts
         public DbSet<LinkParagraphEntity> LinkParagraphs { get; set; }
         public DbSet<LinkGroupEntity> LinkGroups { get; set; }
         public DbSet<AudioEntity> Audioes { get; set; }
+        public DbSet<ReadingEntity> Readings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -208,10 +210,41 @@ namespace Translators.Database.Contexts
                 x.HasKey(r => r.Id);
                 x.HasIndex(x => x.Title);
             });
-            
+
             modelBuilder.Entity<AudioEntity>(x =>
             {
                 x.HasKey(r => r.Id);
+            });
+
+            modelBuilder.Entity<ReadingEntity>(x =>
+            {
+                x.HasKey(r => r.Id);
+                x.HasIndex(r => r.IsDeleted);
+
+                x.HasOne(x => x.User)
+                 .WithMany(x => x.Readings)
+                 .HasForeignKey(x => x.UserId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.Book)
+                 .WithMany(x => x.Readings)
+                 .HasForeignKey(x => x.BookId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.Catalog)
+                 .WithMany(x => x.Readings)
+                 .HasForeignKey(x => x.CatalogId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.Page)
+                 .WithMany(x => x.Readings)
+                 .HasForeignKey(x => x.PageId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.Category)
+                 .WithMany(x => x.Readings)
+                 .HasForeignKey(x => x.CategoryId)
+                 .OnDelete(DeleteBehavior.Restrict);
             });
         }
 

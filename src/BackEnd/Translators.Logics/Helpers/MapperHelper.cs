@@ -33,7 +33,11 @@ namespace System
 
         public static T Map<T>(this object data)
         {
-            if (Mappers.TryGetValue(typeof(T), out Func<object, string, string, object[], object> func))
+            if (data == null)
+                return default;
+            else if (data.GetType() == typeof(T))
+                return (T)data;
+            else if (Mappers.TryGetValue(typeof(T), out Func<object, string, string, object[], object> func))
             {
                 return (T)func(data, null, null, null);
             }

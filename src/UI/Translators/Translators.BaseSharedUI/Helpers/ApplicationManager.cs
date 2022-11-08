@@ -11,9 +11,9 @@ namespace Translators.UI.Helpers
 #if (CSHTML5)
 
 #elif (WPFCore)
-            Process.Start($"{TranslatorService.ServiceAddress}/Application/DownloadLastVersion?fileName=wpfcore.zip");
+            System.Diagnostics.Process.Start($"{TranslatorService.ServiceAddress}/Application/DownloadLastVersion?fileName=wpfcore.zip");
 #elif (WPF)
-            Process.Start($"{TranslatorService.ServiceAddress}/Application/DownloadLastVersion?fileName=wpf.zip");
+            System.Diagnostics.Process.Process.Start($"{TranslatorService.ServiceAddress}/Application/DownloadLastVersion?fileName=wpf.zip");
 #else
             if (Device.RuntimePlatform == Device.iOS)
             {

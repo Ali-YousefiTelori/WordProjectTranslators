@@ -8,11 +8,13 @@
         InternalError = 3,
         Dupplicate = 4,
         Empty = 5,
-        NotFound = 6
+        NotFound = 6,
+        ValidationsError = 7
     }
 
     public class ErrorContract
     {
+        public List<ValidationContract> Validations { get; set; } = new List<ValidationContract>();
         public FailedReasonType FailedReasonType { get; set; }
         public string Message { get; set; }
         public string Details { get; set; }
@@ -36,7 +38,7 @@
             };
         }
 
-        public static implicit operator MessageContract((string Message, FailedReasonType FailedReasonType) result)
+        public static implicit operator MessageContract((FailedReasonType FailedReasonType, string Message) result)
         {
             return new MessageContract()
             {
@@ -73,6 +75,19 @@
 
         public static implicit operator MessageContract<T>(T contract)
         {
+            if (contract == null)
+            {
+                return new MessageContract<T>()
+                {
+                    IsSuccess = false,
+                    Error = new ErrorContract()
+                    {
+                        FailedReasonType = FailedReasonType.NotFound,
+                        StackTrace = Environment.StackTrace,
+                        Message = "یافت نشد."
+                    }
+                };
+            }
             return new MessageContract<T>()
             {
                 IsSuccess = true,

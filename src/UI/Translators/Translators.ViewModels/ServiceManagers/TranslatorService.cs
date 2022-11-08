@@ -56,6 +56,7 @@ namespace Translators.ServiceManagers
         static IAuthenticationServiceAsync DuplexAuthenticationService { get; set; }
         static IApplicationServiceAsync DuplexApplicationService { get; set; }
         static IParagraphServiceAsync DuplexParagraphService { get; set; }
+        static IUserReadingServiceAsync DuplexUserReadingService { get; set; }
 
         public static bool IsAdmin { get; set; }
         public static bool IsDuplexProtocol { get; set; }
@@ -136,6 +137,17 @@ namespace Translators.ServiceManagers
                 return new TranslatorsServices.HttpServices.ParagraphService(ServiceAddress, NoCacheHttpClient);
             else
                 return new TranslatorsServices.HttpServices.ParagraphService(ServiceAddress, CacheHttpClient);
+        }
+
+        public static IUserReadingServiceAsync GetUserReadingService(bool isForce)
+        {
+            IsForce = isForce;
+            if (IsDuplexProtocol)
+                return DuplexUserReadingService;
+            if (isForce)
+                return new TranslatorsServices.HttpServices.UserReadingService(ServiceAddress, NoCacheHttpClient);
+            else
+                return new TranslatorsServices.HttpServices.UserReadingService(ServiceAddress, CacheHttpClient);
         }
 
         public static Func<string> GetVersion { get; set; }

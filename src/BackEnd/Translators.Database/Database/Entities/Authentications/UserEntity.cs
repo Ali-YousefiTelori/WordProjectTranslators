@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Translators.Database.Entities.UserPersonalization;
 
 namespace Translators.Database.Entities.Authentications
 {
@@ -18,5 +19,6 @@ namespace Translators.Database.Entities.Authentications
 
         public List<UserPermissionEntity> UserPermissions { get; set; }
         public List<LinkParagraphEntity> LinkParagraphs { get; set; }
+        public List<ReadingEntity> Readings { get; set; }
     }
 }

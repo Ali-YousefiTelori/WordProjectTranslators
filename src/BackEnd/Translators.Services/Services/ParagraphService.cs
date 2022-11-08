@@ -3,10 +3,12 @@ using SignalGo.Shared.DataTypes;
 using Translators.Attributes;
 using Translators.Contracts.Common;
 using Translators.Contracts.Common.Authentications;
+using Translators.Contracts.Common.DataTypes;
 using Translators.Contracts.Requests;
 using Translators.Database.Contexts;
 using Translators.Database.Entities;
 using Translators.Logics;
+using Translators.Security;
 using Translators.Validations;
 
 namespace Translators.Services
@@ -22,15 +24,12 @@ namespace Translators.Services
         }
 
         [JsonCustomSerialization]
+        [AuthenticationSecurityPermission(PermissionType.Admin, PermissionType.EditLink)]
         public async Task<MessageContract> LinkParagraph([NumberValidation] LinkParagraphRequestContract linkParagraphRequest)
         {
             var currentUser = OperationContext<UserContract>.CurrentSetting;
-            if (currentUser == null || currentUser.Permissions == null)
-                return ("شما وارد نشده اید یا ثبت نام نکرده اید!", FailedReasonType.SessionAccessDenied);
-            else if (!currentUser.Permissions.Any(x => x == Contracts.Common.DataTypes.PermissionType.Admin))
-                return ("شما دسترسی انجام اینکار را ندارید!", FailedReasonType.AccessDenied);
-            else if (linkParagraphRequest.FromParagraphIds.Count == 0 || linkParagraphRequest.ToParagraphIds.Count == 0)
-                return ("هیچ آیه‌ای برای لینک وجود ندارد!", FailedReasonType.Empty);
+            if (linkParagraphRequest.FromParagraphIds.Count == 0 || linkParagraphRequest.ToParagraphIds.Count == 0)
+                return (FailedReasonType.Empty, "هیچ آیه‌ای برای لینک وجود ندارد!");
 
             //if ((await new LogicBase<TranslatorContext, LinkParagraphEntity, LinkParagraphEntity>().Find(q => q.Where(x => x.FromParagraphId == linkParagraphRequest.FromParagraphId && x.ToParagraphId == linkParagraphRequest.ToParagraphId && x.LinkGroup.Title == linkParagraphRequest.Title))).Result != null)
             //    return ("این آیات قبلا به هم لینک شده بودند!", FailedReasonType.Dupplicate);

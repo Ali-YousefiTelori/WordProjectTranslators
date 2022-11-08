@@ -17,7 +17,7 @@ namespace Translators.Logics
             return entities;
         }
 
-        async Task<TEntity> AddToDatabase(TEntity entity)
+        protected async Task<TEntity> AddToDatabase(TEntity entity)
         {
             TContext context = new TContext();
             await context.AddAsync(entity);
@@ -41,6 +41,15 @@ namespace Translators.Logics
             context.Update(entity);
             await context.SaveChangesAsync();
             return entity.Map<TContract>();
+        }
+
+        async Task<List<TContract>> UpdateAllToDatabase(List<TContract> contracts)
+        {
+            TContext context = new TContext();
+            var entities = contracts.Map<List<TEntity>>();
+            context.UpdateRange(entities);
+            await context.SaveChangesAsync();
+            return entities.Map<List<TContract>>();
         }
 
         async Task<List<TContract>> GetAllFromDatabase(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery)
@@ -82,11 +91,6 @@ namespace Translators.Logics
             return await AddRangeToDatabase(entities);
         }
 
-        public async Task<MessageContract<TEntity>> Add(TEntity entity)
-        {
-            return await AddToDatabase(entity);
-        }
-
         public async Task<MessageContract<TContract>> Add(TContract contract)
         {
             return await AddToDatabase(contract);
@@ -95,6 +99,11 @@ namespace Translators.Logics
         public async Task<MessageContract<TContract>> Update(TContract contract)
         {
             return await UpdateToDatabase(contract);
+        }
+
+        public async Task<MessageContract<List<TContract>>> UpdateAll(IEnumerable<TContract> contracts)
+        {
+            return await UpdateAllToDatabase(contracts.ToList());
         }
 
         public async Task<MessageContract<List<TContract>>> GetAll(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery = null)
@@ -116,9 +125,13 @@ namespace Translators.Logics
         }
     }
 
-    public class LogicBase<TContext, TEntity> : LogicBase<TContext, byte, TEntity>
+    public class LogicBase<TContext, TEntity> : LogicBase<TContext, TEntity, TEntity>
         where TContext : TranslatorContext, new()
         where TEntity : class
     {
+        public async Task<MessageContract<TEntity>> Add(TEntity entity)
+        {
+            return await AddToDatabase(entity);
+        }
     }
 }

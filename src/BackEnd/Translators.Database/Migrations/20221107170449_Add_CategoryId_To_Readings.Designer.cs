@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Translators.Database.Contexts;
 
@@ -11,9 +12,10 @@ using Translators.Database.Contexts;
 namespace Translators.Migrations
 {
     [DbContext(typeof(TranslatorContext))]
-    partial class TranslatorContextModelSnapshot : ModelSnapshot
+    [Migration("20221107170449_Add_CategoryId_To_Readings")]
+    partial class Add_CategoryId_To_Readings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -394,9 +396,6 @@ namespace Translators.Migrations
 
                     b.Property<long>("PageId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("StartPageNumber")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
