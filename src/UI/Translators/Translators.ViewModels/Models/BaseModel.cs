@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using Translators.ServiceManagers;
 
 namespace Translators.Models
 {
@@ -10,7 +12,14 @@ namespace Translators.Models
         {
             if (PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                try
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                }
+                catch (Exception ex)
+                {
+                    TranslatorService.LogException(ex.ToString());
+                }
             }
         }
     }

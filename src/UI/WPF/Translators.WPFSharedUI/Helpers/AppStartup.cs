@@ -30,7 +30,7 @@ namespace Translators.UI.Helpers
 
         static string GetVersion()
         {
-            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            return $"WPF {Assembly.GetExecutingAssembly().GetName().Version}";
         }
 
         static string GetVersionNumber()

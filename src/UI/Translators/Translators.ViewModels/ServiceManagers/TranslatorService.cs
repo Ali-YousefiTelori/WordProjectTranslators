@@ -2,13 +2,13 @@
 using System;
 using System.Threading.Tasks;
 using Translators.Models;
+using Translators.Models.Storages;
 using TranslatorsServices.Interfaces;
 
 namespace Translators.ServiceManagers
 {
     public static class TranslatorService
     {
-        public static string Session { get; set; }
         public static void Initialize()
         {
             ClientProvider clientProvider = new ClientProvider();
@@ -163,7 +163,7 @@ namespace Translators.ServiceManagers
                     LogTrace = error,
                     DeviceDescription = GetVersion(),
                     AppVersion = version,
-                    Session = TranslatorService.Session
+                    Session = ApplicationProfileData.Current?.Value?.Session?.ToString()
                 });
             }
             catch
