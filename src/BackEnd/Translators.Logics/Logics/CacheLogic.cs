@@ -45,7 +45,7 @@ namespace Translators.Logics
                 Languages.TryAdd(item.Id, item.Map<LanguageContract>());
             }
 
-            var pages = await context.Pages.AsNoTracking().ToListAsync();
+            var pages = await context.Pages.Include(x => x.Audios).AsNoTracking().ToListAsync();
             foreach (var item in pages)
             {
                 Pages.TryAdd(item.Id, item.Map<PageContract>());
@@ -53,7 +53,7 @@ namespace Translators.Logics
 
             FixPageBookIds(Pages.Values.ToList());
 
-            var paragraphs = await context.Paragraphs.Include(x => x.LinkParagraphs).AsNoTracking().ToListAsync();
+            var paragraphs = await context.Paragraphs.Include(x => x.Audios).Include(x => x.LinkParagraphs).AsNoTracking().ToListAsync();
             foreach (var item in paragraphs)
             {
                 Paragraphs.TryAdd(item.Id, item.Map<ParagraphContract>());

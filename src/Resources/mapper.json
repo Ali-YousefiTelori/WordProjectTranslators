@@ -17,7 +17,8 @@
           "ToName": "BookContract",
           "ToSkipProperties": [
             "Category",
-            "IsHidden"
+            "IsHidden",
+            "Readings"
           ],
           "CustomPropertiesMap": []
         },
@@ -53,7 +54,8 @@
           "ToSkipProperties": [
             "Book",
             "Paragraphs",
-            "BookNames"
+            "BookNames",
+            "Readings"
           ],
           "CustomPropertiesMap": []
         },
@@ -87,9 +89,16 @@
             "Catalog",
             "CatalogNames",
             "Audioes",
-            "BookId"
+            "BookId",
+            "Readings"
           ],
-          "CustomPropertiesMap": []
+          "CustomPropertiesMap": [
+            {
+              "From": "Audios",
+              "To": "AudioFiles",
+              "Type": 0
+            }
+          ]
         },
         {
           "FromAssemblyName": "Translators.Database.dll",
@@ -101,7 +110,9 @@
           "ToAssemblyName": "Translators.Domain.dll",
           "ToNamespace": "Translators.Contracts.Common",
           "ToName": "CategoryContract",
-          "ToSkipProperties": [],
+          "ToSkipProperties": [
+            "Readings"
+          ],
           "CustomPropertiesMap": []
         },
         {
@@ -122,6 +133,11 @@
             "PageNumber"
           ],
           "CustomPropertiesMap": [
+            {
+              "From": "Audios",
+              "To": "AudioFiles",
+              "Type": 0
+            },
             {
               "From": "HasLink",
               "To": "$toMap.LinkParagraphs?.Count > 0 || toMap.LinkParagraphs?.Count > 0",
@@ -202,6 +218,27 @@
           "ToName": "LogContract",
           "ToSkipProperties": [
             "Values"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "AudioEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "AudioFileContract",
+          "ToSkipProperties": [
+            "Url",
+            "Data",
+            "Page",
+            "Language",
+            "Paragraph",
+            "Translator",
+            "AudioReader"
           ],
           "CustomPropertiesMap": []
         }

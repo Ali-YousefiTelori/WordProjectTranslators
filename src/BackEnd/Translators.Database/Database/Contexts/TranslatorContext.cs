@@ -26,7 +26,8 @@ namespace Translators.Database.Contexts
         public DbSet<LinkGroupEntity> LinkGroups { get; set; }
         public DbSet<AudioEntity> Audioes { get; set; }
         public DbSet<ReadingEntity> Readings { get; set; }
-
+        public DbSet<AudioReaderEntity> AudioReaders { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -214,6 +215,31 @@ namespace Translators.Database.Contexts
             modelBuilder.Entity<AudioEntity>(x =>
             {
                 x.HasKey(r => r.Id);
+
+                x.HasOne(x => x.Page)
+                 .WithMany(x => x.Audios)
+                 .HasForeignKey(x => x.PageId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.Paragraph)
+                 .WithMany(x => x.Audios)
+                 .HasForeignKey(x => x.ParagraphId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.Translator)
+                 .WithMany(x => x.Audios)
+                 .HasForeignKey(x => x.TranslatorId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.Language)
+                 .WithMany(x => x.Audios)
+                 .HasForeignKey(x => x.LanguageId)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                x.HasOne(x => x.AudioReader)
+                 .WithMany(x => x.Audios)
+                 .HasForeignKey(x => x.AudioReaderId)
+                 .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<ReadingEntity>(x =>

@@ -100,7 +100,7 @@ namespace Translators.ViewModels.Pages
 
         public bool IsOutsideOfBookTab { get; set; }
 
-        public long PageId { get; set; }
+        public PageContract Page { get; set; }
         public long BookId { get; set; }
         public long CatalogId { get; set; }
 
@@ -217,7 +217,7 @@ namespace Translators.ViewModels.Pages
         {
             var pageResult = await TranslatorService.GetPageService(isForce).GetPageAsync(pageNumber, bookId);
             if (pageResult.IsSuccess && pageNumber == CatalogStartPageNumber && bookId == BookId)
-                PageId = pageResult.Result.First().Id;
+                Page = pageResult.Result.First();
             return pageResult;
         }
 
@@ -325,10 +325,16 @@ namespace Translators.ViewModels.Pages
                 IsLoadingPlayStream = true;
                 if (!isLoaded)
                 {
-                    string key = PageId.ToString();
+                    var audio = Page.AudioFiles?.GroupBy(x => x.LanguageId).Select(x => x.FirstOrDefault()).FirstOrDefault();
+                    if (audio == null)
+                    {
+                        await AlertHelper.Display("ناموجود","باشه");
+                        return;
+                    }
+                    string key = $"{audio.PageId.GetValueOrDefault()}_{audio.ParagraphId.GetValueOrDefault()}_{audio.Id}";
                     var saver = new ApplicationBookAudioData();
                     saver.Initialize(key, ".mp3");
-                    var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/Page/DownloadFile?pageId={key}");
+                    var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/Storage/DownloadFile?fileId={audio.Id}&password={audio.Password}");
                     var run = AudioPlayerBaseHelper.CurrentBase.Load(stream);
                     AudioPlayerBaseHelper.CurrentBase.PlaybackEnded = Current_PlaybackEnded;
                     PlaybackCurrentPosition = 0;

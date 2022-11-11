@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using SignalGo.Shared.Models;
 using System.Text.RegularExpressions;
 using Translators.Database.Contexts;
 using Translators.Database.Entities;
 using Translators.Helpers;
+using Translators.Logics;
 using Translators.Models;
 
 namespace Translators.Patches
@@ -16,7 +18,7 @@ namespace Translators.Patches
             {
                 Console.WriteLine("Starting...");
                 await ConfigData.LoadAsync();
-                //await AddTransliterations();
+                await UploadQuranMisharyAlafasyAudios();
                 Console.WriteLine("Finished!");
             }
             catch (Exception ex)
@@ -25,6 +27,84 @@ namespace Translators.Patches
             }
 
             Console.ReadLine();
+        }
+
+        static async Task UploadQuranMisharyAlafasyAudios()
+        {
+            using TranslatorContext translatorContext = new TranslatorContext();
+            //سوره های قران
+            var catalogs = await translatorContext.Catalogs.Where(x => x.BookId == 1).ToListAsync();
+            var paragraphs = await translatorContext.Paragraphs.Where(x => x.Catalog.BookId == 1).ToListAsync();
+            string folderPath = "C:\\Users\\Administrator\\Downloads\\Mishary...Alafasy...verse...by...verseMP3...QURANN";
+            int index = 0;
+            foreach (var item in Directory.GetDirectories(folderPath))
+            {
+                var folderName = Path.GetFileName(item);
+                var id = int.Parse(folderName);
+                var catalog = catalogs.FirstOrDefault(x => x.Number == id);
+                foreach (var paragraph in paragraphs.Where(x => x.CatalogId == catalog.Id))
+                {
+                    if (paragraph.Id <= 498)
+                        continue;
+                    try
+                    {
+                        var fileName = Path.Combine(folderPath, catalog.Number.ToString("000"), $"{catalog.Number:000}{paragraph.Number:000}.mp3");
+                        var data = new Contracts.Common.AudioFileContract()
+                        {
+                            AudioReaderId = 1,
+                            FileName = Path.GetFileName(fileName),
+                            IsMain = true,
+                            LanguageId = 1,
+                            ParagraphId = paragraph.Id,
+                            Password = Guid.NewGuid().ToString()
+                        };
+                        byte[] paramFileStream = File.ReadAllBytes(fileName);
+
+                        var formContent = new MultipartFormDataContent
+                        {
+                            // Send form text values here
+                            {new StringContent(JsonConvert.SerializeObject(data)),"data"},
+                            // Send Image Here
+                            {new StreamContent(new MemoryStream(paramFileStream)),"file",data.FileName}
+                        };
+
+                        var myHttpClient = new HttpClient();
+                        var response = await myHttpClient.PostAsync("http://api.noorpod.ir/Storage/UploadFile", formContent);
+                        string stringContent = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Done {index} {fileName}");
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    index++;
+                }
+            }
+        }
+
+        static async Task MoveAudiosToFiles()
+        {
+            using TranslatorContext translatorContext = new TranslatorContext();
+            await translatorContext.Database.MigrateAsync();
+            var allAudios = await translatorContext.Audioes.ToListAsync();
+            int index = 0;
+            foreach (var audio in allAudios)
+            {
+                audio.Password = Guid.NewGuid().ToString();
+                await translatorContext.SaveChangesAsync();
+                using var stream = new MemoryStream(audio.Data);
+                stream.Seek(0, SeekOrigin.Begin);
+                var logic = await StorageLogic.UploadToExistingFile(null, new BaseStreamInfo()
+                {
+                    FileName = audio.FileName,
+                    Length = audio.Data.Length,
+                    Stream = stream
+                }, audio.Id);
+                if (!logic)
+                    Console.WriteLine(logic.ToString());
+                Console.WriteLine($"Comepleted {index}/{allAudios.Count}");
+                index++;
+            }
         }
 
         static async Task AddTransliterations()
@@ -54,7 +134,7 @@ namespace Translators.Patches
                 }
                 var split = line.Split('	');
                 var bookNumber = new string(split[0].Where(x => char.IsDigit(x)).ToArray());
-                
+
                 var SurahNumber = split[2];
                 var verseNumber = split[3];
                 var text = split[4].Replace("܀", "").Trim();
@@ -159,7 +239,7 @@ namespace Translators.Patches
                     translatorContext.Words.Add(word);
                 }
                 index++;
-                while(true)
+                while (true)
                 {
                     try
                     {

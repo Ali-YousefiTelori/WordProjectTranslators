@@ -22,9 +22,11 @@ namespace Translators.Services
         public async Task<MessageContract<List<PageContract>>> GetPage([NumberValidation] long pageNumber, [NumberValidation] long bookId)
         {
             var result = await new LogicBase<TranslatorContext, PageContract, PageEntity>().GetAll(x =>
-                         x.Include(q => q.Paragraphs).ThenInclude(p => p.Words).ThenInclude(w => w.Values).ThenInclude(n => n.Language)
+                         x.Include(q => q.Audios)
+                         .Include(q => q.Paragraphs).ThenInclude(p => p.Words).ThenInclude(w => w.Values).ThenInclude(n => n.Language)
                          .Include(q => q.Paragraphs).ThenInclude(p => p.Words).ThenInclude(w => w.Values).ThenInclude(n => n.Translator)
                          .Include(q => q.Paragraphs).ThenInclude(p => p.LinkParagraphs)
+                         .Include(q => q.Paragraphs).ThenInclude(p => p.Audios)
                         .Where(q => q.Number == pageNumber && q.Catalog.BookId == bookId));
             var catalogIds = result.Result.SelectMany(x => x.Paragraphs).GroupBy(x => x.CatalogId).Select(x => x.Key).ToArray();
             var catalogs = await new LogicBase<TranslatorContext, CatalogContract, CatalogEntity>().GetAll(x => x.Include(c => c.Names).ThenInclude(c => c.Language).Where(i => catalogIds.Contains(i.Id)));
@@ -60,7 +62,7 @@ namespace Translators.Services
         public async Task<MessageContract<List<PageContract>>> GetPagesByBookId([NumberValidation] long bookId)
         {
             var pageResult = await new LogicBase<TranslatorContext, PageContract, PageEntity>().GetAll(x =>
-                       x.Where(q => q.Catalog.BookId == bookId));
+                       x.Where(q => q.Catalog.BookId == bookId).Include(q => q.Audios));
             CacheLogic.FixPageBookIds(pageResult.Result);
             return pageResult;
         }
@@ -137,12 +139,12 @@ namespace Translators.Services
         public async Task<MessageContract> UploadFile(StreamInfo<long> stream)
         {
             var verseResult = await new LogicBase<TranslatorContext, PageEntity, PageEntity>().Find(x =>
-                        x.Include(q => q.Audioes).Where(q => q.Id == stream.Data));
+                        x.Include(q => q.Audios).Where(q => q.Id == stream.Data));
             if (!verseResult.IsSuccess)
                 return verseResult.ToContract<MessageContract>();
 
             var bytes = await StreamHelper.ReadAllBytes(stream);
-            if (verseResult.Result.Audioes.Count == 0)
+            if (verseResult.Result.Audios.Count == 0)
             {
                 var audioEntity = new AudioEntity()
                 {
@@ -156,7 +158,7 @@ namespace Translators.Services
             }
             else
             {
-                var audioEntity = verseResult.Result.Audioes[0];
+                var audioEntity = verseResult.Result.Audios[0];
                 audioEntity.FileName = stream.FileName;
                 audioEntity.Data = bytes;
                 var updateAudioEntity = await new LogicBase<TranslatorContext, AudioEntity, AudioEntity>().Update(audioEntity);
@@ -173,8 +175,8 @@ namespace Translators.Services
             try
             {
                 var verseResult = await new LogicBase<TranslatorContext, PageEntity, PageEntity>().Find(x =>
-                        x.Include(q => q.Audioes).Where(q => q.Id == pageId));
-                var audio = verseResult.Result?.Audioes?.FirstOrDefault();
+                        x.Include(q => q.Audios).Where(q => q.Id == pageId));
+                var audio = verseResult.Result?.Audios?.FirstOrDefault();
                 if (!verseResult.IsSuccess || audio == null)
                 {
                     context.HttpClient.Status = System.Net.HttpStatusCode.NotFound;

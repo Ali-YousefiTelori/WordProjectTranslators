@@ -23,5 +23,6 @@ namespace Translators.Database.Entities
 
         public List<WordEntity> Words { get; set; }
         public List<LinkParagraphEntity> LinkParagraphs { get; set; }
+        public List<AudioEntity> Audios { get; set; }
     }
 }

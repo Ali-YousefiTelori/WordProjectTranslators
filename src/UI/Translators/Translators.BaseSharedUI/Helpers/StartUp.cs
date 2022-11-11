@@ -23,7 +23,7 @@ namespace Translators.UI.Helpers
                     }
                     catch (Exception ex)
                     {
-                        await BaseViewModel.AlertExcepption(ex);
+                        await ViewModels.BaseViewModel.AlertExcepption(ex);
                     }
                 });
             };
@@ -39,7 +39,7 @@ namespace Translators.UI.Helpers
                     }
                     catch (Exception ex)
                     {
-                        await BaseViewModel.AlertExcepption(ex);
+                        await ViewModels.BaseViewModel.AlertExcepption(ex);
                     }
                 });
                 return result;

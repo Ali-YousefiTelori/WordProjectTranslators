@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Utilities.Encoders;
 using SignalGo.Shared.Models;
 using Translators.Contracts.Common;
 using Translators.Database.Contexts;
@@ -133,5 +134,10 @@ namespace Translators.Logics
         {
             return await AddToDatabase(entity);
         }
+    }
+
+    public class TranslatorLogicBase<TEntity> : LogicBase<TranslatorContext, TEntity, TEntity>
+        where TEntity : class
+    {
     }
 }

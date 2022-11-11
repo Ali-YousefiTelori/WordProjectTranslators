@@ -19,7 +19,7 @@ namespace Translators.Database.Entities
         public CatalogEntity Catalog { get; set; }
 
         public List<ParagraphEntity> Paragraphs { get; set; }
-        public List<AudioEntity> Audioes { get; set; }
+        public List<AudioEntity> Audios { get; set; }
         public List<ReadingEntity> Readings { get; set; }
     }
 }

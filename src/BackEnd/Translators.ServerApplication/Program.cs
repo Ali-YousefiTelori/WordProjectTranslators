@@ -31,6 +31,7 @@ namespace Translators.ServerApplication
                 serverProvider.RegisterServerService<ParagraphService>();
                 serverProvider.RegisterServerService<ApplicationService>();
                 serverProvider.RegisterServerService<UserReadingService>();
+                serverProvider.RegisterServerService<StorageService>();
                 
                 serverProvider.ErrorHandlingFunction = (ex, type, method, parameters, jsonParameter, client) =>
                 {

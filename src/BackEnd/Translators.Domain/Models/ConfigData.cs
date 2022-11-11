@@ -7,7 +7,8 @@ namespace Translators.Models
     {
         public static ConfigData Current { get; set; }
         public string ConnectionString { get; set; }
-
+        public string Domain { get; set; }
+        public string StoragePath { get; set; }
         public static async Task LoadAsync()
         {
             var savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.json");

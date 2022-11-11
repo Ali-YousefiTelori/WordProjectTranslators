@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Translators.Database\Translators.Database.csproj" />
+    <PackageReference Include="MimeKit" Version="2.11.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="KavenegarDotNetCore" Version="1.0.3" />
+    <PackageReference Include="UltraStreamGo" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

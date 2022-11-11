@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Translators.Database.Contexts;
 
@@ -11,9 +12,10 @@ using Translators.Database.Contexts;
 namespace Translators.Migrations
 {
     [DbContext(typeof(TranslatorContext))]
-    partial class TranslatorContextModelSnapshot : ModelSnapshot
+    [Migration("20221111132424_AddAudioToFile")]
+    partial class AddAudioToFile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,9 +57,6 @@ namespace Translators.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long?>("AudioReaderId")
-                        .HasColumnType("bigint");
-
                     b.Property<byte[]>("Data")
                         .HasColumnType("varbinary(max)");
 
@@ -84,8 +83,6 @@ namespace Translators.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AudioReaderId");
-
                     b.HasIndex("LanguageId");
 
                     b.HasIndex("PageId");
@@ -95,22 +92,6 @@ namespace Translators.Migrations
                     b.HasIndex("TranslatorId");
 
                     b.ToTable("Audioes");
-                });
-
-            modelBuilder.Entity("Translators.Database.Entities.AudioReaderEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AudioReaders");
                 });
 
             modelBuilder.Entity("Translators.Database.Entities.Authentications.SMSUserEntity", b =>
@@ -586,11 +567,6 @@ namespace Translators.Migrations
 
             modelBuilder.Entity("Translators.Database.Entities.AudioEntity", b =>
                 {
-                    b.HasOne("Translators.Database.Entities.AudioReaderEntity", "AudioReader")
-                        .WithMany("Audios")
-                        .HasForeignKey("AudioReaderId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("Translators.Database.Entities.LanguageEntity", "Language")
                         .WithMany("Audios")
                         .HasForeignKey("LanguageId")
@@ -610,8 +586,6 @@ namespace Translators.Migrations
                         .WithMany("Audios")
                         .HasForeignKey("TranslatorId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("AudioReader");
 
                     b.Navigation("Language");
 
@@ -833,11 +807,6 @@ namespace Translators.Migrations
                         .IsRequired();
 
                     b.Navigation("Word");
-                });
-
-            modelBuilder.Entity("Translators.Database.Entities.AudioReaderEntity", b =>
-                {
-                    b.Navigation("Audios");
                 });
 
             modelBuilder.Entity("Translators.Database.Entities.Authentications.UserEntity", b =>

@@ -19,5 +19,6 @@ namespace Translators.Contracts.Common
         public long BookId { get; set; }
 
         public List<ParagraphContract> Paragraphs { get; set; }
+        public List<AudioFileContract> AudioFiles { get; set; }
     }
 }

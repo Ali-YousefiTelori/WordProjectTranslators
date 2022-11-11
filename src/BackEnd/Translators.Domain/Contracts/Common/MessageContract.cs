@@ -9,7 +9,8 @@
         Dupplicate = 4,
         Empty = 5,
         NotFound = 6,
-        ValidationsError = 7
+        ValidationsError = 7,
+        StreamError = 8
     }
 
     public class ErrorContract
@@ -19,6 +20,11 @@
         public string Message { get; set; }
         public string Details { get; set; }
         public string StackTrace { get; set; }
+
+        public override string ToString()
+        {
+            return $"{FailedReasonType}\r\n{Message}\r\n${Details}${StackTrace}$";
+        }
     }
 
     public class MessageContract
@@ -36,6 +42,11 @@
                     Message = "No details!"
                 }
             };
+        }
+
+        public static implicit operator bool(MessageContract contract)
+        {
+            return contract.IsSuccess;
         }
 
         public static implicit operator MessageContract((FailedReasonType FailedReasonType, string Message) result)
@@ -62,6 +73,11 @@
                 }
             };
         }
+
+        public override string ToString()
+        {
+            return $"{IsSuccess}\r\n{Error}";
+        }
     }
 
     public class MessageContract<T> : MessageContract
@@ -71,6 +87,11 @@
         public bool HasResult()
         {
             return IsSuccess && Result is not null;
+        }
+
+        public static implicit operator bool(MessageContract<T> contract)
+        {
+            return contract.IsSuccess;
         }
 
         public static implicit operator MessageContract<T>(T contract)
@@ -132,6 +153,21 @@
             };
         }
 
+        public static implicit operator MessageContract<T>(Exception exception)
+        {
+            return new MessageContract<T>()
+            {
+                IsSuccess = false,
+                Error = new ErrorContract()
+                {
+                    FailedReasonType = FailedReasonType.InternalError,
+                    StackTrace = Environment.StackTrace,
+                    Message = exception.Message,
+                    Details = exception.ToString()
+                }
+            };
+        }
+
         public static implicit operator MessageContract<T>((string Result, string Details) data)
         {
             return new MessageContract<T>()
@@ -143,6 +179,11 @@
                     Details = data.Details
                 }
             };
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }

@@ -17,6 +17,7 @@
         public long PageNumber { get; set; }
         
         public List<WordContract> Words { get; set; }
+        public List<AudioFileContract> AudioFiles { get; set; }
 
         string mainValue = "";
         string translatedValue = "";

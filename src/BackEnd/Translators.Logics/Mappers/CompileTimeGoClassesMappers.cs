@@ -96,8 +96,8 @@ namespace CompileTimeGoMapper
                 Id = toMap.Id,
                 Number = toMap.Number,
                 StartPageNumber = toMap.StartPageNumber,
-                Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 BookId = toMap.BookId,
+                Names = toMap.Names?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
                 Pages = toMap.Pages?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
@@ -161,6 +161,7 @@ namespace CompileTimeGoMapper
                 Number = toMap.Number,
                 CatalogId = toMap.CatalogId,
                 Paragraphs = toMap.Paragraphs?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
+                Audios = toMap.AudioFiles?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -175,6 +176,7 @@ namespace CompileTimeGoMapper
                 Number = toMap.Number,
                 CatalogId = toMap.CatalogId,
                 Paragraphs = toMap.Paragraphs?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
+                AudioFiles = toMap.Audios?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -223,6 +225,7 @@ namespace CompileTimeGoMapper
                 PageId = toMap.PageId,
                 CatalogId = toMap.CatalogId,
                 Words = toMap.Words?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
+                Audios = toMap.AudioFiles?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -240,6 +243,7 @@ namespace CompileTimeGoMapper
                 PageId = toMap.PageId,
                 CatalogId = toMap.CatalogId,
                 Words = toMap.Words?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
+                AudioFiles = toMap.Audios?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -393,6 +397,47 @@ namespace CompileTimeGoMapper
                 AppVersion = toMap.AppVersion,
                 Session = toMap.Session,
                 DeviceDescription = toMap.DeviceDescription,
+            };
+
+            return mapped;
+        }
+    }
+    public static class AudioEntity_AudioFileContractMapper
+    {
+        public static global::Translators.Database.Entities.AudioEntity Map(this global::Translators.Contracts.Common.AudioFileContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Database.Entities.AudioEntity()
+            {
+                Id = toMap.Id,
+                IsMain = toMap.IsMain,
+                FileName = toMap.FileName,
+                Password = toMap.Password,
+                PageId = toMap.PageId,
+                LanguageId = toMap.LanguageId,
+                ParagraphId = toMap.ParagraphId,
+                AudioReaderId = toMap.AudioReaderId,
+                TranslatorId = toMap.TranslatorId,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.AudioFileContract Map(this global::Translators.Database.Entities.AudioEntity toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.AudioFileContract()
+            {
+                IsMain = toMap.IsMain,
+                FileName = toMap.FileName,
+                PageId = toMap.PageId,
+                LanguageId = toMap.LanguageId,
+                TranslatorId = toMap.TranslatorId,
+                ParagraphId = toMap.ParagraphId,
+                AudioReaderId = toMap.AudioReaderId,
+                Id = toMap.Id,
+                Password = toMap.Password,
             };
 
             return mapped;
