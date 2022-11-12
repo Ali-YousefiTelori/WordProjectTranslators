@@ -35,7 +35,7 @@
                         <SwipeItem Text="Next Page" Command="{Binding SwipeRightCommand,Source={StaticResource PageViewModel}}" />
                     </SwipeItems>
                 </SwipeView.LeftItems>
-                <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems" autoScroll:CollectionViewAutoScroll.BindTo="{Binding ScrollToIndex}">
+                <CollectionView ItemsSource="{Binding Items}" ItemSizingStrategy="MeasureAllItems" autoScroll:CollectionViewAutoScroll.BindTo="{Binding Player.ScrollToIndex}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid effect:TouchEffect.LongPressCommand="{Binding LongTouchedCommand, Source={StaticResource PageViewModel}}" effect:TouchEffect.LongPressCommandParameter="{Binding}" BackgroundColor="{Binding MeOnChanged,Converter={StaticResource ParagraphEvenColorConverter}}" VerticalOptions="Start">
@@ -79,33 +79,33 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
-            <Slider Grid.ColumnSpan="3" Value="{Binding PlaybackCurrentPosition,Mode=TwoWay}" FlowDirection="LeftToRight"/>
+            <Slider Grid.ColumnSpan="3" Value="{Binding Player.PlaybackCurrentPosition,Mode=TwoWay}" FlowDirection="LeftToRight"/>
             <Button HorizontalOptions="Start" Text="{Binding ReadingName}" Command="{Binding RemoveReadingCommand}" Grid.Row="1"/>
             <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
                 <Button Text="{Binding CatalogStartPageNumber}" Command="{Binding SelectPageCommand}"/>
                 <Button Text="آیه" Command="{Binding SelectVerseCommand}"/>
                 <Button FontFamily="icomoon" Text="" WidthRequest="40" Command="{Binding PlayCommand}">
                     <Button.Triggers>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsPlaying}" Value="False">
+                        <DataTrigger TargetType="Button" Binding="{Binding Player.IsPlaying}" Value="False">
                             <Setter Property="Text" Value="" />
                         </DataTrigger>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsPlaying}" Value="True">
+                        <DataTrigger TargetType="Button" Binding="{Binding Player.IsPlaying}" Value="True">
                             <Setter Property="Text" Value="" />
                         </DataTrigger>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsLoadingPlayStream}" Value="True">
+                        <DataTrigger TargetType="Button" Binding="{Binding Player.IsLoadingPlayStream}" Value="True">
                             <Setter Property="IsVisible" Value="False" />
                         </DataTrigger>
-                        <DataTrigger TargetType="Button" Binding="{Binding IsLoadingPlayStream}" Value="False">
+                        <DataTrigger TargetType="Button" Binding="{Binding Player.IsLoadingPlayStream}" Value="False">
                             <Setter Property="IsVisible" Value="True" />
                         </DataTrigger>
                     </Button.Triggers>
                 </Button>
-                <ActivityIndicator IsRunning="{Binding IsLoadingPlayStream}" WidthRequest="40" Grid.Row="1">
+                <ActivityIndicator IsRunning="{Binding Player.IsLoadingPlayStream}" WidthRequest="40" Grid.Row="1">
                     <ActivityIndicator.Triggers>
-                        <DataTrigger TargetType="ActivityIndicator" Binding="{Binding IsLoadingPlayStream}" Value="False">
+                        <DataTrigger TargetType="ActivityIndicator" Binding="{Binding Player.IsLoadingPlayStream}" Value="False">
                             <Setter Property="IsVisible" Value="False" />
                         </DataTrigger>
-                        <DataTrigger TargetType="ActivityIndicator" Binding="{Binding IsLoadingPlayStream}" Value="True">
+                        <DataTrigger TargetType="ActivityIndicator" Binding="{Binding Player.IsLoadingPlayStream}" Value="True">
                             <Setter Property="IsVisible" Value="True" />
                         </DataTrigger>
                     </ActivityIndicator.Triggers>

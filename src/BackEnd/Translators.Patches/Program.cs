@@ -18,7 +18,8 @@ namespace Translators.Patches
             {
                 Console.WriteLine("Starting...");
                 await ConfigData.LoadAsync();
-                //await SetAudiosDurations();
+                //await UploadQuranMakaremKarimiAudios();
+                await SetAudiosDurations();
                 Console.WriteLine("Finished!");
             }
             catch (Exception ex)
@@ -47,6 +48,66 @@ namespace Translators.Patches
             }
         }
 
+        static async Task UploadQuranMakaremKarimiAudios()
+        {
+            using TranslatorContext translatorContext = new TranslatorContext();
+            //سوره های قران
+            var catalogs = await translatorContext.Catalogs.Where(x => x.BookId == 1).ToListAsync();
+            var paragraphs = await translatorContext.Paragraphs.Where(x => x.Catalog.BookId == 1).ToListAsync();
+            string folderPath = "C:\\Users\\Administrator\\Downloads\\000_versebyverse";
+            int index = 0;
+            foreach (var item in Directory.GetFiles(folderPath))
+            {
+                if (!item.EndsWith(".mp3", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                var filename = Path.GetFileName(item);
+                var id = int.Parse(filename.Substring(0, 3));
+                var pid = int.Parse(filename.Substring(3, 3));
+                var catalog = catalogs.FirstOrDefault(x => x.Number == id);
+                foreach (var paragraph in paragraphs.Where(x => x.CatalogId == catalog.Id && x.Number == pid))
+                {
+                    try
+                    {
+                        if (paragraph.Id <= 3644)
+                            continue;
+                        var fileName = Path.Combine(folderPath, $"{catalog.Number:000}{paragraph.Number:000}.mp3");
+                        var data = new Contracts.Common.AudioFileContract()
+                        {
+                            AudioReaderId = 2,
+                            FileName = Path.GetFileName(fileName),
+                            IsMain = false,
+                            LanguageId = 2,
+                            ParagraphId = paragraph.Id,
+                            Password = Guid.NewGuid().ToString(),
+                            TranslatorId = 1
+                        };
+                        byte[] paramFileStream = File.ReadAllBytes(fileName);
+
+                        var formContent = new MultipartFormDataContent
+                        {
+                            // Send form text values here
+                            {new StringContent(JsonConvert.SerializeObject(data)),"data"},
+                            // Send Image Here
+                            {new StreamContent(new MemoryStream(paramFileStream)),"file",data.FileName}
+                        };
+
+                        var myHttpClient = new HttpClient();
+                        var response = await myHttpClient.PostAsync("http://api.noorpod.ir/Storage/UploadFile", formContent);
+                        string stringContent = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Done {index} {fileName}");
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    finally
+                    {
+                        index++;
+                    }
+                }
+            }
+        }
+
         static async Task UploadQuranMisharyAlafasyAudios()
         {
             using TranslatorContext translatorContext = new TranslatorContext();
@@ -62,8 +123,6 @@ namespace Translators.Patches
                 var catalog = catalogs.FirstOrDefault(x => x.Number == id);
                 foreach (var paragraph in paragraphs.Where(x => x.CatalogId == catalog.Id))
                 {
-                    if (paragraph.Id <= 498)
-                        continue;
                     try
                     {
                         var fileName = Path.Combine(folderPath, catalog.Number.ToString("000"), $"{catalog.Number:000}{paragraph.Number:000}.mp3");
