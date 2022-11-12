@@ -414,6 +414,7 @@ namespace CompileTimeGoMapper
                 IsMain = toMap.IsMain,
                 FileName = toMap.FileName,
                 Password = toMap.Password,
+                DurationTicks = toMap.DurationTicks,
                 PageId = toMap.PageId,
                 LanguageId = toMap.LanguageId,
                 ParagraphId = toMap.ParagraphId,
@@ -431,6 +432,7 @@ namespace CompileTimeGoMapper
             {
                 IsMain = toMap.IsMain,
                 FileName = toMap.FileName,
+                DurationTicks = toMap.DurationTicks,
                 PageId = toMap.PageId,
                 LanguageId = toMap.LanguageId,
                 TranslatorId = toMap.TranslatorId,

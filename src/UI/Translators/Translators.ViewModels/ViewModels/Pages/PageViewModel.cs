@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
@@ -126,6 +127,7 @@ namespace Translators.ViewModels.Pages
             }
         }
 
+        private double _AudioDuration;
         private double _PlaybackCurrentPosition;
         public double PlaybackCurrentPosition
         {
@@ -141,7 +143,7 @@ namespace Translators.ViewModels.Pages
                 OnPropertyChanged(nameof(PlaybackCurrentPosition));
                 if (AudioPlayerBaseHelper.CurrentBase.CanSeek)
                 {
-                    AudioPlayerBaseHelper.CurrentBase.Seek(value * AudioPlayerBaseHelper.CurrentBase.Duration);
+                    Seek(value * _AudioDuration);
                 }
             }
         }
@@ -316,26 +318,28 @@ namespace Translators.ViewModels.Pages
             }
         }
 
+        List<Stream> Audios { get; set; }
+        int _AudioIndex = 0;
         double _LastPlaybackSpeedRatoSet = 0;
         bool isLoaded = false;
         private async Task Play()
         {
             try
             {
+                if (IsLoading)
+                    return;
                 IsLoadingPlayStream = true;
                 if (!isLoaded)
                 {
-                    var audio = Page.AudioFiles?.GroupBy(x => x.LanguageId).Select(x => x.FirstOrDefault()).FirstOrDefault();
-                    if (audio == null)
+                    var audios = GetAudios();
+                    if (audios.Count == 0)
                     {
-                        await AlertHelper.Display("ناموجود","باشه");
+                        await AlertHelper.Display("ناموجود", "باشه");
                         return;
                     }
-                    string key = $"{audio.PageId.GetValueOrDefault()}_{audio.ParagraphId.GetValueOrDefault()}_{audio.Id}";
-                    var saver = new ApplicationBookAudioData();
-                    saver.Initialize(key, ".mp3");
-                    var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/Storage/DownloadFile?fileId={audio.Id}&password={audio.Password}");
-                    var run = AudioPlayerBaseHelper.CurrentBase.Load(stream);
+
+                    Audios = await DownloadAudios(audios);
+                    var run = AudioPlayerBaseHelper.CurrentBase.Load(GetCopyStream(_AudioIndex));
                     AudioPlayerBaseHelper.CurrentBase.PlaybackEnded = Current_PlaybackEnded;
                     PlaybackCurrentPosition = 0;
                 }
@@ -343,15 +347,7 @@ namespace Translators.ViewModels.Pages
                 if (IsPlaying)
                     AudioPlayerBaseHelper.CurrentBase.Pause();
                 else
-                {
-                    //In Android it will stop instead of pause
-                    if (_LastPlaybackSpeedRatoSet != _PlaybackSpeedRato)
-                    {
-                        _LastPlaybackSpeedRatoSet = _PlaybackSpeedRato;
-                        AudioPlayerBaseHelper.CurrentBase.SetSpeed(_PlaybackSpeedRato);
-                    }
-                    AudioPlayerBaseHelper.CurrentBase.Play();
-                }
+                    PlayBase();
                 IsPlaying = !IsPlaying;
                 isLoaded = true;
             }
@@ -359,6 +355,45 @@ namespace Translators.ViewModels.Pages
             {
                 IsLoadingPlayStream = false;
             }
+        }
+
+        void PlayBase()
+        {
+            //In Android it will stop instead of pause
+            if (_LastPlaybackSpeedRatoSet != _PlaybackSpeedRato)
+            {
+                _LastPlaybackSpeedRatoSet = _PlaybackSpeedRato;
+                AudioPlayerBaseHelper.CurrentBase.SetSpeed(_PlaybackSpeedRato);
+            }
+            AudioPlayerBaseHelper.CurrentBase.Play();
+        }
+
+        List<AudioFileContract> GetAudios()
+        {
+            var result = Page.AudioFiles?.GroupBy(x => x.LanguageId).Select(x => x.FirstOrDefault()).FirstOrDefault();
+            if (result == null)
+                return Page.Paragraphs.Where(x => x.AudioFiles?.Count > 0).SelectMany(x => x.AudioFiles).ToList();
+            return new List<AudioFileContract>()
+            {
+                result
+            };
+        }
+
+        async Task<List<Stream>> DownloadAudios(List<AudioFileContract> audioFiles)
+        {
+            List<Stream> result = new List<Stream>();
+            double duration = 0;
+            foreach (var audio in audioFiles)
+            {
+                string key = $"{audio.PageId.GetValueOrDefault()}_{audio.ParagraphId.GetValueOrDefault()}_{audio.Id}";
+                var saver = new ApplicationBookAudioData();
+                saver.Initialize(key, ".mp3");
+                var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/Storage/DownloadFile?fileId={audio.Id}&password={audio.Password}");
+                result.Add(stream);
+                duration += new TimeSpan(audio.DurationTicks).TotalSeconds;
+            }
+            _AudioDuration = duration;
+            return result;
         }
 
         bool _canPositionUpdate = true;
@@ -370,7 +405,8 @@ namespace Translators.ViewModels.Pages
                 {
                     if (IsPlaying && AudioPlayerBaseHelper.CurrentBase.CanSeek)
                     {
-                        _PlaybackCurrentPosition = 1 * (AudioPlayerBaseHelper.CurrentBase.CurrentPosition / AudioPlayerBaseHelper.CurrentBase.Duration);
+                        var currentPosition = GetToCurrentAudioIndexDuration(_AudioIndex).TotalSeconds;
+                        _PlaybackCurrentPosition = 1 * ((currentPosition + AudioPlayerBaseHelper.CurrentBase.CurrentPosition) / _AudioDuration);
 
                         SetScrollByAudio();
                         OnPropertyChanged(nameof(PlaybackCurrentPosition));
@@ -379,6 +415,18 @@ namespace Translators.ViewModels.Pages
                 await Task.Delay(TimeSpan.FromSeconds(1));
             }
         }
+
+        TimeSpan GetToCurrentAudioIndexDuration(int index)
+        {
+            return new TimeSpan(Page.Paragraphs.Take(index).Sum(x => GetParagraphDuration(x).Ticks));
+        }
+
+        TimeSpan GetParagraphDuration(ParagraphContract paragraph)
+        {
+            var audios = paragraph?.AudioFiles;
+            return new TimeSpan(audios?.Count > 0 ? audios.Sum(a => a.DurationTicks) : 0);
+        }
+
 
         void SetScrollByAudio()
         {
@@ -398,11 +446,31 @@ namespace Translators.ViewModels.Pages
                 }
                 ScrollToIndex = PositionItems.Where(x => _PlaybackCurrentPosition > x.from && _PlaybackCurrentPosition < x.to).Select(x => x.index).FirstOrDefault();
             }
+        }
 
+        void Seek(double position)
+        {
+            if (Audios.Count > 1)
+            {
+                var selectedAudio = (int)(position / _AudioDuration * Audios.Count);
+                if (selectedAudio == Audios.Count)
+                    selectedAudio--;
+                if (selectedAudio != _AudioIndex)
+                {
+                    PlayAudio(selectedAudio);
+                }
+                var paragraphTotal = GetParagraphDuration(Page.Paragraphs[selectedAudio]).TotalSeconds;
+                var seek = paragraphTotal - (GetToCurrentAudioIndexDuration(selectedAudio).TotalSeconds + paragraphTotal - position);
+                _PlaybackCurrentPosition = 1 * (position / _AudioDuration);
+                AudioPlayerBaseHelper.CurrentBase.Seek(seek);
+            }
+            else
+                AudioPlayerBaseHelper.CurrentBase.Seek(position);
         }
 
         void ResetPlayBack()
         {
+            _AudioIndex = 0;
             isLoaded = false;
             IsPlaying = false;
             AudioPlayerBaseHelper.CurrentBase.Stop();
@@ -413,15 +481,46 @@ namespace Translators.ViewModels.Pages
         {
             if (!IsPlaying)
                 return;
-            try
+            if (_AudioIndex == Audios.Count - 1)
             {
-                await SwipeRight();
-                await Play();
+                try
+                {
+                    await SwipeRight();
+                    await Play();
+                }
+                catch (Exception ex)
+                {
+                    await BaseViewModel.AlertExcepption(ex);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                await BaseViewModel.AlertExcepption(ex);
+                PlayAudio(_AudioIndex + 1);
             }
+        }
+
+        void PlayAudio(int index)
+        {
+            _AudioIndex = index;
+            bool doPlay = IsPlaying;
+            IsPlaying = false;
+            AudioPlayerBaseHelper.CurrentBase.PlaybackEnded = null;
+            AudioPlayerBaseHelper.CurrentBase.Stop();
+            var run = AudioPlayerBaseHelper.CurrentBase.Load(GetCopyStream(index));
+            AudioPlayerBaseHelper.CurrentBase.PlaybackEnded = Current_PlaybackEnded;
+            if (doPlay)
+            {
+                PlayBase();
+                IsPlaying = !IsPlaying;
+            }
+        }
+
+        MemoryStream GetCopyStream(int index)
+        {
+            var resultStream = new MemoryStream();
+            Audios[index].Seek(0, SeekOrigin.Begin);
+            Audios[index].CopyTo(resultStream);
+            return resultStream;
         }
 
         private async Task LongTouched(ParagraphModel paragraphModel)

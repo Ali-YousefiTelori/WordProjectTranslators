@@ -18,7 +18,7 @@ namespace Translators.Patches
             {
                 Console.WriteLine("Starting...");
                 await ConfigData.LoadAsync();
-                await UploadQuranMisharyAlafasyAudios();
+                //await SetAudiosDurations();
                 Console.WriteLine("Finished!");
             }
             catch (Exception ex)
@@ -27,6 +27,24 @@ namespace Translators.Patches
             }
 
             Console.ReadLine();
+        }
+
+        static async Task SetAudiosDurations()
+        {
+            using TranslatorContext translatorContext = new TranslatorContext();
+            var audios = await translatorContext.Audioes.Where(x => x.DurationTicks == 0).ToListAsync();
+
+            int index = 0;
+            foreach (var audio in audios)
+            {
+                var path = StorageLogic.DirectoryManager.GetFilePath(audio.Id);
+                var tfile = TagLib.File.Create(path, "audio/mpeg", TagLib.ReadStyle.Average);
+                string title = tfile.Tag.Title;
+                audio.DurationTicks = tfile.Properties.Duration.Ticks;
+                await translatorContext.SaveChangesAsync();
+                index++;
+                Console.WriteLine($"Done {index} {audios.Count} {audio.DurationTicks}");
+            }
         }
 
         static async Task UploadQuranMisharyAlafasyAudios()

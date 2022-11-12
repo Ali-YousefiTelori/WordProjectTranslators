@@ -7,6 +7,7 @@
         /// </summary>
         public bool IsMain { get; set; }
         public string FileName { get; set; }
+        public long DurationTicks { get; set; }
         public long? PageId { get; set; }
         public long? LanguageId { get; set; }
         /// <summary>

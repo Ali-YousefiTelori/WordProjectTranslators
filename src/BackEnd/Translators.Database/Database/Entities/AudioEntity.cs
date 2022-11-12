@@ -17,7 +17,7 @@ namespace Translators.Database.Entities
         public string FileName { get; set; }
         public byte[] Data { get; set; }
         public string Password { get; set; }
-
+        public long DurationTicks { get; set; }
         public long? PageId { get; set; }
         public PageEntity Page { get; set; }
 
