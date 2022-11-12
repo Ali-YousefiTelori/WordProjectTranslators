@@ -432,19 +432,24 @@ namespace Translators.ViewModels.Pages
         {
             if (HasAutoScrollInPlayback)
             {
-                int index = 0;
-                var fullLength = Items.Sum(x => x.TranslatedValue.Length + x.MainDisplayValue.Length);
-                var itemsLengths = Items.Select(x => new { Length = x.TranslatedValue.Length + x.MainDisplayValue.Length }); ;
-                double from = 0;
-                List<(double from, double to, int index)> PositionItems = new List<(double from, double to, int index)>();
-                foreach (var item in Items)
+                if (Audios.Count == 1)
                 {
-                    double to = from + (item.TranslatedValue.Length + item.MainDisplayValue.Length) / (double)fullLength;
-                    PositionItems.Add((from, to, index));
-                    from = to;
-                    index++;
+                    int index = 0;
+                    var fullLength = Items.Sum(x => x.TranslatedValue.Length + x.MainDisplayValue.Length);
+                    var itemsLengths = Items.Select(x => new { Length = x.TranslatedValue.Length + x.MainDisplayValue.Length }); ;
+                    double from = 0;
+                    List<(double from, double to, int index)> PositionItems = new List<(double from, double to, int index)>();
+                    foreach (var item in Items)
+                    {
+                        double to = from + (item.TranslatedValue.Length + item.MainDisplayValue.Length) / (double)fullLength;
+                        PositionItems.Add((from, to, index));
+                        from = to;
+                        index++;
+                    }
+                    ScrollToIndex = PositionItems.Where(x => _PlaybackCurrentPosition > x.from && _PlaybackCurrentPosition < x.to).Select(x => x.index).FirstOrDefault();
                 }
-                ScrollToIndex = PositionItems.Where(x => _PlaybackCurrentPosition > x.from && _PlaybackCurrentPosition < x.to).Select(x => x.index).FirstOrDefault();
+                else
+                    ScrollToIndex = _AudioIndex;
             }
         }
 
@@ -510,6 +515,7 @@ namespace Translators.ViewModels.Pages
             AudioPlayerBaseHelper.CurrentBase.PlaybackEnded = Current_PlaybackEnded;
             if (doPlay)
             {
+                _LastPlaybackSpeedRatoSet = 0;
                 PlayBase();
                 IsPlaying = !IsPlaying;
             }
@@ -520,6 +526,7 @@ namespace Translators.ViewModels.Pages
             var resultStream = new MemoryStream();
             Audios[index].Seek(0, SeekOrigin.Begin);
             Audios[index].CopyTo(resultStream);
+            resultStream.Seek(0, SeekOrigin.Begin);
             return resultStream;
         }
 
