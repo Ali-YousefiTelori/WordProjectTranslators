@@ -1,4 +1,5 @@
 ﻿using SignalGo.Shared.DataTypes;
+using System.Collections.Generic;
 using Translators.Contracts.Common.DataTypes;
 
 namespace Translators.Contracts.Common.Authentications

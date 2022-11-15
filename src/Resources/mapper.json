@@ -20,7 +20,13 @@
             "IsHidden",
             "Readings"
           ],
-          "CustomPropertiesMap": []
+          "CustomPropertiesMap": [
+            {
+              "From": "Names",
+              "To": "$toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            }
+          ]
         },
         {
           "FromAssemblyName": "Translators.Database.dll",
@@ -57,7 +63,13 @@
             "BookNames",
             "Readings"
           ],
-          "CustomPropertiesMap": []
+          "CustomPropertiesMap": [
+            {
+              "From": "Names",
+              "To": "$toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            }
+          ]
         },
         {
           "FromAssemblyName": "Translators.Database.dll",
@@ -94,8 +106,18 @@
           ],
           "CustomPropertiesMap": [
             {
+              "From": "AudioFiles",
+              "To": "$toMap.Audios?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            },
+            {
+              "From": "Paragraphs",
+              "To": "$toMap.Paragraphs?.Select(x => ParagraphEntity_ParagraphContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            },
+            {
               "From": "Audios",
-              "To": "AudioFiles",
+              "To": "$toMap.AudioFiles?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
               "Type": 0
             }
           ]
@@ -113,7 +135,13 @@
           "ToSkipProperties": [
             "Readings"
           ],
-          "CustomPropertiesMap": []
+          "CustomPropertiesMap": [
+            {
+              "From": "Names",
+              "To": "$toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            }
+          ]
         },
         {
           "FromAssemblyName": "Translators.Database.dll",
@@ -134,8 +162,18 @@
           ],
           "CustomPropertiesMap": [
             {
+              "From": "AudioFiles",
+              "To": "$toMap.Audios?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            },
+            {
+              "From": "Words",
+              "To": "$toMap.Words?.Select(x => WordEntity_WordContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            },
+            {
               "From": "Audios",
-              "To": "AudioFiles",
+              "To": "$toMap.AudioFiles?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
               "Type": 0
             },
             {
@@ -158,7 +196,13 @@
           "ToSkipProperties": [
             "Paragraph"
           ],
-          "CustomPropertiesMap": []
+          "CustomPropertiesMap": [
+            {
+              "From": "Values",
+              "To": "$toMap.Values?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            }
+          ]
         },
         {
           "FromAssemblyName": "Translators.Database.dll",
@@ -204,7 +248,13 @@
             "Values",
             "Audios"
           ],
-          "CustomPropertiesMap": []
+          "CustomPropertiesMap": [
+            {
+              "From": "Names",
+              "To": "$toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            }
+          ]
         },
         {
           "FromAssemblyName": "Translators.Database.dll",
@@ -239,6 +289,118 @@
             "Paragraph",
             "Translator",
             "AudioReader"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Contracts.Common",
+          "FromName": "ParagraphContract",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common.Paragraphs",
+          "ToName": "SimpleParagraphContract",
+          "ToSkipProperties": [
+            "AnotherValue",
+            "PageId",
+            "Page",
+            "CatalogId",
+            "Catalog",
+            "LinkParagraphs",
+            "BookId",
+            "PageNumber"
+          ],
+          "CustomPropertiesMap": [
+            {
+              "From": "MainWords",
+              "To": "$toMap.Words?.Where(x => x.Values.Any(v => v.IsMain || v.IsTransliteration)).Select(x => WordContract_SimpleWordContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            },
+            {
+              "From": "AudioFiles",
+              "To": "$toMap.AudioFiles?.Select(x => AudioFileContract_SimpleFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList()",
+              "Type": 0
+            },
+            {
+              "From": "MainWords",
+              "To": "Words",
+              "Type": 0
+            },
+            {
+              "From": "TranslatedValue",
+              "To": "$string.Join(' ', toMap.Words?.SelectMany(x => x.Values).Where(x => !x.IsMain && !x.IsTransliteration).Select(x => x.Value))",
+              "Type": 0
+            }
+          ]
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Contracts.Common",
+          "FromName": "WordContract",
+          "FromDirectCode": "var value = toMap.Values.First();",
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common.Words",
+          "ToName": "SimpleWordContract",
+          "ToSkipProperties": [
+            "Values",
+            "ParagraphId",
+            "Paragraph",
+            "WordLetters",
+            "WordRoots",
+            "TranslatorNameId"
+          ],
+          "CustomPropertiesMap": [
+            {
+              "From": "TranslatorId",
+              "To": "#value.TranslatorId",
+              "Type": 0
+            },
+            {
+              "From": "LanguageId",
+              "To": "#value.LanguageId",
+              "Type": 0
+            },
+            {
+              "From": "Value",
+              "To": "#value.Value",
+              "Type": 0
+            },
+            {
+              "From": "IsTransliteration",
+              "To": "#value.IsTransliteration",
+              "Type": 0
+            },
+            {
+              "From": "IsMain",
+              "To": "#value.IsMain",
+              "Type": 0
+            }
+          ]
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Contracts.Common",
+          "FromName": "AudioFileContract",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common.Files",
+          "ToName": "SimpleFileContract",
+          "ToSkipProperties": [
+            "PageId",
+            "ParagraphId",
+            "Data",
+            "Page",
+            "Language",
+            "Paragraph",
+            "AudioReader",
+            "Translator",
+            "Url"
           ],
           "CustomPropertiesMap": []
         }

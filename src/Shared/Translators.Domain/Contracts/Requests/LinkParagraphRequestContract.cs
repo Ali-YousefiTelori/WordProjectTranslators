@@ -1,4 +1,5 @@
-﻿using Translators.Validations;
+﻿using System.Collections.Generic;
+using Translators.Validations;
 
 namespace Translators.Contracts.Requests
 {

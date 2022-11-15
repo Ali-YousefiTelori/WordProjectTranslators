@@ -1,4 +1,7 @@
-﻿namespace Translators.Contracts.Common
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Translators.Contracts.Common
 {
     /// <summary>
     /// word of paragraph

@@ -1,4 +1,5 @@
 ﻿using SignalGo.Shared.DataTypes;
+using System;
 using System.Reflection;
 
 namespace Translators.Validations

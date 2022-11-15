@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Translators.Models
 {
@@ -13,7 +16,11 @@ namespace Translators.Models
         {
             var savePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.json");
             Debug.WriteLine(savePath);
+#if (NET6_0)
             Current = JsonConvert.DeserializeObject<ConfigData>(await File.ReadAllTextAsync(savePath));
+#else
+            Current = JsonConvert.DeserializeObject<ConfigData>(File.ReadAllText(savePath));
+#endif
         }
 
         public static void Load()

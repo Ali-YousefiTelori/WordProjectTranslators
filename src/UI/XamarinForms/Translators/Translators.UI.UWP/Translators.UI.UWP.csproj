@@ -63,7 +63,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS;Xamarin</DefineConstants>
     <Optimize>true</Optimize>
     <NoWarn>;2008</NoWarn>
     <DebugType>pdbonly</DebugType>
@@ -188,6 +188,10 @@
     <ProjectReference Include="..\..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.UWP\Plugin.SimpleAudioPlayer.UWP.csproj">
       <Project>{e34b516d-c0d8-450f-9db0-bb6a5b04aef1}</Project>
       <Name>Plugin.SimpleAudioPlayer.UWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Shared\Translators.Domain\Translators.Domain.csproj">
+      <Project>{9d2482a3-0e74-49f9-a29a-777db40bd546}</Project>
+      <Name>Translators.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj">
       <Project>{e7db95c7-edf8-4f9b-b5bd-4d13efeb98fc}</Project>

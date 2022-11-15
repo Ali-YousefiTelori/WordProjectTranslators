@@ -1,13 +1,12 @@
 ﻿using Newtonsoft.Json;
 using SignalGo.Client;
 using SignalGo.Shared.Models;
-using System;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using Translators.Contracts.Common;
+using Translators.Helpers;
 using Translators.Models.Storages;
+using HttpClient = SignalGo.Client.HttpClient;
 
 namespace Translators.ServiceManagers
 {
@@ -81,12 +80,16 @@ namespace Translators.ServiceManagers
 
         public override T Deserialize<T>(HttpClientDataResponse data)
         {
-            var contract =  base.Deserialize<T>(data);
+            var contract = base.Deserialize<T>(data);
             if (contract is MessageContract messageContract)
             {
                 if (!messageContract.IsSuccess && messageContract.Error?.FailedReasonType == FailedReasonType.SessionAccessDenied)
                 {
                     _ = ApplicationProfileData.Login(ApplicationProfileData.Current.Value.Session);
+                }
+                else if (!messageContract && messageContract.Error?.FailedReasonType == FailedReasonType.InternalError)
+                {
+                    _ = AlertHelper.Alert("خطا", $"خطای نامشخص سرویس دهنده رخ داده است، ممکن است نسخه‌ی نرم افزار شما قدیمی باشد لطفا نسبت به بروزرسانی نرم افزار خود اقدام نمایید.");
                 }
             }
             return contract;

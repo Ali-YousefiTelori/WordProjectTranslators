@@ -95,6 +95,10 @@
       <Project>{56a56f17-7de1-4ca1-9617-bf32e971ac84}</Project>
       <Name>Plugin.SimpleAudioPlayer.Android</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Shared\Translators.Domain\Translators.Domain.csproj">
+      <Project>{9d2482a3-0e74-49f9-a29a-777db40bd546}</Project>
+      <Name>Translators.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj">
       <Project>{e7db95c7-edf8-4f9b-b5bd-4d13efeb98fc}</Project>
       <Name>Translators.ViewModels</Name>

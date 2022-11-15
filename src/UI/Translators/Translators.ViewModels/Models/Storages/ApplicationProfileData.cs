@@ -34,7 +34,7 @@ namespace Translators.Models.Storages
         {
             if (session.HasValue)
             {
-                var result = await TranslatorService.GetAuthenticationService(true).LoginAsync(session.Value);
+                var result = await TranslatorService.GetOldAuthenticationService(true).LoginAsync(session.Value);
                 if (result.IsSuccess)
                 {
                     Current.Value.Session = Guid.Parse(result.Result.Key);

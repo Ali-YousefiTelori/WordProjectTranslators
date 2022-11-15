@@ -1,6 +1,5 @@
 ﻿using SignalGo.Client;
 using System;
-using System.Threading.Tasks;
 using Translators.Models;
 using Translators.Models.Storages;
 using TranslatorsServices.Interfaces;
@@ -14,9 +13,11 @@ namespace Translators.ServiceManagers
             ClientProvider clientProvider = new ClientProvider();
             DuplexBookService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.BookService>(clientProvider);
             DuplexChapterService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ChapterService>(clientProvider);
+            OldDuplexPageService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ObsoletePageService>(clientProvider);
             DuplexPageService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.PageService>(clientProvider);
             DuplexHealthService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.HealthService>(clientProvider);
             DuplexAuthenticationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.AuthenticationService>(clientProvider);
+            OldDuplexAuthenticationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ObsoleteAuthenticationService>(clientProvider);
             DuplexParagraphService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ParagraphService>(clientProvider);
             DuplexApplicationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ApplicationService>(clientProvider);
 
@@ -51,9 +52,11 @@ namespace Translators.ServiceManagers
 
         static IBookServiceAsync DuplexBookService { get; set; }
         static IChapterServiceAsync DuplexChapterService { get; set; }
+        static IObsoletePageServiceAsync OldDuplexPageService { get; set; }
         static IPageServiceAsync DuplexPageService { get; set; }
         static IHealthService DuplexHealthService { get; set; }
         static IAuthenticationServiceAsync DuplexAuthenticationService { get; set; }
+        static IObsoleteAuthenticationServiceAsync OldDuplexAuthenticationService { get; set; }
         static IApplicationServiceAsync DuplexApplicationService { get; set; }
         static IParagraphServiceAsync DuplexParagraphService { get; set; }
         static IUserReadingServiceAsync DuplexUserReadingService { get; set; }
@@ -84,6 +87,17 @@ namespace Translators.ServiceManagers
                 return new TranslatorsServices.HttpServices.ChapterService(ServiceAddress, CacheHttpClient);
         }
 
+        public static IObsoletePageServiceAsync GetOldPageService(bool isForce)
+        {
+            IsForce = isForce;
+            if (IsDuplexProtocol)
+                return OldDuplexPageService;
+            if (isForce)
+                return new TranslatorsServices.HttpServices.ObsoletePageService(ServiceAddress, NoCacheHttpClient);
+            else
+                return new TranslatorsServices.HttpServices.ObsoletePageService(ServiceAddress, CacheHttpClient);
+        }
+
         public static IPageServiceAsync GetPageService(bool isForce)
         {
             IsForce = isForce;
@@ -104,6 +118,17 @@ namespace Translators.ServiceManagers
                 return new TranslatorsServices.HttpServices.HealthService(ServiceAddress, NoCacheHttpClient);
             else
                 return new TranslatorsServices.HttpServices.HealthService(ServiceAddress, CacheHttpClient);
+        }
+
+        public static IObsoleteAuthenticationServiceAsync GetOldAuthenticationService(bool isForce)
+        {
+            IsForce = isForce;
+            if (IsDuplexProtocol)
+                return OldDuplexAuthenticationService;
+            if (isForce)
+                return new TranslatorsServices.HttpServices.ObsoleteAuthenticationService(ServiceAddress, NoCacheHttpClient);
+            else
+                return new TranslatorsServices.HttpServices.ObsoleteAuthenticationService(ServiceAddress, CacheHttpClient);
         }
 
         public static IAuthenticationServiceAsync GetAuthenticationService(bool isForce)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
+using Translators.Contracts.Responses.Pages;
 using Translators.Helpers;
 using Translators.Logics;
 using Translators.Models;
@@ -132,30 +133,13 @@ namespace Translators.ViewModels.Pages
             if (pages.IsSuccess)
             {
                 bool isEven = false;
-                InitialData(pages.Result.SelectMany(x => x.Paragraphs.Select(i => ParagraphModel.Map(i))).Select(v =>
+                InitialData(pages.Result.Paragraphs.Select(i => ParagraphModel.Map(i)).Select(v =>
                 {
                     v.IsEven = isEven;
                     isEven = !isEven;
                     return v;
                 }));
-                var bookId = pages.Result.First().BookId;
-                var categoryResult = await TranslatorService.GetBookService(isForce).GetCategoryByBookIdAsync(bookId);
-                if (categoryResult.IsSuccess)
-                {
-                    CatalogName = $"{categoryResult.Result.Names.GetPersianValue()} / ";
-                }
-                var bookResult = await TranslatorService.GetBookService(isForce).GetBookByIdAsync(bookId);
-                if (bookResult.IsSuccess)
-                {
-                    var value = bookResult.Result.Names.GetPersianValue();
-                    if (!value.Contains(CatalogName.Trim().Trim('/').Trim()))
-                        CatalogName += $"{value} / ";
-                }
-                CatalogName += string.Join(" - ", pages.Result.Select(x => x.CatalogNames.GetPersianValue()).Distinct());
-                if (!CatalogName.Any(x => char.IsDigit(x)))
-                {
-                    CatalogName += " - " + pages.Result.FirstOrDefault()?.Number;
-                }
+                CatalogName = pages.Result.CatalogName;
                 if (!IsOutsideOfBookTab)
                 {
                     ApplicationReadingData.SetTitle(CatalogName);
@@ -165,11 +149,15 @@ namespace Translators.ViewModels.Pages
             Player.InitializeItems(Items);
         }
 
-        async Task<MessageContract<List<PageContract>>> FetchPage(bool isForce, long pageNumber, long bookId)
+        async Task<MessageContract<PageResponseContract>> FetchPage(bool isForce, long pageNumber, long bookId)
         {
-            var pageResult = await TranslatorService.GetPageService(isForce).GetPageAsync(pageNumber, bookId);
+            var pageResult = await TranslatorService.GetPageService(isForce).GetPageAsync(new Contracts.Requests.Pages.PageRequest()
+            {
+                 PageNumber = pageNumber,
+                 BookId = bookId,
+            });
             if (pageResult.IsSuccess && pageNumber == CatalogStartPageNumber && bookId == BookId)
-                Player.Page = pageResult.Result.First();
+                Player.Page = pageResult.Result;
             return pageResult;
         }
 
@@ -252,7 +240,7 @@ namespace Translators.ViewModels.Pages
                 try
                 {
                     IsLoading = true;
-                    verseResult = await TranslatorService.GetPageService(false).GetPageNumberByVerseNumberAsync(number, CatalogId);
+                    verseResult = await TranslatorService.GetOldPageService(false).GetPageNumberByVerseNumberAsync(number, CatalogId);
                 }
                 finally
                 {

@@ -1,4 +1,7 @@
-﻿namespace Translators.Contracts.Common
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Translators.Contracts.Common
 {
     /// <summary>
     /// paragraph of a book page
@@ -25,7 +28,7 @@
         {
             if (!string.IsNullOrEmpty(mainValue))
                 return mainValue;
-            mainValue = string.Join(' ', Words.SelectMany(w => w.Values).Where(v => v.IsMain).Select(x => x.SearchValue));
+            mainValue = string.Join(" ", Words.SelectMany(w => w.Values).Where(v => v.IsMain).Select(x => x.SearchValue));
             return mainValue;
         }
 
@@ -33,13 +36,13 @@
         {
             if (!string.IsNullOrEmpty(translatedValue))
                 return translatedValue;
-            translatedValue = string.Join(' ', Words.SelectMany(w => w.Values).Where(v => !v.IsMain).Select(x => x.SearchValue));
+            translatedValue = string.Join(" ", Words.SelectMany(w => w.Values).Where(v => !v.IsMain).Select(x => x.SearchValue));
             return translatedValue;
         }
 
         public override string ToString()
         {
-            return string.Join(' ', Words.Select(x => x.Values.Select(v => v.Value)));
+            return string.Join(" ", Words.Select(x => x.Values.Select(v => v.Value)));
         }
     }
 }

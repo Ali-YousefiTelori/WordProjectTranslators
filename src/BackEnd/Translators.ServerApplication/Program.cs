@@ -1,8 +1,11 @@
-﻿using SignalGo.Server.ServiceManager;
+﻿using Newtonsoft.Json;
+using SignalGo.Server.ServiceManager;
+using SignalGo.Shared.Log;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Translators.Attributes;
 using Translators.Contracts.Common;
@@ -23,16 +26,22 @@ namespace Translators.ServerApplication
                 await CacheLogic.Initialize();
 
                 ServerProvider serverProvider = new ServerProvider();
+                serverProvider.ProviderSetting.IsEnabledDataExchanger = false;
+                serverProvider.ProviderSetting.IsEnabledReferenceResolver = false;
+                serverProvider.ProviderSetting.IsEnabledReferenceResolverForArray = false;
                 serverProvider.RegisterServerService<BookService>();
                 serverProvider.RegisterServerService<ChapterService>();
+                serverProvider.RegisterServerService<ObsoletePageService>();
                 serverProvider.RegisterServerService<PageService>();
-                serverProvider.RegisterServerService<HealthService>(); 
+                serverProvider.RegisterServerService<HealthService>();
                 serverProvider.RegisterServerService<AuthenticationService>();
+                serverProvider.RegisterServerService<ObsoleteAuthenticationService>();
                 serverProvider.RegisterServerService<ParagraphService>();
                 serverProvider.RegisterServerService<ApplicationService>();
                 serverProvider.RegisterServerService<UserReadingService>();
                 serverProvider.RegisterServerService<StorageService>();
-                
+                AutoLogger logger = new AutoLogger() { FileName = "Failed Operations.log" };
+
                 serverProvider.ErrorHandlingFunction = (ex, type, method, parameters, jsonParameter, client) =>
                 {
                     return new MessageContract()
@@ -45,6 +54,15 @@ namespace Translators.ServerApplication
                             StackTrace = ex.StackTrace
                         }
                     };
+                };
+
+                serverProvider.OnSendResponseToClientFunction = (request, response, type, method, client, guid) =>
+                {
+                    if (response is MessageContract messageContract && !messageContract)
+                    {
+                        logger.LogText($"Operation failed: {type?.FullName} {method?.Name} {JsonConvert.SerializeObject(request)} {response}");
+                    }
+                    return response;
                 };
                 serverProvider.ValidationResultHandlingFunction = (validations, obj, method) =>
                 {

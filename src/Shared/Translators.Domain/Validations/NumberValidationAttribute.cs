@@ -24,13 +24,9 @@ namespace Translators.Validations
 
         public override object GetErrorValue()
         {
-            return new MessageContract()
+            return new ValidationContract()
             {
-                IsSuccess = false,
-                Error = new ErrorContract()
-                {
-                    Message = $"Validation error on {CurrentValue}"
-                }
+                Message = $"Validation error on {CurrentValue}"
             };
         }
     }
