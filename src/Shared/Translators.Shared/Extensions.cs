@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using Translators.Contracts.Common;
-using Translators.Converters;
+using Translators.Shared.Converters;
 
 namespace System
 {

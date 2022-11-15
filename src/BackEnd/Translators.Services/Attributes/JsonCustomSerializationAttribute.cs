@@ -74,4 +74,25 @@ namespace Translators.Attributes
             }
         }
     }
+
+    public class FastJsonSerializationAttribute : JsonCustomSerializationAttribute
+    {
+        public override object Deserialize(Type type, string data, object serverBase, object client)
+        {
+            return JsonConvert.DeserializeObject(data, type, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.None,
+            });
+        }
+
+        public override string Serialize(object data, object serverBase, object client)
+        {
+            return JsonConvert.SerializeObject(data, Formatting.None, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.None,
+            });
+        }
+    }
 }

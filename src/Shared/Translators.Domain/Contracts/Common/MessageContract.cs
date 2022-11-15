@@ -1,4 +1,7 @@
-﻿namespace Translators.Contracts.Common
+﻿using System;
+using System.Collections.Generic;
+
+namespace Translators.Contracts.Common
 {
     public enum FailedReasonType : byte
     {
@@ -31,6 +34,11 @@
     {
         public bool IsSuccess { get; set; }
         public ErrorContract Error { get; set; }
+
+        public virtual object GetResult()
+        {
+            throw new NotImplementedException();
+        }
 
         public static implicit operator MessageContract(bool result)
         {
@@ -83,6 +91,11 @@
     public class MessageContract<T> : MessageContract
     {
         public T Result { get; set; }
+
+        public override object GetResult()
+        {
+            return Result;
+        }
 
         public bool HasResult()
         {

@@ -4,8 +4,13 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <RootNamespace>Translators</RootNamespace>
     <LangVersion>latest</LangVersion>
+    <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SignalGo.Net.Client" Version="5.7.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Translators.Domain\Translators.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Shared\Translators.Shared\Translators.Shared.csproj" />
   </ItemGroup>
 </Project>

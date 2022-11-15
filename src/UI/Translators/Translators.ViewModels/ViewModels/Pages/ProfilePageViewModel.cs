@@ -55,7 +55,7 @@ namespace Translators.ViewModels.Pages
             try
             {
                 IsLoading = true;
-                var result = await TranslatorService.GetAuthenticationService(true).RegisterAsync(userName);
+                var result = await TranslatorService.GetOldAuthenticationService(true).RegisterAsync(userName);
                 if (result.IsSuccess)
                 {
                     ApplicationProfileData.Current.Value.Session = Guid.Parse(result.Result.Key);
@@ -70,7 +70,7 @@ namespace Translators.ViewModels.Pages
                         var session = await AlertHelper.DisplayPrompt("رمز", "لطفا رمز ورود را وارد کنید.");
                         if (Guid.TryParse(session, out Guid guid))
                         {
-                            var loginResult = await TranslatorService.GetAuthenticationService(true).LoginAsync(guid);
+                            var loginResult = await TranslatorService.GetOldAuthenticationService(true).LoginAsync(guid);
                             if (loginResult.IsSuccess)
                             {
                                 ApplicationProfileData.Current.Value.Session = guid;

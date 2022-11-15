@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Utilities.Encoders;
 using SignalGo.Shared.Models;
+using System;
 using Translators.Contracts.Common;
 using Translators.Database.Contexts;
 
@@ -50,7 +51,7 @@ namespace Translators.Logics
             var entities = contracts.Map<List<TEntity>>();
             context.UpdateRange(entities);
             await context.SaveChangesAsync();
-            return entities.Map<List<TContract>>();
+            return entities.MapToList<TContract>();
         }
 
         async Task<List<TContract>> GetAllFromDatabase(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery)
@@ -60,7 +61,7 @@ namespace Translators.Logics
             if (getQuery != null)
                 query = getQuery(query);
             var entities = await query.ToListAsync();
-            return entities.Select(x => x.Map<TContract>()).ToList();
+            return entities.MapToList<TContract>();
         }
 
         async Task<TContract> GetFirstOrDefaultFromDatabase(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery)
@@ -130,10 +131,6 @@ namespace Translators.Logics
         where TContext : TranslatorContext, new()
         where TEntity : class
     {
-        public async Task<MessageContract<TEntity>> Add(TEntity entity)
-        {
-            return await AddToDatabase(entity);
-        }
     }
 
     public class TranslatorLogicBase<TEntity> : LogicBase<TranslatorContext, TEntity, TEntity>
