@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Translators.Schemas;
 
 namespace Translators.Contracts.Common
 {
@@ -10,11 +6,8 @@ namespace Translators.Contracts.Common
     /// ریشه
     /// root of word
     /// </summary>
-    public class WordRootContract
+    public class WordRootContract : WordRootSchema
     {
-        public long Id { get; set; }
-        public string Value { get; set; }
 
-        public long WordId { get; set; }
     }
 }

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Translators.Schemas;
 
 namespace Translators.Contracts.Common
 {
-    public class LanguageContract
+    public class LanguageContract : LanguageSchema
     {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
+
     }
 }

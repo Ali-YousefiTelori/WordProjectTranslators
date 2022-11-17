@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Translators.Schemas;
 
 namespace Translators.Contracts.Common
 {
@@ -10,11 +6,7 @@ namespace Translators.Contracts.Common
     /// letter of word
     /// حروف
     /// </summary>
-    public class WordLetterContract
+    public class WordLetterContract : WordLetterSchema
     {
-        public long Id { get; set; }
-        public char Value { get; set; }
-
-        public long WordId { get; set; }
     }
 }

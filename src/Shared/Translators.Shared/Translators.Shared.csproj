@@ -7,6 +7,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Translators.Domain\Translators.Domain.csproj" />
+    <PackageReference Include="BinaryGo">
+      <Version>0.1.0.3</Version>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

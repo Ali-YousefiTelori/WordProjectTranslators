@@ -1,20 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Translators.Schemas;
 
 namespace Translators.Contracts.Common
 {
     /// <summary>
     /// word of paragraph
     /// </summary>
-    public class WordContract
+    public class WordContract : WordSchema
     {
-        public long Id { get; set; }
-        public int Index { get; set; }
-
         public List<ValueContract> Values { get; set; }
-
-        public long ParagraphId { get; set; }
-
         public List<WordLetterContract> WordLetters { get; set; }
         public List<WordRootContract> WordRoots { get; set; }
 

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Translators.Schemas.Bases;
 
 namespace Translators.Database.Entities
 {
     /// <summary>
     /// translator of book
     /// </summary>
-    public class TranslatorEntity
+    public class TranslatorEntity : TranslatorSchemaBase
     {
-        public long Id { get; set; }
         /// <summary>
         /// نام مترجم
         /// </summary>

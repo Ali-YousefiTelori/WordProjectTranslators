@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Translators.Schemas.Bases;
 
 namespace Translators.Contracts.Common
 {
@@ -7,17 +8,9 @@ namespace Translators.Contracts.Common
     /// catalog of any books
     /// sura in queran
     /// </summary>
-    public class CatalogContract
+    public class CatalogContract : CatalogSchemaBase
     {
-        public long Id { get; set; }
-
-        public int Number { get; set; }
-        public int StartPageNumber { get; set; }
-
         public List<ValueContract> Names { get; set; }
-
-        public long BookId { get; set; }
-
         public List<PageContract> Pages { get; set; }
         public List<ValueContract> BookNames { get; set; }
 

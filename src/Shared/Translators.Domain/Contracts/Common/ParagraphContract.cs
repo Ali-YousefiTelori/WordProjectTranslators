@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Translators.Schemas;
 
 namespace Translators.Contracts.Common
 {
@@ -7,18 +8,12 @@ namespace Translators.Contracts.Common
     /// paragraph of a book page
     /// verses
     /// </summary>
-    public class ParagraphContract
+    public class ParagraphContract : ParagraphSchema
     {
-        public long Id { get; set; }
-        public long Number { get; set; }
-        public string AnotherValue { get; set; }
         public bool HasLink { get; set; }
-
-        public long PageId { get; set; }
-        public long CatalogId { get; set; }
         public long BookId { get; set; }
         public long PageNumber { get; set; }
-        
+
         public List<WordContract> Words { get; set; }
         public List<AudioFileContract> AudioFiles { get; set; }
 

@@ -1,10 +1,9 @@
-﻿namespace Translators.Database.Entities
+﻿using Translators.Schemas;
+
+namespace Translators.Database.Entities
 {
-    public class LanguageEntity
+    public class LanguageEntity : LanguageSchema
     {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
         public List<ValueEntity> Values { get; set; }
         public List<AudioEntity> Audios { get; set; }
     }

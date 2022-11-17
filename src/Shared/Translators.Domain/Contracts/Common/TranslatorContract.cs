@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Translators.Schemas;
+using Translators.Schemas.Bases;
 
 namespace Translators.Contracts.Common
 {
-    public class TranslatorContract
+    public class TranslatorContract : TranslatorSchemaBase
     {
-        public long Id { get; set; }
-        /// <summary>
-        /// نام مترجم
-        /// </summary>
         public List<ValueContract> Names { get; set; }
     }
 }

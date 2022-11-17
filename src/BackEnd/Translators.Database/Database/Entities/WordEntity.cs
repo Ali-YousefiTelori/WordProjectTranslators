@@ -1,24 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Translators.Schemas;
 
 namespace Translators.Database.Entities
 {
     /// <summary>
     /// word of paragraph
     /// </summary>
-    public class WordEntity
+    public class WordEntity : WordSchema
     {
-        public long Id { get; set; }
-        public int Index { get; set; }
-
         public List<ValueEntity> Values { get; set; }
-
-        public long ParagraphId { get; set; }
         public ParagraphEntity Paragraph { get; set; }
-
         public List<WordLetterEntity> WordLetters { get; set; }
         public List<WordRootEntity> WordRoots { get; set; }
     }

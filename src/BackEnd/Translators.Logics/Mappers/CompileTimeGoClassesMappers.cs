@@ -11,10 +11,10 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Database.Entities.BookEntity()
             {
-                Id = toMap.Id,
                 Names = toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Catalogs = toMap.Catalogs?.Select(x => CatalogEntity_CatalogContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Id = toMap.Id,
                 CategoryId = toMap.CategoryId,
-                Catalogs = toMap.Catalogs?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -25,10 +25,10 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Contracts.Common.BookContract()
             {
-                Id = toMap.Id,
                 Names = toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Catalogs = toMap.Catalogs?.Select(x => CatalogEntity_CatalogContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Id = toMap.Id,
                 CategoryId = toMap.CategoryId,
-                Catalogs = toMap.Catalogs?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -42,15 +42,15 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Database.Entities.ValueEntity()
             {
+                Language = LanguageEntity_LanguageContractMapper.Map(toMap.Language, uniqueRecordId, language, parameters),
+                Translator = TranslatorEntity_TranslatorContractMapper.Map(toMap.Translator, uniqueRecordId, language, parameters),
                 Id = toMap.Id,
                 IsMain = toMap.IsMain,
                 IsTransliteration = toMap.IsTransliteration,
                 Value = toMap.Value,
                 SearchValue = toMap.SearchValue,
                 LanguageId = toMap.LanguageId,
-                Language = toMap.Language.Map(uniqueRecordId, language, parameters),
                 TranslatorId = toMap.TranslatorId,
-                Translator = toMap.Translator.Map(uniqueRecordId, language, parameters),
                 TranslatorNameId = toMap.TranslatorNameId,
                 BookNameId = toMap.BookNameId,
                 CategoryNameId = toMap.CategoryNameId,
@@ -66,15 +66,15 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Contracts.Common.ValueContract()
             {
+                Language = LanguageEntity_LanguageContractMapper.Map(toMap.Language, uniqueRecordId, language, parameters),
+                Translator = TranslatorEntity_TranslatorContractMapper.Map(toMap.Translator, uniqueRecordId, language, parameters),
                 Id = toMap.Id,
                 IsMain = toMap.IsMain,
                 IsTransliteration = toMap.IsTransliteration,
                 Value = toMap.Value,
                 SearchValue = toMap.SearchValue,
                 LanguageId = toMap.LanguageId,
-                Language = toMap.Language.Map(uniqueRecordId, language, parameters),
                 TranslatorId = toMap.TranslatorId,
-                Translator = toMap.Translator.Map(uniqueRecordId, language, parameters),
                 TranslatorNameId = toMap.TranslatorNameId,
                 BookNameId = toMap.BookNameId,
                 CategoryNameId = toMap.CategoryNameId,
@@ -93,12 +93,12 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Database.Entities.CatalogEntity()
             {
+                Names = toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Pages = toMap.Pages?.Select(x => PageEntity_PageContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 Id = toMap.Id,
                 Number = toMap.Number,
                 StartPageNumber = toMap.StartPageNumber,
                 BookId = toMap.BookId,
-                Names = toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
-                Pages = toMap.Pages?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -109,12 +109,12 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Contracts.Common.CatalogContract()
             {
+                Names = toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Pages = toMap.Pages?.Select(x => PageEntity_PageContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 Id = toMap.Id,
                 Number = toMap.Number,
                 StartPageNumber = toMap.StartPageNumber,
-                Names = toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 BookId = toMap.BookId,
-                Pages = toMap.Pages?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -157,11 +157,11 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Database.Entities.PageEntity()
             {
+                Paragraphs = toMap.Paragraphs?.Select(x => ParagraphEntity_ParagraphContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Audios = toMap.AudioFiles?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 Id = toMap.Id,
                 Number = toMap.Number,
                 CatalogId = toMap.CatalogId,
-                Paragraphs = toMap.Paragraphs?.Select(x => ParagraphEntity_ParagraphContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
-                Audios = toMap.AudioFiles?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -172,11 +172,11 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Contracts.Common.PageContract()
             {
+                Paragraphs = toMap.Paragraphs?.Select(x => ParagraphEntity_ParagraphContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                AudioFiles = toMap.Audios?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 Id = toMap.Id,
                 Number = toMap.Number,
                 CatalogId = toMap.CatalogId,
-                Paragraphs = toMap.Paragraphs?.Select(x => ParagraphEntity_ParagraphContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
-                AudioFiles = toMap.Audios?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -190,9 +190,9 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Database.Entities.CategoryEntity()
             {
-                Id = toMap.Id,
                 Names = toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
-                Books = toMap.Books?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
+                Books = toMap.Books?.Select(x => BookEntity_BookContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Id = toMap.Id,
             };
 
             return mapped;
@@ -203,9 +203,9 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Contracts.Common.CategoryContract()
             {
-                Id = toMap.Id,
                 Names = toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
-                Books = toMap.Books?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
+                Books = toMap.Books?.Select(x => BookEntity_BookContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Id = toMap.Id,
             };
 
             return mapped;
@@ -219,13 +219,13 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Database.Entities.ParagraphEntity()
             {
+                Words = toMap.Words?.Select(x => WordEntity_WordContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Audios = toMap.AudioFiles?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 Id = toMap.Id,
                 Number = toMap.Number,
                 AnotherValue = toMap.AnotherValue,
                 PageId = toMap.PageId,
                 CatalogId = toMap.CatalogId,
-                Words = toMap.Words?.Select(x => WordEntity_WordContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
-                Audios = toMap.AudioFiles?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -236,14 +236,14 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Contracts.Common.ParagraphContract()
             {
+                HasLink = toMap.LinkParagraphs?.Count > 0 || toMap.LinkParagraphs?.Count > 0,
+                Words = toMap.Words?.Select(x => WordEntity_WordContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                AudioFiles = toMap.Audios?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 Id = toMap.Id,
                 Number = toMap.Number,
                 AnotherValue = toMap.AnotherValue,
-                HasLink = toMap.LinkParagraphs?.Count > 0 || toMap.LinkParagraphs?.Count > 0,
                 PageId = toMap.PageId,
                 CatalogId = toMap.CatalogId,
-                Words = toMap.Words?.Select(x => WordEntity_WordContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
-                AudioFiles = toMap.Audios?.Select(x => AudioEntity_AudioFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -257,12 +257,12 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Database.Entities.WordEntity()
             {
+                Values = toMap.Values?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                WordLetters = toMap.WordLetters?.Select(x => WordLetterEntity_WordLetterContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                WordRoots = toMap.WordRoots?.Select(x => WordRootEntity_WordRootContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 Id = toMap.Id,
                 Index = toMap.Index,
-                Values = toMap.Values?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 ParagraphId = toMap.ParagraphId,
-                WordLetters = toMap.WordLetters?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
-                WordRoots = toMap.WordRoots?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -273,12 +273,12 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Contracts.Common.WordContract()
             {
+                Values = toMap.Values?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                WordLetters = toMap.WordLetters?.Select(x => WordLetterEntity_WordLetterContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                WordRoots = toMap.WordRoots?.Select(x => WordRootEntity_WordRootContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 Id = toMap.Id,
                 Index = toMap.Index,
-                Values = toMap.Values?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 ParagraphId = toMap.ParagraphId,
-                WordLetters = toMap.WordLetters?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
-                WordRoots = toMap.WordRoots?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -350,8 +350,8 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Database.Entities.TranslatorEntity()
             {
-                Id = toMap.Id,
                 Names = toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Id = toMap.Id,
             };
 
             return mapped;
@@ -362,8 +362,8 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Contracts.Common.TranslatorContract()
             {
-                Id = toMap.Id,
                 Names = toMap.Names?.Select(x => ValueEntity_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Id = toMap.Id,
             };
 
             return mapped;
@@ -453,11 +453,11 @@ namespace CompileTimeGoMapper
                 return default;
             var mapped = new global::Translators.Contracts.Common.ParagraphContract()
             {
+                HasLink = toMap.HasLink,
+                Words = toMap.MainWords?.Select(x => WordContract_SimpleWordContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                AudioFiles = toMap.AudioFiles?.Select(x => AudioFileContract_SimpleFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 Id = toMap.Id,
                 Number = toMap.Number,
-                HasLink = toMap.HasLink,
-                Words = toMap.MainWords?.Select(x => x.Map(uniqueRecordId, language, parameters)).ToList(),
-                AudioFiles = toMap.AudioFiles?.Select(x => AudioFileContract_SimpleFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
             };
 
             return mapped;
@@ -471,7 +471,7 @@ namespace CompileTimeGoMapper
                 Id = toMap.Id,
                 Number = toMap.Number,
                 HasLink = toMap.HasLink,
-                MainWords = toMap.Words?.Where(x => x.Values.Any(v => v.IsMain || v.IsTransliteration)).Select(x => WordContract_SimpleWordContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                MainWords = toMap.Words?.Select(x => WordContract_SimpleWordContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
                 TranslatedValue = string.Join(' ', toMap.Words?.SelectMany(x => x.Values).Where(x => !x.IsMain && !x.IsTransliteration).Select(x => x.Value)),
                 AudioFiles = toMap.AudioFiles?.Select(x => AudioFileContract_SimpleFileContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
             };

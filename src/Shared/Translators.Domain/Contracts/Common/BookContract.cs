@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Translators.Schemas.Bases;
 
 namespace Translators.Contracts.Common
 {
     /// <summary>
     /// real books
     /// </summary>
-    public class BookContract
+    public class BookContract : BookSchemaBase
     {
-        public long Id { get; set; }
-
         public List<ValueContract> Names { get; set; }
-
-        public long CategoryId { get; set; }
-
         public List<CatalogContract> Catalogs { get; set; }
     }
 }
