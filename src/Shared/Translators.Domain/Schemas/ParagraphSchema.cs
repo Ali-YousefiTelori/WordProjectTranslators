@@ -10,5 +10,10 @@
         public string AnotherValue { get; set; }
         public long PageId { get; set; }
         public long CatalogId { get; set; }
+
+        public static string GetKey(ParagraphSchema paragraphSchema)
+        {
+            return $"{paragraphSchema.CatalogId}";
+        }
     }
 }

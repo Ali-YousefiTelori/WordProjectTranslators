@@ -17,5 +17,10 @@
         public long? TranslatorId { get; set; }
         public long? ParagraphId { get; set; }
         public long? AudioReaderId { get; set; }
+
+        public static string GetKey(AudioFileContract audioFile)
+        {
+            return $"{audioFile.IsMain}_{audioFile.LanguageId}_{audioFile.TranslatorId}_{audioFile.AudioReaderId}";
+        }
     }
 }
