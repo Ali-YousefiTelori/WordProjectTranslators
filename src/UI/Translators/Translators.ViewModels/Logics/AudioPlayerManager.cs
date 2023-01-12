@@ -233,22 +233,29 @@ namespace Translators.Logics
 
         void Seek(double position)
         {
-            if (Audios.Count > 1)
+            try
             {
-                var selectedAudio = (int)(position / _AudioDuration * Audios.Count);
-                if (selectedAudio == Audios.Count)
-                    selectedAudio--;
-                if (selectedAudio != _AudioIndex)
+                if (Audios?.Count > 1)
                 {
-                    PlayAudio(selectedAudio);
+                    var selectedAudio = (int)(position / _AudioDuration * Audios.Count);
+                    if (selectedAudio == Audios.Count)
+                        selectedAudio--;
+                    if (selectedAudio != _AudioIndex)
+                    {
+                        PlayAudio(selectedAudio);
+                    }
+                    var paragraphTotal = GetAudioDuration(Audios[selectedAudio].Audio).TotalSeconds;
+                    var seek = paragraphTotal - (GetToCurrentAudioIndexDuration(selectedAudio).TotalSeconds + paragraphTotal - position);
+                    _PlaybackCurrentPosition = 1 * (position / _AudioDuration);
+                    AudioPlayerBaseHelper.CurrentBase.Seek(seek);
                 }
-                var paragraphTotal = GetAudioDuration(Audios[selectedAudio].Audio).TotalSeconds;
-                var seek = paragraphTotal - (GetToCurrentAudioIndexDuration(selectedAudio).TotalSeconds + paragraphTotal - position);
-                _PlaybackCurrentPosition = 1 * (position / _AudioDuration);
-                AudioPlayerBaseHelper.CurrentBase.Seek(seek);
+                else
+                    AudioPlayerBaseHelper.CurrentBase.Seek(position);
             }
-            else
-                AudioPlayerBaseHelper.CurrentBase.Seek(position);
+            catch (Exception ex)
+            {
+                TranslatorService.LogException($"{Audios == null}-{AudioPlayerBaseHelper.CurrentBase == null}: {ex}");
+            }
         }
 
         void PlayAudio(int index)
