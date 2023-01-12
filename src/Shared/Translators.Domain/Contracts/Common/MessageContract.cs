@@ -6,14 +6,19 @@ namespace Translators.Contracts.Common
     public enum FailedReasonType : byte
     {
         None = 0,
-        SessionAccessDenied = 1,
-        AccessDenied = 2,
-        InternalError = 3,
-        Dupplicate = 4,
-        Empty = 5,
-        NotFound = 6,
-        ValidationsError = 7,
-        StreamError = 8
+        Default = 1,
+        All = 2,
+        Other = 3,
+        Unknown = 4,
+        Nothing = 5,
+        SessionAccessDenied = 6,
+        AccessDenied = 7,
+        InternalError = 8,
+        Dupplicate = 9,
+        Empty = 10,
+        NotFound = 11,
+        ValidationsError = 12,
+        StreamError = 13
     }
 
     public class ErrorContract
