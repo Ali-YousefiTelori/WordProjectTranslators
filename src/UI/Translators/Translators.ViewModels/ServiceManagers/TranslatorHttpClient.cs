@@ -41,13 +41,20 @@ namespace Translators.ServiceManagers
 
         public static async Task SaveLocal(string url, ParameterInfo[] parameterInfoes, string json)
         {
-            var messageContract = JsonConvert.DeserializeObject<MessageContract>(json);
-            if (messageContract.IsSuccess)
+            try
             {
-                var key = GetKey(url, parameterInfoes);
-                var saver = new ApplicationBookData();
-                saver.Initialize(key);
-                await saver.Add(json);
+                var messageContract = JsonConvert.DeserializeObject<MessageContract>(json);
+                if (messageContract.IsSuccess)
+                {
+                    var key = GetKey(url, parameterInfoes);
+                    var saver = new ApplicationBookData();
+                    saver.Initialize(key);
+                    await saver.Add(json);
+                }
+            }
+            catch (Exception ex)
+            {
+                TranslatorService.LogException($"{json} {Environment.NewLine} ## {Environment.NewLine} {ex}");
             }
         }
 
