@@ -84,8 +84,8 @@ namespace Translators.Logics
             {
                 CatalogName = pagesResult.Result.CatalogName,
                 Languages = languages.MapResultToList<LanguageContract>(),
-                Paragraphs = pagesResult.Result.Pages.First().Paragraphs.MapToList<SimpleParagraphContract>(),
-                AudioFiles = pagesResult.Result.Pages.First().AudioFiles.MapToList<SimpleFileContract>()
+                Paragraphs = pagesResult.Result.Pages.SelectMany(x => x.Paragraphs).MapToList<SimpleParagraphContract>(),
+                AudioFiles = pagesResult.Result.Pages.SelectMany(x => x.AudioFiles).MapToList<SimpleFileContract>()
             };
             return result;
         }
