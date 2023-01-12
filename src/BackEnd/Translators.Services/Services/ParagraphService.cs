@@ -57,7 +57,13 @@ namespace Translators.Services
                 UserId = currentUser.UserId,
                 ParagraphId = id,
             }).ToList());
-
+            foreach (var paragraphId in paragraphIds)
+            {
+                if (CacheLogic.Paragraphs.TryGetValue(paragraphId, out ParagraphContract paragraphContract))
+                {
+                    paragraphContract.HasLink = true;
+                }
+            }
             return result;
         }
 
