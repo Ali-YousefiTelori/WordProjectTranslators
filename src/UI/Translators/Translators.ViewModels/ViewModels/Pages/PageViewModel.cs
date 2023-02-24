@@ -133,7 +133,7 @@ namespace Translators.ViewModels.Pages
             if (pages.IsSuccess)
             {
                 bool isEven = false;
-                InitialData(pages.Result.Paragraphs.Select(i => ParagraphModel.Map(i)).Select(v =>
+                InitialData(pages.Result.Paragraphs.Select(i => ParagraphModel.Map(i, BookId, CatalogId, CatalogStartPageNumber)).Select(v =>
                 {
                     v.IsEven = isEven;
                     isEven = !isEven;

@@ -1,5 +1,4 @@
 ﻿using SignalGo.Shared.Models;
-using System.Linq;
 using Translators.Contracts.Common;
 using Translators.Contracts.Common.Paragraphs;
 using Translators.ViewModels;
@@ -70,7 +69,7 @@ namespace Translators.Models
             };
         }
 
-        public static ParagraphModel Map(SimpleParagraphContract paragraphContract)
+        public static ParagraphModel Map(SimpleParagraphContract paragraphContract, long bookId = 0 , long catalogId = 0, long pageNumber = 0)
         {
             return new ParagraphModel()
             {
@@ -80,6 +79,9 @@ namespace Translators.Models
                 MainValue = string.Join(" ", paragraphContract.MainWords.OrderBy(x => x.Index).Where(x => !x.IsTransliteration).Select(x => x.Value)),
                 TranslatedValue = paragraphContract.TranslatedValue,
                 MainTransliterationValue = string.Join(" ", paragraphContract.MainWords.OrderBy(x => x.Index).Where(x => x.IsTransliteration).Select(x => x.Value)),
+                CatalogId = catalogId,
+                BookId = bookId,
+                PageNumber = pageNumber
             };
         }
     }

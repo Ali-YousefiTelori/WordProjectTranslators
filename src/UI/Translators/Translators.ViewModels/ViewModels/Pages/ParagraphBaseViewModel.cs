@@ -104,7 +104,7 @@ namespace Translators.ViewModels.Pages
                                 stringBuilder.Append($"({item.Number})");
                         }
 
-                        if (!string.IsNullOrEmpty(first.DisplayName))
+                        if (!string.IsNullOrEmpty(first.DisplayName) && !IsInSearchTab)
                             stringBuilder.Append(first.DisplayName);
                         await ClipboardHelper.CopyText(stringBuilder.ToString());
                         break;
@@ -118,7 +118,7 @@ namespace Translators.ViewModels.Pages
                             if (hasMany)
                                 stringBuilder.Append($"({item.Number})");
                         }
-                        if (!string.IsNullOrEmpty(first.DisplayName))
+                        if (!string.IsNullOrEmpty(first.DisplayName) && !IsInSearchTab)
                             stringBuilder.Append(first.DisplayName);
                         await ClipboardHelper.CopyText(stringBuilder.ToString());
                         break;
@@ -132,7 +132,7 @@ namespace Translators.ViewModels.Pages
                             if (hasMany)
                                 stringBuilder.Append($"({item.Number})");
                         }
-                        if (!string.IsNullOrEmpty(first.DisplayName))
+                        if (!string.IsNullOrEmpty(first.DisplayName) && !IsInSearchTab)
                             stringBuilder.Append(first.DisplayName);
                         await ClipboardHelper.CopyText(stringBuilder.ToString());
                         break;
