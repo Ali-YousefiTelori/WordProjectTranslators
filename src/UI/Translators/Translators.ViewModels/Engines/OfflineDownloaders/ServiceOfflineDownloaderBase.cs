@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.IO;
 using System.IO.Compression;
-using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Models.Interfaces;
 using Translators.Models.Storages;
@@ -19,7 +16,7 @@ namespace Translators.Engines.OfflineDownloaders
         {
             try
             {
-                await DownloadFile(ServiceAddress, SaveToFileAddress);
+                await DownloadFile(ServiceAddress, SaveToFileAddress, false);
                 return true;
             }
             catch

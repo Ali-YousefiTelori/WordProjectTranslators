@@ -22,6 +22,7 @@ namespace Translators.Logics
         public BaseViewModel ViewModel { get; set; }
 
         protected bool IsDownloadedStreams { get; set; }
+        public bool DoDownloadAgain { get; set; }
 
         private double _AudioDuration;
         private double _PlaybackCurrentPosition;
@@ -102,7 +103,8 @@ namespace Translators.Logics
                         return;
                     }
 
-                    Audios = await DownloadAudios(audios);
+                    Audios = await DownloadAudios(audios, DoDownloadAgain);
+                    DoDownloadAgain = false;
                     var run = AudioPlayerBaseHelper.CurrentBase.Load(GetCopyStream(_AudioIndex));
                     AudioPlayerBaseHelper.CurrentBase.PlaybackEnded = Current_PlaybackEnded;
                     PlaybackCurrentPosition = 0;
@@ -168,7 +170,7 @@ namespace Translators.Logics
             return result;
         }
 
-        async Task<List<(SimpleFileContract, Stream)>> DownloadAudios(List<SimpleFileContract> audioFiles)
+        async Task<List<(SimpleFileContract, Stream)>> DownloadAudios(List<SimpleFileContract> audioFiles, bool doReDownload)
         {
             List<(SimpleFileContract, Stream)> result = new List<(SimpleFileContract, Stream)>();
             double duration = 0;
@@ -177,7 +179,7 @@ namespace Translators.Logics
                 string key = $"{audio.PageId.GetValueOrDefault()}_{audio.Id}";
                 var saver = new ApplicationBookAudioData();
                 saver.Initialize(key, ".mp3");
-                var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/Storage/DownloadFile?fileId={audio.Id}&password={audio.Password}");
+                var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/Storage/DownloadFile?fileId={audio.Id}&password={audio.Password}", doReDownload);
                 string groupKey = GetAudioGroupKey(audio);
                 result.Add((audio, stream));
                 duration += new TimeSpan(audio.DurationTicks).TotalSeconds;

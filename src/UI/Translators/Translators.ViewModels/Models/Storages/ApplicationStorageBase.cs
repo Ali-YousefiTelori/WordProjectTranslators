@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Translators.Models.Storages
 {
@@ -89,9 +85,9 @@ namespace Translators.Models.Storages
             }
         }
 
-        public async Task<Stream> DownloadFileStream(string uri)
+        public async Task<Stream> DownloadFileStream(string uri, bool doReDownload)
         {
-            var stream = new MemoryStream(File.ReadAllBytes(await DownloadFile(uri, FilePath)));
+            var stream = new MemoryStream(File.ReadAllBytes(await DownloadFile(uri, FilePath, doReDownload)));
             return stream;
         }
 

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-
-namespace Translators.Models.Storages
+﻿namespace Translators.Models.Storages
 {
     public abstract class StreamDownloaderBase
     {
@@ -18,7 +11,7 @@ namespace Translators.Models.Storages
         }
 
         static HttpClient HttpClient { get; set; } = new HttpClient();
-        public async Task<string> DownloadFile(string uri, string filePath)
+        public async Task<string> DownloadFile(string uri, string filePath, bool doReDownload)
         {
             for (int i = 0; i < 3; i++)
             {
@@ -26,7 +19,9 @@ namespace Translators.Models.Storages
                 {
                     if (File.Exists(filePath))
                     {
-                        if (new FileInfo(filePath).Length > 0)
+                        if (doReDownload)
+                            File.Delete(filePath);
+                        else if (new FileInfo(filePath).Length > 0)
                             return filePath;
                     }
                     using var contentResponse = await HttpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);

@@ -119,6 +119,8 @@ namespace Translators.ViewModels.Pages
         public override async Task FetchData(bool isForce)
         {
             Player.Reset();
+            if (isForce)
+                Player.DoDownloadAgain = true;
             var pages = await FetchPage(isForce, CatalogStartPageNumber, BookId);
             //fetch next
             _ = Task.Factory.StartNew(async () =>
