@@ -22,6 +22,9 @@ namespace Translators.Logics
         public BaseViewModel ViewModel { get; set; }
 
         protected bool IsDownloadedStreams { get; set; }
+        /// <summary>
+        /// try download again the audio from client
+        /// </summary>
         public bool DoDownloadAgain { get; set; }
 
         private double _AudioDuration;
