@@ -11,12 +11,13 @@ namespace Translators.Tests.Shared.FileVersionControl
             if (SchemaVersionControl.Current == null)
             {
                 var pathyProvider = new SystemPathProvider();
-                var directory = new EasyMicroservices.FileManager.Providers.DirectoryProviders.DiskDirectoryProvider("Root", pathyProvider);
+                var directory = new EasyMicroservices.FileManager.Providers.DirectoryProviders.MemoryDirectoryProvider("Root", pathyProvider);
                 var file = new EasyMicroservices.FileManager.Providers.FileProviders.MemoryFileProvider(directory);
                 SchemaVersionControl.Current = new SchemaVersionControl(pathyProvider, file, directory);
             }
         }
 
+        [Fact]
         public async Task Test()
         {
             await SchemaVersionControl.Current.RegisterTypes(false);
@@ -34,7 +35,12 @@ namespace Translators.Tests.Shared.FileVersionControl
                 }
             };
             await SchemaVersionControl.Current.SaveSchema(items);
-            SchemaVersionControl.Current.LoadSchema
+            var loaded = await SchemaVersionControl.Current.LoadSchema<List<LinkGroupSchema>>();
+            Assert.True(loaded);
+            Assert.Equal(1, loaded.Result[0].Id);
+            Assert.Equal("Test 1", loaded.Result[0].Title);
+            Assert.Equal(2, loaded.Result[1].Id);
+            Assert.Equal("Test 2", loaded.Result[1].Title);
         }
     }
 }

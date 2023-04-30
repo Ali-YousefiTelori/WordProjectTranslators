@@ -1,7 +1,10 @@
 ﻿using BinaryGo.Runtime.Helpers;
 using EasyMicroservices.FileManager.Interfaces;
+using EasyMicroservices.FileManager.Providers.PathProviders;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
@@ -13,7 +16,7 @@ namespace Translators.Shared.FileVersionControl
     public class SchemaVersionControl
     {
         public static SchemaVersionControl Current { get; set; }
-        Dictionary<string, object> LoadedSchemas { get; set; } = new();
+        ConcurrentDictionary<string, object> LoadedSchemas { get; set; } = new();
         TranslatorSerializer Serializer { get; set; } = new();
         static readonly TypeHelper TypeHelper = new();
 
@@ -40,46 +43,99 @@ namespace Translators.Shared.FileVersionControl
                 Root = pathProvider.Combine(AppDomain.CurrentDomain.BaseDirectory, "SchemaVersionControl");
         }
 
-        string GetTypeHash(string customKey, string typeName, string typeHash)
+        public static void Initialize()
         {
-            return $"{customKey},{typeName},{typeHash}";
+            var pathyProvider = new SystemPathProvider();
+            var directory = new EasyMicroservices.FileManager.Providers.DirectoryProviders.DiskDirectoryProvider("VersionFiles", pathyProvider);
+            var file = new EasyMicroservices.FileManager.Providers.FileProviders.DiskFileProvider(directory);
+            Current = new SchemaVersionControl(pathyProvider, file, directory);
         }
 
-        string GetTypeHash(string customKey, Type type)
+        string GetTypeHash(string typeName, string typeHash)
+        {
+            return $"{typeName},{typeHash}";
+        }
+
+        string GetTypeHash(Type type)
         {
             var hash = TypeHelper.GetTypeUniqueHash(type);
-            return GetTypeHash(customKey, type.Name, hash);
+            return GetTypeHash(GetTypeName(type), hash);
         }
 
-        async Task<string> GetFilePath(string customKey, Type type, string uniqueVersion = null)
+        string GetTypeName(Type type)
         {
-            var hash = GetTypeHash(customKey, type);
-            var directory = uniqueVersion == null ? Root : _pathProvider.Combine(Root, uniqueVersion);
+            if (type.Name.Contains('`') || type.Name.Contains('['))
+            {
+                var name = CleanName(type.Name);
+                if (type.GenericTypeArguments.Length > 0)
+                    return $"{name}_{CleanName(GetGenericNames(type.GenericTypeArguments))}";
+                if (type.HasElementType)
+                    return $"{name}_Array";
+                return name;
+            }
+            return type.Name;
+        }
+
+        string CleanName(string name)
+        {
+            return name.Split('`').FirstOrDefault().Replace("[", "").Replace("]", "");
+        }
+
+        string GetGenericNames(Type[] types)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (var type in types)
+            {
+                stringBuilder.Append(CleanName(type.Name));
+                stringBuilder.Append('_');
+            }
+            return stringBuilder.ToString();
+        }
+
+        async Task<string> GetFilePath(string customKey, string typeHash, string uniqueVersion = null)
+        {
+            var directory = uniqueVersion == null ? _pathProvider.Combine(Root, UniqueVersionHashedKey) : _pathProvider.Combine(Root, uniqueVersion);
             if (!await _directoryManager.IsExistDirectoryAsync(directory))
                 await _directoryManager.CreateDirectoryAsync(directory);
-            string fileName = $"{hash}.zip";
-            return uniqueVersion == null ? _pathProvider.Combine(Root, fileName) : _pathProvider.Combine(Root, uniqueVersion, fileName);
+            string fileName = $"{customKey},{typeHash}.zip";
+            return _pathProvider.Combine(directory, fileName);
         }
-        public async Task<MessageContract<TSchema>> LoadSchema<TSchema>(string customKey = DefaultCustomKey, string uniqueVersion = null)
+
+        public Task<MessageContract<TSchema>> LoadSchema<TSchema>(string customKey = DefaultCustomKey, string uniqueVersion = null)
         {
-            var contract = await GetSchemaBytes<TSchema>(customKey, uniqueVersion);
+            var hash = GetTypeHash(typeof(TSchema));
+            return LoadSchema<TSchema>(hash, customKey, uniqueVersion);
+        }
+
+        public async Task<MessageContract<TSchema>> LoadSchema<TSchema>(string typeHash, string customKey = DefaultCustomKey, string uniqueVersion = null)
+        {
+            var contract = await GetSchemaBytes(typeHash, customKey, uniqueVersion);
             if (contract)
                 return Serializer.DeSerialize<TSchema>(contract.Result);
             return contract.ToContract<TSchema>();
         }
 
-        async Task<MessageContract<byte[]>> GetSchemaBytes<TSchema>(string customKey = DefaultCustomKey, string uniqueVersion = null)
+        public async Task<MessageContract<TSchema>> SaveAndUpdateSchema<TSchema>(TSchema saveData, string customKey = DefaultCustomKey)
         {
-            var path = await GetFilePath(customKey, typeof(TSchema), uniqueVersion);
+            var hash = GetTypeHash(typeof(TSchema));
+            await SaveSchema(saveData, customKey, true);
+            LoadedSchemas[hash] = saveData;
+            return saveData;
+        }
+
+        async Task<MessageContract<byte[]>> GetSchemaBytes(string typeHash, string customKey = DefaultCustomKey, string uniqueVersion = null)
+        {
+            var path = await GetFilePath(customKey, typeHash, uniqueVersion);
             if (!await _fileManager.IsExistFileAsync(path))
                 return FailedReasonType.NotFound;
             var bytes = await _fileManager.ReadAllBytesAsync(path);
             return bytes;
         }
 
-        public async Task SaveSchemaList<TSchema>(List<TSchema> data, string customKey = DefaultCustomKey, bool doOverride = false)
+        public async Task SaveSchema<TSchema>(TSchema data, string customKey = DefaultCustomKey, bool doOverride = false)
         {
-            var path = await GetFilePath(customKey, typeof(TSchema), UniqueVersionHashedKey);
+            var hash = GetTypeHash(typeof(TSchema));
+            var path = await GetFilePath(customKey, hash, UniqueVersionHashedKey);
             if (await _fileManager.IsExistFileAsync(path) && !doOverride)
                 return;
             var bytes = Serializer.Serialize(data);
@@ -96,20 +152,20 @@ namespace Translators.Shared.FileVersionControl
             TypeHelper typeHelper = new TypeHelper();
             StringBuilder builder = new StringBuilder();
 
-            await GetTypeHash<AudioSchema>(builder, doesLoadSchema);
-            await GetTypeHash<BookSchemaBase>(builder, doesLoadSchema);
-            await GetTypeHash<CatalogSchemaBase>(builder, doesLoadSchema);
-            await GetTypeHash<CategorySchemaBase>(builder, doesLoadSchema);
-            await GetTypeHash<FileSchema>(builder, doesLoadSchema);
-            await GetTypeHash<LanguageSchema>(builder, doesLoadSchema);
-            await GetTypeHash<LinkGroupSchema>(builder, doesLoadSchema);
-            await GetTypeHash<PageSchema>(builder, doesLoadSchema);
-            await GetTypeHash<ParagraphSchema>(builder, doesLoadSchema);
-            await GetTypeHash<TranslatorSchema>(builder, doesLoadSchema);
-            await GetTypeHash<ValueSchema>(builder, doesLoadSchema);
-            await GetTypeHash<WordSchema>(builder, doesLoadSchema);
-            await GetTypeHash<WordLetterSchema>(builder, doesLoadSchema);
-            await GetTypeHash<WordRootSchema>(builder, doesLoadSchema);
+            GetTypeHash<AudioSchema>(builder, doesLoadSchema);
+            GetTypeHash<BookSchemaBase>(builder, doesLoadSchema);
+            GetTypeHash<CatalogSchemaBase>(builder, doesLoadSchema);
+            GetTypeHash<CategorySchemaBase>(builder, doesLoadSchema);
+            GetTypeHash<FileSchema>(builder, doesLoadSchema);
+            GetTypeHash<LanguageSchema>(builder, doesLoadSchema);
+            GetTypeHash<LinkGroupSchema>(builder, doesLoadSchema);
+            GetTypeHash<PageSchema>(builder, doesLoadSchema);
+            GetTypeHash<ParagraphSchema>(builder, doesLoadSchema);
+            GetTypeHash<TranslatorSchema>(builder, doesLoadSchema);
+            GetTypeHash<ValueSchema>(builder, doesLoadSchema);
+            GetTypeHash<WordSchema>(builder, doesLoadSchema);
+            GetTypeHash<WordLetterSchema>(builder, doesLoadSchema);
+            GetTypeHash<WordRootSchema>(builder, doesLoadSchema);
 
             //GetTypeHash<AudioFileContract>(typeHelper, builder);
             //GetTypeHash<BookContract>(typeHelper, builder);
@@ -140,20 +196,37 @@ namespace Translators.Shared.FileVersionControl
             //GetTypeHash<PageResponseContract>(typeHelper, builder);
 
             UniqueVersionHashedKey = typeHelper.GetSHA1Hash(builder.ToString());
-        }
-
-        async Task GetTypeHash<T>(StringBuilder builder, bool doesLoadSchema, string customKey = DefaultCustomKey)
-        {
-            var hash = GetTypeHash(customKey, typeof(Type));
-            builder.Append(hash);
             if (doesLoadSchema)
             {
-                var result = await LoadSchema<T>(customKey);
-                if (result)
+                var method = typeof(SchemaVersionControl).GetMethod(nameof(SaveAndUpdateSchema), System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+                foreach (var keyPair in RegisteredTypes)
                 {
-                    LoadedSchemas.Add(hash, result.Result);
+                    var callMethod = method.MakeGenericMethod(keyPair.Value);
+                    var resultAwaitor = (Task)callMethod.Invoke(this, new object[] { DefaultCustomKey });
+                    await resultAwaitor;
+                    //var resultProperty = typeof(Task<>).MakeGenericType(typeof(MessageContract<>).MakeGenericType(keyPair.Value)).GetProperty("Result");
+                    //var result = (MessageContract)resultProperty.GetValue(resultAwaitor);
+                    //if (result)
+                    //{
+                    //    LoadedSchemas.Add(keyPair.Key, result.GetResult());
+                    //}
                 }
             }
+        }
+
+        Dictionary<string, Type> RegisteredTypes { get; } = new Dictionary<string, Type>();
+        void GetTypeHash<T>(StringBuilder builder, bool doesLoadSchema, string customKey = DefaultCustomKey)
+        {
+            ExtractTypeHash<T>(builder, doesLoadSchema, customKey);
+            ExtractTypeHash<List<T>>(builder, doesLoadSchema, customKey);
+            ExtractTypeHash<T[]>(builder, doesLoadSchema, customKey);
+        }
+
+        void ExtractTypeHash<T>(StringBuilder builder, bool doesLoadSchema, string customKey = DefaultCustomKey)
+        {
+            var hash = GetTypeHash(typeof(T));
+            builder.Append(hash);
+            RegisteredTypes.Add(hash, typeof(T));
         }
     }
 }

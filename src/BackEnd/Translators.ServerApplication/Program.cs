@@ -12,6 +12,7 @@ using Translators.Contracts.Common;
 using Translators.Logics;
 using Translators.Models;
 using Translators.Services;
+using Translators.Shared.FileVersionControl;
 
 namespace Translators.ServerApplication
 {
@@ -22,6 +23,8 @@ namespace Translators.ServerApplication
             try
             {
                 Console.WriteLine("Starting...");
+                SchemaVersionControl.Initialize();
+                await SchemaVersionControl.Current.RegisterTypes(false);
                 await ConfigData.LoadAsync();
                 await CacheLogic.Initialize();
 

@@ -10,7 +10,7 @@
     <PackageReference Include="BinaryGo">
       <Version>0.1.0.6</Version>
     </PackageReference>
-    <PackageReference Include="EasyMicroservices.FileManager" Version="0.0.0.2" />
+    <PackageReference Include="EasyMicroservices.FileManager" Version="0.0.0.3" />
   </ItemGroup>
 
   <ItemGroup>

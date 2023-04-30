@@ -2,6 +2,9 @@
 using System.Collections.Concurrent;
 using Translators.Contracts.Common;
 using Translators.Database.Contexts;
+using Translators.Schemas;
+using Translators.Schemas.Bases;
+using Translators.Shared.FileVersionControl;
 
 namespace Translators.Logics
 {
@@ -22,11 +25,13 @@ namespace Translators.Logics
             await using var context = new TranslatorContext();
             await context.Database.MigrateAsync();
             Console.WriteLine("Load Categories...");
-            var categories = await context.Categories.AsNoTracking().ToListAsync();
+            var categories = (await context.Categories.AsNoTracking().ToListAsync()).Select(x => x.Map<CategorySchemaBase>()).ToList();
             foreach (var item in categories)
             {
                 Categories.TryAdd(item.Id, item.Map<CategoryContract>());
             }
+
+            await SchemaVersionControl.Current.SaveAndUpdateSchema(categories, "Categories");
 
             Console.WriteLine("Load Books...");
             var books = await context.Books.AsNoTracking().ToListAsync();
