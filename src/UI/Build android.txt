@@ -1,0 +1,6 @@
+run script XamarinForms\Update-PackageName.ps1
+
+
+Right-click the script and choose Properties. In the Properties dialog, if available, select the Unblock checkbox and press OK.
+
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser

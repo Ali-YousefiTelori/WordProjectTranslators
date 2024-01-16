@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
     <LangVersion>Latest</LangVersion>
   </PropertyGroup>
 
@@ -10,11 +10,25 @@
     <PackageReference Include="BinaryGo">
       <Version>0.1.0.6</Version>
     </PackageReference>
+    <PackageReference Include="EasyMicroservices.Compression" Version="0.0.0.1" />
     <PackageReference Include="EasyMicroservices.FileManager" Version="0.0.0.3" />
+    <PackageReference Include="EasyMicroservices.Serialization.BinaryGo" Version="0.0.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Logics\" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="EasyMicroservices.Serialization.Newtonsoft.Json">
+      <Version>0.0.0.1</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="EasyMicroservices.Serialization.Newtonsoft.Json">
+      <Version>0.0.0.1</Version>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

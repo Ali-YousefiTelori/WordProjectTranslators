@@ -23,9 +23,9 @@ namespace Translators.ServerApplication
             try
             {
                 Console.WriteLine("Starting...");
+                await ConfigData.LoadAsync();
                 SchemaVersionControl.Initialize();
                 await SchemaVersionControl.Current.RegisterTypes(false);
-                await ConfigData.LoadAsync();
                 await CacheLogic.Initialize();
 
                 ServerProvider serverProvider = new ServerProvider();

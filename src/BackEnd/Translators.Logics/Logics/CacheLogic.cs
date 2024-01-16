@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Translators.Contracts.Common;
 using Translators.Database.Contexts;
 using Translators.Schemas;
@@ -25,13 +26,11 @@ namespace Translators.Logics
             await using var context = new TranslatorContext();
             await context.Database.MigrateAsync();
             Console.WriteLine("Load Categories...");
-            var categories = (await context.Categories.AsNoTracking().ToListAsync()).Select(x => x.Map<CategorySchemaBase>()).ToList();
+            var categories = await context.Categories.AsNoTracking().ToListAsync();
             foreach (var item in categories)
             {
                 Categories.TryAdd(item.Id, item.Map<CategoryContract>());
             }
-
-            await SchemaVersionControl.Current.SaveAndUpdateSchema(categories, "Categories");
 
             Console.WriteLine("Load Books...");
             var books = await context.Books.AsNoTracking().ToListAsync();
@@ -155,6 +154,27 @@ namespace Translators.Logics
             {
                 category.Value.Names = hasCategories.Where(x => x.CategoryNameId == category.Key).ToList();
                 category.Value.Books = Books.Select(x => x.Value).Where(x => x.CategoryId == category.Key).ToList();
+            }
+
+            _ = SaveVersioning();
+        }
+
+        static async Task SaveVersioning()
+        {
+            try
+            {
+                Console.WriteLine("Saving...");
+                var mappedCategories = Categories.Values.Select(x => x.Map<CategorySchemaBase>()).ToList();
+                await SchemaVersionControl.Current.SaveAndUpdateSchema(mappedCategories, "Categories");
+
+                var mappedValues = Values.Values.Select(x => x.Map<ValueSchema>()).ToList();
+                await SchemaVersionControl.Current.SaveAndUpdateSchema(mappedValues, "Values");
+
+                Console.WriteLine("Saving finished!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
 

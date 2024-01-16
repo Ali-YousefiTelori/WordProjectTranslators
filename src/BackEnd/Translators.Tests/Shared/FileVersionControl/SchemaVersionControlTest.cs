@@ -13,7 +13,8 @@ namespace Translators.Tests.Shared.FileVersionControl
                 var pathyProvider = new SystemPathProvider();
                 var directory = new EasyMicroservices.FileManager.Providers.DirectoryProviders.MemoryDirectoryProvider("Root", pathyProvider);
                 var file = new EasyMicroservices.FileManager.Providers.FileProviders.MemoryFileProvider(directory);
-                SchemaVersionControl.Current = new SchemaVersionControl(pathyProvider, file, directory);
+                var serializer = new EasyMicroservices.Serialization.Newtonsoft.Json.Providers.NewtonsoftJsonProvider();
+                SchemaVersionControl.Current = new SchemaVersionControl(serializer, pathyProvider, file, directory);
             }
         }
 

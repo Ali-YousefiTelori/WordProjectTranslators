@@ -549,5 +549,468 @@ namespace CompileTimeGoMapper
             return mapped;
         }
     }
+    public static class BookSchemaBase_BookContractMapper
+    {
+        public static global::Translators.Schemas.Bases.BookSchemaBase Map(this global::Translators.Contracts.Common.BookContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.Bases.BookSchemaBase()
+            {
+                Id = toMap.Id,
+                IsHidden = toMap.IsHidden,
+                CategoryId = toMap.CategoryId,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.BookContract Map(this global::Translators.Schemas.Bases.BookSchemaBase toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.BookContract()
+            {
+                Id = toMap.Id,
+                IsHidden = toMap.IsHidden,
+                CategoryId = toMap.CategoryId,
+            };
+
+            return mapped;
+        }
+    }
+    public static class AudioSchema_AudioFileContractMapper
+    {
+        public static global::Translators.Schemas.AudioSchema Map(this global::Translators.Contracts.Common.AudioFileContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.AudioSchema()
+            {
+                Id = toMap.Id,
+                IsMain = toMap.IsMain,
+                FileName = toMap.FileName,
+                Password = toMap.Password,
+                DurationTicks = toMap.DurationTicks,
+                PageId = toMap.PageId,
+                LanguageId = toMap.LanguageId,
+                ParagraphId = toMap.ParagraphId,
+                AudioReaderId = toMap.AudioReaderId,
+                TranslatorId = toMap.TranslatorId,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.AudioFileContract Map(this global::Translators.Schemas.AudioSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.AudioFileContract()
+            {
+                IsMain = toMap.IsMain,
+                FileName = toMap.FileName,
+                DurationTicks = toMap.DurationTicks,
+                PageId = toMap.PageId,
+                LanguageId = toMap.LanguageId,
+                TranslatorId = toMap.TranslatorId,
+                ParagraphId = toMap.ParagraphId,
+                AudioReaderId = toMap.AudioReaderId,
+                Id = toMap.Id,
+                Password = toMap.Password,
+            };
+
+            return mapped;
+        }
+    }
+    public static class CatalogSchemaBase_CatalogContractMapper
+    {
+        public static global::Translators.Schemas.Bases.CatalogSchemaBase Map(this global::Translators.Contracts.Common.CatalogContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.Bases.CatalogSchemaBase()
+            {
+                Id = toMap.Id,
+                Number = toMap.Number,
+                StartPageNumber = toMap.StartPageNumber,
+                BookId = toMap.BookId,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.CatalogContract Map(this global::Translators.Schemas.Bases.CatalogSchemaBase toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.CatalogContract()
+            {
+                Id = toMap.Id,
+                Number = toMap.Number,
+                StartPageNumber = toMap.StartPageNumber,
+                BookId = toMap.BookId,
+            };
+
+            return mapped;
+        }
+    }
+    public static class CategorySchemaBase_CategoryContractMapper
+    {
+        public static global::Translators.Schemas.Bases.CategorySchemaBase Map(this global::Translators.Contracts.Common.CategoryContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.Bases.CategorySchemaBase()
+            {
+                Id = toMap.Id,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.CategoryContract Map(this global::Translators.Schemas.Bases.CategorySchemaBase toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.CategoryContract()
+            {
+                Id = toMap.Id,
+            };
+
+            return mapped;
+        }
+    }
+    public static class FileSchema_FileContractMapper
+    {
+        public static global::Translators.Schemas.FileSchema Map(this global::Translators.Contracts.Common.FileContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.FileSchema()
+            {
+                Id = toMap.Id,
+                Password = toMap.Password,
+                Url = toMap.Url,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.FileContract Map(this global::Translators.Schemas.FileSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.FileContract()
+            {
+                Id = toMap.Id,
+                Password = toMap.Password,
+                Url = toMap.Url,
+            };
+
+            return mapped;
+        }
+    }
+    public static class LanguageSchema_LanguageContractMapper
+    {
+        public static global::Translators.Schemas.LanguageSchema Map(this global::Translators.Contracts.Common.LanguageContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.LanguageSchema()
+            {
+                Id = toMap.Id,
+                Name = toMap.Name,
+                Code = toMap.Code,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.LanguageContract Map(this global::Translators.Schemas.LanguageSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.LanguageContract()
+            {
+                Id = toMap.Id,
+                Name = toMap.Name,
+                Code = toMap.Code,
+            };
+
+            return mapped;
+        }
+    }
+    public static class LinkGroupSchema_LinkGroupContractMapper
+    {
+        public static global::Translators.Schemas.LinkGroupSchema Map(this global::Translators.Contracts.Common.LinkGroupContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.LinkGroupSchema()
+            {
+                Id = toMap.Id,
+                Title = toMap.Title,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.LinkGroupContract Map(this global::Translators.Schemas.LinkGroupSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.LinkGroupContract()
+            {
+                Id = toMap.Id,
+                Title = toMap.Title,
+            };
+
+            return mapped;
+        }
+    }
+    public static class LinkGroupEntity_LinkGroupContractMapper
+    {
+        public static global::Translators.Database.Entities.LinkGroupEntity Map(this global::Translators.Contracts.Common.LinkGroupContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Database.Entities.LinkGroupEntity()
+            {
+                Id = toMap.Id,
+                Title = toMap.Title,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.LinkGroupContract Map(this global::Translators.Database.Entities.LinkGroupEntity toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.LinkGroupContract()
+            {
+                Id = toMap.Id,
+                Title = toMap.Title,
+            };
+
+            return mapped;
+        }
+    }
+    public static class PageSchema_PageContractMapper
+    {
+        public static global::Translators.Schemas.PageSchema Map(this global::Translators.Contracts.Common.PageContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.PageSchema()
+            {
+                Id = toMap.Id,
+                Number = toMap.Number,
+                CatalogId = toMap.CatalogId,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.PageContract Map(this global::Translators.Schemas.PageSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.PageContract()
+            {
+                Id = toMap.Id,
+                Number = toMap.Number,
+                CatalogId = toMap.CatalogId,
+            };
+
+            return mapped;
+        }
+    }
+    public static class ParagraphSchema_ParagraphContractMapper
+    {
+        public static global::Translators.Schemas.ParagraphSchema Map(this global::Translators.Contracts.Common.ParagraphContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.ParagraphSchema()
+            {
+                Id = toMap.Id,
+                Number = toMap.Number,
+                AnotherValue = toMap.AnotherValue,
+                PageId = toMap.PageId,
+                CatalogId = toMap.CatalogId,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.ParagraphContract Map(this global::Translators.Schemas.ParagraphSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.ParagraphContract()
+            {
+                Id = toMap.Id,
+                Number = toMap.Number,
+                AnotherValue = toMap.AnotherValue,
+                PageId = toMap.PageId,
+                CatalogId = toMap.CatalogId,
+            };
+
+            return mapped;
+        }
+    }
+    public static class TranslatorSchema_TranslatorContractMapper
+    {
+        public static global::Translators.Schemas.TranslatorSchema Map(this global::Translators.Contracts.Common.TranslatorContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.TranslatorSchema()
+            {
+                Names = toMap.Names?.Select(x => ValueSchema_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Id = toMap.Id,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.TranslatorContract Map(this global::Translators.Schemas.TranslatorSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.TranslatorContract()
+            {
+                Names = toMap.Names?.Select(x => ValueSchema_ValueContractMapper.Map(x, uniqueRecordId, language, parameters)).ToList(),
+                Id = toMap.Id,
+            };
+
+            return mapped;
+        }
+    }
+    public static class ValueSchema_ValueContractMapper
+    {
+        public static global::Translators.Schemas.ValueSchema Map(this global::Translators.Contracts.Common.ValueContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.ValueSchema()
+            {
+                Id = toMap.Id,
+                IsMain = toMap.IsMain,
+                IsTransliteration = toMap.IsTransliteration,
+                Value = toMap.Value,
+                SearchValue = toMap.SearchValue,
+                LanguageId = toMap.LanguageId,
+                TranslatorId = toMap.TranslatorId,
+                TranslatorNameId = toMap.TranslatorNameId,
+                BookNameId = toMap.BookNameId,
+                CategoryNameId = toMap.CategoryNameId,
+                CatalogNameId = toMap.CatalogNameId,
+                WordValueId = toMap.WordValueId,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.ValueContract Map(this global::Translators.Schemas.ValueSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.ValueContract()
+            {
+                Id = toMap.Id,
+                IsMain = toMap.IsMain,
+                IsTransliteration = toMap.IsTransliteration,
+                Value = toMap.Value,
+                SearchValue = toMap.SearchValue,
+                LanguageId = toMap.LanguageId,
+                TranslatorId = toMap.TranslatorId,
+                TranslatorNameId = toMap.TranslatorNameId,
+                BookNameId = toMap.BookNameId,
+                CategoryNameId = toMap.CategoryNameId,
+                CatalogNameId = toMap.CatalogNameId,
+                WordValueId = toMap.WordValueId,
+            };
+
+            return mapped;
+        }
+    }
+    public static class WordSchema_WordContractMapper
+    {
+        public static global::Translators.Schemas.WordSchema Map(this global::Translators.Contracts.Common.WordContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.WordSchema()
+            {
+                Id = toMap.Id,
+                Index = toMap.Index,
+                ParagraphId = toMap.ParagraphId,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.WordContract Map(this global::Translators.Schemas.WordSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.WordContract()
+            {
+                Id = toMap.Id,
+                Index = toMap.Index,
+                ParagraphId = toMap.ParagraphId,
+            };
+
+            return mapped;
+        }
+    }
+    public static class WordLetterSchema_WordLetterContractMapper
+    {
+        public static global::Translators.Schemas.WordLetterSchema Map(this global::Translators.Contracts.Common.WordLetterContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.WordLetterSchema()
+            {
+                Id = toMap.Id,
+                Value = toMap.Value,
+                WordId = toMap.WordId,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.WordLetterContract Map(this global::Translators.Schemas.WordLetterSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.WordLetterContract()
+            {
+                Id = toMap.Id,
+                Value = toMap.Value,
+                WordId = toMap.WordId,
+            };
+
+            return mapped;
+        }
+    }
+    public static class WordRootSchema_WordRootContractMapper
+    {
+        public static global::Translators.Schemas.WordRootSchema Map(this global::Translators.Contracts.Common.WordRootContract toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Schemas.WordRootSchema()
+            {
+                Id = toMap.Id,
+                Value = toMap.Value,
+                WordId = toMap.WordId,
+            };
+
+            return mapped;
+        }
+        public static global::Translators.Contracts.Common.WordRootContract Map(this global::Translators.Schemas.WordRootSchema toMap, string uniqueRecordId, string language, object[] parameters)
+        {
+            if (toMap == default)
+                return default;
+            var mapped = new global::Translators.Contracts.Common.WordRootContract()
+            {
+                Id = toMap.Id,
+                Value = toMap.Value,
+                WordId = toMap.WordId,
+            };
+
+            return mapped;
+        }
+    }
 }
 

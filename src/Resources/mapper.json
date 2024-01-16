@@ -2,8 +2,8 @@
   "Projects": [
     {
       "Name": "Translators",
-      "GeneratePath": "D:\\Github\\WordProjectTranslators\\src\\BackEnd\\Translators.Logics\\Mappers",
-      "BuildPath": "D:\\Github\\WordProjectTranslators\\src\\BackEnd\\Translators.ServerApplication\\bin\\Debug\\net6.0",
+      "GeneratePath": "D:\\Projects\\OpenSource\\Github\\WordProjectTranslators\\src\\BackEnd\\Translators.Logics\\Mappers",
+      "BuildPath": "D:\\Projects\\OpenSource\\Github\\WordProjectTranslators\\src\\BackEnd\\Translators.ServerApplication\\bin\\Debug\\net6.0",
       "MapClasses": [
         {
           "FromAssemblyName": "Translators.Database.dll",
@@ -342,6 +342,241 @@
             "Translator",
             "Url"
           ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas.Bases",
+          "FromName": "BookSchemaBase",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "BookContract",
+          "ToSkipProperties": [
+            "Names",
+            "Catalogs"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "AudioSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "AudioFileContract",
+          "ToSkipProperties": [
+            "Url"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas.Bases",
+          "FromName": "CatalogSchemaBase",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "CatalogContract",
+          "ToSkipProperties": [
+            "Names",
+            "Pages",
+            "BookNames"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas.Bases",
+          "FromName": "CategorySchemaBase",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "CategoryContract",
+          "ToSkipProperties": [
+            "Names",
+            "Books"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "FileSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "FileContract",
+          "ToSkipProperties": [],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "LanguageSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "LanguageContract",
+          "ToSkipProperties": [
+            "Values",
+            "Audios"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "LinkGroupSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "LinkGroupContract",
+          "ToSkipProperties": [
+            "LinkParagraphs"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Database.dll",
+          "FromNamespace": "Translators.Database.Entities",
+          "FromName": "LinkGroupEntity",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "LinkGroupContract",
+          "ToSkipProperties": [
+            "LinkParagraphs"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "PageSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "PageContract",
+          "ToSkipProperties": [
+            "Paragraphs",
+            "CatalogNames",
+            "BookId",
+            "AudioFiles"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "ParagraphSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "ParagraphContract",
+          "ToSkipProperties": [
+            "HasLink",
+            "BookId",
+            "PageNumber",
+            "Words",
+            "AudioFiles"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "TranslatorSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "TranslatorContract",
+          "ToSkipProperties": [
+            "Values",
+            "Audios"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "ValueSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "ValueContract",
+          "ToSkipProperties": [
+            "Language",
+            "Translator"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "WordSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "WordContract",
+          "ToSkipProperties": [
+            "Values",
+            "WordLetters",
+            "WordRoots"
+          ],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "WordLetterSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "WordLetterContract",
+          "ToSkipProperties": [],
+          "CustomPropertiesMap": []
+        },
+        {
+          "FromAssemblyName": "Translators.Domain.dll",
+          "FromNamespace": "Translators.Schemas",
+          "FromName": "WordRootSchema",
+          "FromDirectCode": null,
+          "ToDirectCode": null,
+          "FromSkipProperties": [],
+          "ToAssemblyName": "Translators.Domain.dll",
+          "ToNamespace": "Translators.Contracts.Common",
+          "ToName": "WordRootContract",
+          "ToSkipProperties": [],
           "CustomPropertiesMap": []
         }
       ],

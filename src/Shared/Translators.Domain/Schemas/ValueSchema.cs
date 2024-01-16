@@ -1,6 +1,4 @@
-﻿using Translators.Contracts.Common;
-
-namespace Translators.Schemas
+﻿namespace Translators.Schemas
 {
     /// <summary>
     /// translate entity
@@ -27,7 +25,7 @@ namespace Translators.Schemas
         public long? CatalogNameId { get; set; }
         public long? WordValueId { get; set; }
 
-        public static string GetKey(ValueSchema  valueSchema)
+        public static string GetKey(ValueSchema valueSchema)
         {
             return $"{valueSchema.IsMain}_{valueSchema.LanguageId}_{valueSchema.TranslatorId}_{valueSchema.IsTransliteration}";
         }

@@ -1,8 +1,8 @@
 ﻿using BinaryGo.Runtime.Helpers;
 using EasyMicroservices.FileManager.Interfaces;
 using EasyMicroservices.FileManager.Providers.PathProviders;
+using EasyMicroservices.Serialization.Interfaces;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,8 +16,6 @@ namespace Translators.Shared.FileVersionControl
     public class SchemaVersionControl
     {
         public static SchemaVersionControl Current { get; set; }
-        ConcurrentDictionary<string, object> LoadedSchemas { get; set; } = new();
-        TranslatorSerializer Serializer { get; set; } = new();
         static readonly TypeHelper TypeHelper = new();
 
         const string DefaultCustomKey = "Default";
@@ -32,12 +30,14 @@ namespace Translators.Shared.FileVersionControl
         IPathProvider _pathProvider;
         IFileManagerProvider _fileManager;
         IDirectoryManagerProvider _directoryManager;
+        ITextSerialization _serializer { get; set; }
 
-        public SchemaVersionControl(IPathProvider pathProvider, IFileManagerProvider fileManager, IDirectoryManagerProvider directoryManager, string root = null)
+        public SchemaVersionControl(ITextSerialization serializer, IPathProvider pathProvider, IFileManagerProvider fileManager, IDirectoryManagerProvider directoryManager, string root = null)
         {
             _pathProvider = pathProvider;
             _fileManager = fileManager;
             _directoryManager = directoryManager;
+            _serializer = serializer;
             Root = root;
             if (Root == null)
                 Root = pathProvider.Combine(AppDomain.CurrentDomain.BaseDirectory, "SchemaVersionControl");
@@ -48,7 +48,8 @@ namespace Translators.Shared.FileVersionControl
             var pathyProvider = new SystemPathProvider();
             var directory = new EasyMicroservices.FileManager.Providers.DirectoryProviders.DiskDirectoryProvider("VersionFiles", pathyProvider);
             var file = new EasyMicroservices.FileManager.Providers.FileProviders.DiskFileProvider(directory);
-            Current = new SchemaVersionControl(pathyProvider, file, directory);
+            var serializer = new EasyMicroservices.Serialization.Newtonsoft.Json.Providers.NewtonsoftJsonProvider();
+            Current = new SchemaVersionControl(serializer, pathyProvider, file, directory);
         }
 
         string GetTypeHash(string typeName, string typeHash)
@@ -111,15 +112,13 @@ namespace Translators.Shared.FileVersionControl
         {
             var contract = await GetSchemaBytes(typeHash, customKey, uniqueVersion);
             if (contract)
-                return Serializer.DeSerialize<TSchema>(contract.Result);
+                return _serializer.Deserialize<TSchema>(Encoding.UTF8.GetString(contract.Result));
             return contract.ToContract<TSchema>();
         }
 
         public async Task<MessageContract<TSchema>> SaveAndUpdateSchema<TSchema>(TSchema saveData, string customKey = DefaultCustomKey)
         {
-            var hash = GetTypeHash(typeof(TSchema));
             await SaveSchema(saveData, customKey, true);
-            LoadedSchemas[hash] = saveData;
             return saveData;
         }
 
@@ -138,8 +137,8 @@ namespace Translators.Shared.FileVersionControl
             var path = await GetFilePath(customKey, hash, UniqueVersionHashedKey);
             if (await _fileManager.IsExistFileAsync(path) && !doOverride)
                 return;
-            var bytes = Serializer.Serialize(data);
-            await _fileManager.WriteAllBytesAsync(path, bytes);
+            var text = _serializer.Serialize(data);
+            await _fileManager.WriteAllBytesAsync(path, Encoding.UTF8.GetBytes(text));
         }
 
         public async Task LoadAll()
