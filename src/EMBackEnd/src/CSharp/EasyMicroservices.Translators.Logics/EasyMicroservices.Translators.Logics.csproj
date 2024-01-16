@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>EasyMicroservices.TranslatorsMicroservice</RootNamespace>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="EasyMicroservices.Mapper.CompileTimeMapper" Version="*" />
+    <PackageReference Include="EasyMicroservices.Mapper.SerializerMapper" Version="*" />
+    <PackageReference Include="EasyMicroservices.Serialization.Newtonsoft.Json" Version="*" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="DatabaseLogics\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Mappers\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\EasyMicroservices.TranslatorsMicroservice.Database\EasyMicroservices.TranslatorsMicroservice.Database.csproj" />
+  </ItemGroup>
+  
+
+  
+</Project>
