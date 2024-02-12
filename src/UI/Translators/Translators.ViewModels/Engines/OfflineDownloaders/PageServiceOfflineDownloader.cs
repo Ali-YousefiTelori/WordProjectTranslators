@@ -28,20 +28,20 @@ namespace Translators.Engines.OfflineDownloaders
                 CalculateLength(pageGroups.Count + bookGroup.Count + catalogGroup.Count);
                 foreach (var page in pageGroups)
                 {
-                    await ClientConnectionManager.SaveLocal("page/GetPage",
-                        new SignalGo.Shared.Models.ParameterInfo[]
-                        {
-                            new SignalGo.Shared.Models.ParameterInfo() { Name = "pageNumber", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(page.Key.Number) },
-                            new SignalGo.Shared.Models.ParameterInfo() { Name = "bookId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(page.Key.BookId) }
-                        }, JsonConvert.SerializeObject(ToMessageContract(page.ToList())));
+                    //await ClientConnectionManager.SaveLocal("page/GetPage",
+                    //    new SignalGo.Shared.Models.ParameterInfo[]
+                    //    {
+                    //        new SignalGo.Shared.Models.ParameterInfo() { Name = "pageNumber", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(page.Key.Number) },
+                    //        new SignalGo.Shared.Models.ParameterInfo() { Name = "bookId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(page.Key.BookId) }
+                    //    }, JsonConvert.SerializeObject(ToMessageContract(page.ToList())));
                     AddProgress();
                 }
 
                 foreach (var page in bookGroup)
                 {
-                    await ClientConnectionManager.SaveLocal("page/GetPagesByBookId",
-                        new SignalGo.Shared.Models.ParameterInfo[] { new SignalGo.Shared.Models.ParameterInfo() { Name = "bookId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(page.Key) } },
-                        JsonConvert.SerializeObject(ToMessageContract(page)));
+                    //await ClientConnectionManager.SaveLocal("page/GetPagesByBookId",
+                    //    new SignalGo.Shared.Models.ParameterInfo[] { new SignalGo.Shared.Models.ParameterInfo() { Name = "bookId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(page.Key) } },
+                    //    JsonConvert.SerializeObject(ToMessageContract(page)));
                     AddProgress();
                 }
 
@@ -49,13 +49,13 @@ namespace Translators.Engines.OfflineDownloaders
                 {
                     foreach (var paragraph in page.SelectMany(x => x.Paragraphs))
                     {
-                        var findPage = page.FirstOrDefault(x => x.Id == paragraph.PageId);
-                        await ClientConnectionManager.SaveLocal("page/GetPageNumberByVerseNumber",
-                        new SignalGo.Shared.Models.ParameterInfo[]
-                        {
-                            new SignalGo.Shared.Models.ParameterInfo() { Name = "verseNumber", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(paragraph.Number) },
-                            new SignalGo.Shared.Models.ParameterInfo() { Name = "catalogId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(page.Key) }
-                        }, JsonConvert.SerializeObject(ToMessageContract(findPage.Number)));
+                        //var findPage = page.FirstOrDefault(x => x.Id == paragraph.PageId);
+                        //await ClientConnectionManager.SaveLocal("page/GetPageNumberByVerseNumber",
+                        //new SignalGo.Shared.Models.ParameterInfo[]
+                        //{
+                        //    new SignalGo.Shared.Models.ParameterInfo() { Name = "verseNumber", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(paragraph.Number) },
+                        //    new SignalGo.Shared.Models.ParameterInfo() { Name = "catalogId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(page.Key) }
+                        //}, JsonConvert.SerializeObject(ToMessageContract(findPage.Number)));
                     }
                     AddProgress();
                 }

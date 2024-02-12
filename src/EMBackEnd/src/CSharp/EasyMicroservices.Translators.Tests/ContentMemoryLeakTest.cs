@@ -1,17 +1,7 @@
-﻿using EasyMicroservices.TranslatorsMicroservice.Contracts.Common;
-using EasyMicroservices.TranslatorsMicroservice.Contracts.Requests;
-using EasyMicroservices.TranslatorsMicroservice.Database.Contexts;
-using EasyMicroservices.TranslatorsMicroservice.Database.Entities;
-using EasyMicroservices.TranslatorsMicroservice.WebApi.Controllers;
-using EasyMicroservices.Cores.AspEntityFrameworkCoreApi;
-using EasyMicroservices.Cores.AspEntityFrameworkCoreApi.Interfaces;
-using EasyMicroservices.Cores.Relational.EntityFrameworkCore;
-using EasyMicroservices.Cores.Relational.EntityFrameworkCore.Intrerfaces;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
+﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
 using System.Threading.Tasks;
+using Translators.Services;
 
 namespace EasyMicroservices.TranslatorsMicroservice.Tests
 {
@@ -28,7 +18,7 @@ namespace EasyMicroservices.TranslatorsMicroservice.Tests
             {
                 await EasyMicroservices.TranslatorsMicroservice.WebApi.Program.Run(null, (s) =>
                 {
-                    s.AddControllers().PartManager.ApplicationParts.Add(new AssemblyPart(typeof(CategoryController).Assembly));
+                    s.AddControllers().PartManager.ApplicationParts.Add(new AssemblyPart(typeof(ChapterController).Assembly));
                 });
             });
             await Task.Delay(2000);

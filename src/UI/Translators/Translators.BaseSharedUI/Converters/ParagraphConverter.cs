@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using Translators.Contracts.Common;
+using TranslatorApp.GeneratedServices;
 
 #if (CSHTML5)
 using System.Linq;

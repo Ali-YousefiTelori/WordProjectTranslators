@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.14">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -14,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EasyMicroservices.TranslatorsMicroservice.StartUp\EasyMicroservices.TranslatorsMicroservice.StartUp.csproj" />
+    <ProjectReference Include="..\EasyMicroservices.Translators.Logics\EasyMicroservices.Translators.Logics.csproj" />
   </ItemGroup>
 
 	<ItemGroup>

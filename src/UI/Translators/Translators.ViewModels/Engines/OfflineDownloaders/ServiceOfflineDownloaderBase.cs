@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EasyMicroservices.ServiceContracts;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.IO.Compression;

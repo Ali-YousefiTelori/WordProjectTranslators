@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Translators.Contracts.Common;
+using TranslatorApp.GeneratedServices;
 
 namespace Translators.Converters
 {
@@ -19,7 +19,7 @@ namespace Translators.Converters
             return $"Value {value?.GetType().Name} not found!";
         }
 
-        public static string GetValue(List<ValueContract> values, bool isMain, string languageCode, bool isTransliteration = false)
+        public static string GetValue(ICollection<ValueContract> values, bool isMain, string languageCode, bool isTransliteration = false)
         {
             if (values != null)
             {

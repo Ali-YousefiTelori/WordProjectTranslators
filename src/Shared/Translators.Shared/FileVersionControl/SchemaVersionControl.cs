@@ -2,6 +2,7 @@
 using EasyMicroservices.FileManager.Interfaces;
 using EasyMicroservices.FileManager.Providers.PathProviders;
 using EasyMicroservices.Serialization.Interfaces;
+using EasyMicroservices.ServiceContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,9 @@ namespace Translators.Shared.FileVersionControl
         IPathProvider _pathProvider;
         IFileManagerProvider _fileManager;
         IDirectoryManagerProvider _directoryManager;
-        ITextSerialization _serializer { get; set; }
+        ITextSerializationProvider _serializer { get; set; }
 
-        public SchemaVersionControl(ITextSerialization serializer, IPathProvider pathProvider, IFileManagerProvider fileManager, IDirectoryManagerProvider directoryManager, string root = null)
+        public SchemaVersionControl(ITextSerializationProvider serializer, IPathProvider pathProvider, IFileManagerProvider fileManager, IDirectoryManagerProvider directoryManager, string root = null)
         {
             _pathProvider = pathProvider;
             _fileManager = fileManager;
@@ -201,8 +202,10 @@ namespace Translators.Shared.FileVersionControl
                 foreach (var keyPair in RegisteredTypes)
                 {
                     var callMethod = method.MakeGenericMethod(keyPair.Value);
-                    var resultAwaitor = (Task)callMethod.Invoke(this, new object[] { DefaultCustomKey });
-                    await resultAwaitor;
+                    //var resultAwaitor = (Task)callMethod.Invoke(this, new object[] { DefaultCustomKey });
+                    //await resultAwaitor;
+
+
                     //var resultProperty = typeof(Task<>).MakeGenericType(typeof(MessageContract<>).MakeGenericType(keyPair.Value)).GetProperty("Result");
                     //var result = (MessageContract)resultProperty.GetValue(resultAwaitor);
                     //if (result)

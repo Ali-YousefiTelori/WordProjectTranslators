@@ -1,4 +1,4 @@
-﻿using Translators.Contracts.Common;
+﻿using TranslatorApp.GeneratedServices;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;

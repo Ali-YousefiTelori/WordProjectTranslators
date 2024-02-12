@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Translators.Contracts.Common;
-using Translators.Contracts.Common.Files;
-using Translators.Contracts.Responses.Pages;
+﻿using System.Collections.ObjectModel;
+using TranslatorApp.GeneratedServices;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Storages;
 using Translators.ServiceManagers;
 using Translators.ViewModels;
+using Stream = System.IO.Stream;
 
 namespace Translators.Logics
 {
@@ -78,7 +72,7 @@ namespace Translators.Logics
             }
         }
         public PageResponseContract Page { get; set; }
-        List<(SimpleFileContract Audio, Stream Stream)> Audios { get; set; }
+        List<(AudioFileContract Audio, Stream Stream)> Audios { get; set; }
         int _AudioIndex = 0;
         double _LastPlaybackSpeedRatoSet = 0;
         public void Initalize(BaseViewModel baseViewModel, Func<Task> swipeRight, Func<Task> swipeLeft)
@@ -160,7 +154,7 @@ namespace Translators.Logics
             AudioPlayerBaseHelper.CurrentBase.Play();
         }
 
-        List<SimpleFileContract> GetAudios()
+        List<AudioFileContract> GetAudios()
         {
             var result = Page.AudioFiles?.ToList();
             if (result == null || result.Count == 0)
@@ -168,16 +162,16 @@ namespace Translators.Logics
             return result;
         }
 
-        async Task<List<(SimpleFileContract, Stream)>> DownloadAudios(List<SimpleFileContract> audioFiles)
+        async Task<List<(AudioFileContract, Stream)>> DownloadAudios(List<AudioFileContract> audioFiles)
         {
-            List<(SimpleFileContract, Stream)> result = new List<(SimpleFileContract, Stream)>();
+            List<(AudioFileContract, Stream)> result = new List<(AudioFileContract, Stream)>();
             double duration = 0;
             foreach (var audio in audioFiles)
             {
                 string key = $"{audio.PageId.GetValueOrDefault()}_{audio.Id}";
                 var saver = new ApplicationBookAudioData();
                 saver.Initialize(key, ".mp3");
-                var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/Storage/DownloadFile?fileId={audio.Id}&password={audio.Password}");
+                var stream = await saver.DownloadFileStream($"{TranslatorService.ServiceAddress}/api/Storage/DownloadFile?fileId={audio.Id}&password={audio.Password}");
                 string groupKey = GetAudioGroupKey(audio);
                 result.Add((audio, stream));
                 duration += new TimeSpan(audio.DurationTicks).TotalSeconds;
@@ -186,7 +180,7 @@ namespace Translators.Logics
             return result;
         }
 
-        string GetAudioGroupKey(SimpleFileContract audioFile)
+        string GetAudioGroupKey(AudioFileContract audioFile)
         {
             return $"{audioFile.LanguageId}_{audioFile.TranslatorId}";
         }
@@ -196,7 +190,7 @@ namespace Translators.Logics
             return new TimeSpan(Audios.Take(index).Sum(x => GetAudioDuration(x.Audio).Ticks));
         }
 
-        TimeSpan GetAudioDuration(SimpleFileContract audioFile)
+        TimeSpan GetAudioDuration(AudioFileContract audioFile)
         {
             return new TimeSpan(audioFile.DurationTicks);
         }

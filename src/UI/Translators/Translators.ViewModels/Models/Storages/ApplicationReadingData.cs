@@ -113,7 +113,7 @@ namespace Translators.Models.Storages
             //sync readings to live
             if (readingQuery.Count == 0)
                 return;
-            var updateReadings = await TranslatorService.GetUserReadingService(true).SyncUserReadingsAsync(readingQuery.Select(x => new UserReadingContract()
+            var updateReadings = await TranslatorService.GetUserReadingService(true).SyncUserReadingsAsync(readingQuery.Select(x => new TranslatorApp.GeneratedServices.UserReadingContract()
             {
                 BookId = x.Pages.FirstOrDefault(x => x.PageType == PageType.Pages).ParentId,
                 CatalogId = x.Pages.FirstOrDefault(x => x.PageType == PageType.Chapter).Id,

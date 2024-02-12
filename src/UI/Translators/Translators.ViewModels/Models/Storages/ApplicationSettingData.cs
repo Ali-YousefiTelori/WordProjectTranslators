@@ -22,7 +22,7 @@ namespace Translators.Models.Storages
             BaseViewModel._HasAutoScrollInPlayback = value.HasAutoScrollInPlayback;
             BaseViewModel._ShowTransliteration = value.ShowTransliteration;
             
-            TranslatorService.IsDuplexProtocol = BaseViewModel._UseDuplexProtocol = value.UseDuplexProtocol;
+            //TranslatorService.IsDuplexProtocol = BaseViewModel._UseDuplexProtocol = value.UseDuplexProtocol;
         }
 
         public void Save()

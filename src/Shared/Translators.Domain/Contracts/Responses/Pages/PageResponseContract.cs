@@ -13,7 +13,7 @@ namespace Translators.Contracts.Responses.Pages
     {
         public string CatalogName { get; set; }
         public List<LanguageContract> Languages { get; set; }
-        public List<SimpleParagraphContract> Paragraphs { get; set; }
-        public List<SimpleFileContract> AudioFiles { get; set; }
+        public List<ParagraphContract> Paragraphs { get; set; }
+        public List<AudioFileContract> AudioFiles { get; set; }
     }
 }

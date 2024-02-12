@@ -1,16 +1,16 @@
-﻿using EasyMicroservices.TranslatorsMicroservice.Database.Schemas;
-using EasyMicroservices.Cores.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Translators.Database.Entities.UserPersonalization;
+using Translators.Schemas.Bases;
 
-namespace EasyMicroservices.TranslatorsMicroservice.Database.Entities
+namespace Translators.Database.Entities
 {
-    public class CategoryEntity : CategorySchema, IIdSchema<long>
+    /// <summary>
+    /// category of books
+    /// </summary>
+    public class CategoryEntity : CategorySchemaBase
     {
-        public long Id { get; set; }
-        public ICollection<ContentEntity> Translators { get; set; }
+        public List<ValueEntity> Names { get; set; }
+        public List<BookEntity> Books { get; set; }
+        public List<ReadingEntity> Readings { get; set; }
     }
 }

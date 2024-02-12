@@ -9,17 +9,19 @@
     <PackageReference Include="EasyMicroservices.Mapper.CompileTimeMapper" Version="*" />
     <PackageReference Include="EasyMicroservices.Mapper.SerializerMapper" Version="*" />
     <PackageReference Include="EasyMicroservices.Serialization.Newtonsoft.Json" Version="*" />
+    <PackageReference Include="MimeKit" Version="2.11.0" />
+    <PackageReference Include="UltraStreamGo" Version="1.0.0" />
   </ItemGroup>
   
   <ItemGroup>
     <Folder Include="DatabaseLogics\" />
-    <Folder Include="Helpers\" />
     <Folder Include="Interfaces\" />
     <Folder Include="Mappers\" />
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\EasyMicroservices.TranslatorsMicroservice.Database\EasyMicroservices.TranslatorsMicroservice.Database.csproj" />
+    <ProjectReference Include="..\..\..\..\Shared\Translators.Shared\Translators.Shared.csproj" />
+    <ProjectReference Include="..\EasyMicroservices.Translators.Database\EasyMicroservices.Translators.Database.csproj" />
   </ItemGroup>
   
 

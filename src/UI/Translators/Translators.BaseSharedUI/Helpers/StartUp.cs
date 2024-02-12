@@ -1,4 +1,5 @@
-﻿using Translators.Helpers;
+﻿using TranslatorApp.GeneratedServices;
+using Translators.Helpers;
 using Translators.Models.Storages;
 using Translators.ServiceManagers;
 
@@ -47,15 +48,15 @@ namespace Translators.UI.Helpers
 #else
             if (Device.RuntimePlatform == Device.iOS)
             {
-                ApplicationHelper.ApplicationType = Contracts.Common.DataTypes.ApplicationType.IOS;
+                ApplicationHelper.ApplicationType = ApplicationType.IOS;
             }
             else if (Device.RuntimePlatform == Device.Android)
             {
-                ApplicationHelper.ApplicationType = Contracts.Common.DataTypes.ApplicationType.Android;
+                ApplicationHelper.ApplicationType = ApplicationType.Android;
             }
             else if (Device.RuntimePlatform == Device.UWP)
             {
-                ApplicationHelper.ApplicationType = Contracts.Common.DataTypes.ApplicationType.UWP;
+                ApplicationHelper.ApplicationType = ApplicationType.UWP;
             }
             AsyncHelper.RunOnUAction = Device.BeginInvokeOnMainThread;
             AsyncHelper.RunOnUIFunc = Device.InvokeOnMainThreadAsync;

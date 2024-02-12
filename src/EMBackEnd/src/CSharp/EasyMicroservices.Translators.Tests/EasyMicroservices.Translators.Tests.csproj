@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="EasyMicroservices.TranslatorsMicroservice.Clients" Version="0.0.0.22" />
     <PackageReference Include="EasyMicroservices.Tests" Version="*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="xunit" Version="2.6.1" />
@@ -37,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EasyMicroservices.TranslatorsMicroservice.WebApi\EasyMicroservices.TranslatorsMicroservice.WebApi.csproj" />
+    <ProjectReference Include="..\EasyMicroservices.Translators.WebApi\EasyMicroservices.Translators.WebApi.csproj" />
   </ItemGroup>
 
 </Project>

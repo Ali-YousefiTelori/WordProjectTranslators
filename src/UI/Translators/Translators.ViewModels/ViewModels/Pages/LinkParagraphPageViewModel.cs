@@ -1,8 +1,9 @@
-﻿using System;
+﻿using EasyMicroservices.ServiceContracts;
+using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Translators.Contracts.Common;
+using TranslatorApp.GeneratedServices;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
@@ -101,7 +102,7 @@ namespace Translators.ViewModels.Pages
                 }));
             }
             else
-                await AlertContract(groups);
+                await AlertContract(groups.ToContract());
         }
 
         private async Task Save()
@@ -115,7 +116,7 @@ namespace Translators.ViewModels.Pages
                     await AlertHelper.Alert("لینک", "لطفا نام گروه لینک را وارد کنید یا از گروه های قبلی یک گروه را انتخاب کنید!");
                     return;
                 }
-                var result = await TranslatorService.GetParagraphService(true).LinkParagraphAsync(new Contracts.Requests.LinkParagraphRequestContract()
+                var result = await TranslatorService.GetParagraphService(true).LinkParagraphAsync(new LinkParagraphRequestContract
                 {
                     Title = title,
                     FromParagraphIds = TranslatorService.ParagraphsForLink.Select(x => x.Id).ToList(),

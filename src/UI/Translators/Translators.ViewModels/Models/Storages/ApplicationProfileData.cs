@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyMicroservices.ServiceContracts;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,14 +35,14 @@ namespace Translators.Models.Storages
         {
             if (session.HasValue)
             {
-                var result = await TranslatorService.GetOldAuthenticationService(true).LoginAsync(session.Value);
-                if (result.IsSuccess)
-                {
-                    Current.Value.Session = Guid.Parse(result.Result.Key);
-                    TranslatorService.IsAdmin = result.Result.Permissions.Any(x => x == PermissionType.Admin);
-                    _ = ApplicationReadingData.SyncReading();
-                }
-                return result;
+                //var result = await TranslatorService.GetOldAuthenticationService(true).LoginAsync(session.Value);
+                //if (result.IsSuccess)
+                //{
+                //    Current.Value.Session = Guid.Parse(result.Result.Key);
+                //    TranslatorService.IsAdmin = result.Result.Permissions.Any(x => x == PermissionType.Admin);
+                //    _ = ApplicationReadingData.SyncReading();
+                //}
+                //return result;
             }
             return new MessageContract<UserContract>()
             {

@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translators.ViewModels", "T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translators.SharedUI_MAUI", "Translators.SharedUI\Translators.SharedUI_MAUI.csproj", "{4315E81C-E00E-44C0-A9F8-A3DA19172E78}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translators.Shared", "..\..\Shared\Translators.Shared\Translators.Shared.csproj", "{2139698A-D625-405A-A7E6-4DD5C725D0A2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Translators.Domain", "..\..\Shared\Translators.Domain\Translators.Domain.csproj", "{3387ED1C-A4FD-4512-8993-B81BB2204A56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{4315E81C-E00E-44C0-A9F8-A3DA19172E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4315E81C-E00E-44C0-A9F8-A3DA19172E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4315E81C-E00E-44C0-A9F8-A3DA19172E78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2139698A-D625-405A-A7E6-4DD5C725D0A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2139698A-D625-405A-A7E6-4DD5C725D0A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2139698A-D625-405A-A7E6-4DD5C725D0A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2139698A-D625-405A-A7E6-4DD5C725D0A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3387ED1C-A4FD-4512-8993-B81BB2204A56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3387ED1C-A4FD-4512-8993-B81BB2204A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3387ED1C-A4FD-4512-8993-B81BB2204A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3387ED1C-A4FD-4512-8993-B81BB2204A56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

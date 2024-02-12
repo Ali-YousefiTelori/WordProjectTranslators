@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Translators.Contracts.Common;
+using TranslatorApp.GeneratedServices;
 
 namespace Translators.Models
 {
@@ -35,7 +35,7 @@ namespace Translators.Models
             return new CategoryModel()
             {
                 Id = category.Id,
-                Names = category.Names,
+                Names = category.Names?.ToList(),
                 Type = ServiceType.Category
             };
         }
@@ -45,7 +45,7 @@ namespace Translators.Models
             return new CategoryModel()
             {
                 Id = book.Id,
-                Names = book.Names,
+                Names = book.Names?.ToList(),
                 Type = ServiceType.Book
             };
         }

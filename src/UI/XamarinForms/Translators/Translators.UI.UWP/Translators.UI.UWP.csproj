@@ -12,7 +12,7 @@
     <AssemblyName>Translators.UI.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
-    <TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
+    <TargetPlatformVersion>10.0.20348.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
@@ -188,10 +188,6 @@
     <ProjectReference Include="..\..\..\..\..\..\Xamarin-Plugins\SimpleAudioPlayer\SimpleAudioPlayer\Plugin.SimpleAudioPlayer.UWP\Plugin.SimpleAudioPlayer.UWP.csproj">
       <Project>{e34b516d-c0d8-450f-9db0-bb6a5b04aef1}</Project>
       <Name>Plugin.SimpleAudioPlayer.UWP</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Shared\Translators.Domain\Translators.Domain.csproj">
-      <Project>{9d2482a3-0e74-49f9-a29a-777db40bd546}</Project>
-      <Name>Translators.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Translators\Translators.ViewModels\Translators.ViewModels.csproj">
       <Project>{e7db95c7-edf8-4f9b-b5bd-4d13efeb98fc}</Project>

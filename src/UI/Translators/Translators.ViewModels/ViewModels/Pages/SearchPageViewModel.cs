@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using EasyMicroservices.ServiceContracts;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Translators.Contracts.Common;
+using TranslatorApp.GeneratedServices;
 using Translators.Helpers;
 using Translators.Models;
 using Translators.Models.Interfaces;
@@ -29,7 +30,7 @@ namespace Translators.ViewModels.Pages
             return new SearchModel()
             {
                 Id = book.Id,
-                Names = book.Names,
+                Names = book.Names?.ToList(),
                 Type = ServiceType.Book,
                 CategoryId = book.CategoryId
             };
@@ -67,7 +68,7 @@ namespace Translators.ViewModels.Pages
             {
                 IsLoading = true;
                 var bookIds = Items.Where(x => x.IsSelected).Select(x => x.Id).Distinct().ToList();
-                var result = await TranslatorService.GetOldPageService(true).SearchAsync(new Contracts.Requests.AdvancedSearchFilterRequestContract()
+                var result = await TranslatorService.GetOldPageService(true).SearchAsync(new  AdvancedSearchFilterRequestContract
                 {
                     BookIds = bookIds,
                     Search = SearchText,
@@ -78,7 +79,7 @@ namespace Translators.ViewModels.Pages
                 if (result.IsSuccess)
                     await PageHelper.PushPage(0, 0, result.Result, PageType.SearchResult, this);
                 else
-                    await AlertContract(result);
+                    await AlertContract(result.ToContract());
             }
             finally
             {

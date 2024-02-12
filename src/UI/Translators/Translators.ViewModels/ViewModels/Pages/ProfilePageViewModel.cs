@@ -55,38 +55,38 @@ namespace Translators.ViewModels.Pages
             try
             {
                 IsLoading = true;
-                var result = await TranslatorService.GetOldAuthenticationService(true).RegisterAsync(userName);
-                if (result.IsSuccess)
-                {
-                    ApplicationProfileData.Current.Value.Session = Guid.Parse(result.Result.Key);
-                    UserName = result.Result.UserName;
-                    ApplicationProfileData.Current.Save();
-                    CanRegister = false;
-                }
-                else
-                {
-                    if (result.Error.FailedReasonType == Contracts.Common.FailedReasonType.Dupplicate)
-                    {
-                        var session = await AlertHelper.DisplayPrompt("رمز", "لطفا رمز ورود را وارد کنید.");
-                        if (Guid.TryParse(session, out Guid guid))
-                        {
-                            var loginResult = await TranslatorService.GetOldAuthenticationService(true).LoginAsync(guid);
-                            if (loginResult.IsSuccess)
-                            {
-                                ApplicationProfileData.Current.Value.Session = guid;
-                                isLogin = true;
-                            }
-                            else
-                                await AlertContract(result);
-                        }
-                        else
-                        {
-                            await AlertHelper.Alert("خطا", "رمز عبور صحیح نیست!");
-                        }
-                    }
-                    else
-                        await AlertContract(result);
-                }
+                //var result = await TranslatorService.GetOldAuthenticationService(true).RegisterAsync(userName);
+                //if (result.IsSuccess)
+                //{
+                //    ApplicationProfileData.Current.Value.Session = Guid.Parse(result.Result.Key);
+                //    UserName = result.Result.UserName;
+                //    ApplicationProfileData.Current.Save();
+                //    CanRegister = false;
+                //}
+                //else
+                //{
+                //    if (result.Error.FailedReasonType == Contracts.Common.FailedReasonType.Dupplicate)
+                //    {
+                //        var session = await AlertHelper.DisplayPrompt("رمز", "لطفا رمز ورود را وارد کنید.");
+                //        if (Guid.TryParse(session, out Guid guid))
+                //        {
+                //            var loginResult = await TranslatorService.GetOldAuthenticationService(true).LoginAsync(guid);
+                //            if (loginResult.IsSuccess)
+                //            {
+                //                ApplicationProfileData.Current.Value.Session = guid;
+                //                isLogin = true;
+                //            }
+                //            else
+                //                await AlertContract(result);
+                //        }
+                //        else
+                //        {
+                //            await AlertHelper.Alert("خطا", "رمز عبور صحیح نیست!");
+                //        }
+                //    }
+                //    else
+                //        await AlertContract(result);
+                //}
             }
             finally
             {

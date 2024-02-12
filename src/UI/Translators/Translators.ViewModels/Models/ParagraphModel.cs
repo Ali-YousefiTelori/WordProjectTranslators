@@ -1,12 +1,10 @@
-﻿using SignalGo.Shared.Models;
-using System.Linq;
-using Translators.Contracts.Common;
+﻿using TranslatorApp.GeneratedServices;
 using Translators.Contracts.Common.Paragraphs;
 using Translators.ViewModels;
 
 namespace Translators.Models
 {
-    public class ParagraphBaseModel : NotifyPropertyChangedBase
+    public class ParagraphBaseModel : EasyMicroservices.UI.Cores.BaseViewModel
     {
         public long Id { get; set; }
         public string DisplayName { get; set; }

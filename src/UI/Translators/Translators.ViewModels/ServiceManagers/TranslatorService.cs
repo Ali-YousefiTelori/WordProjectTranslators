@@ -1,8 +1,6 @@
-﻿using SignalGo.Client;
-using System;
+﻿using TranslatorApp.GeneratedServices;
 using Translators.Models;
 using Translators.Models.Storages;
-using TranslatorsServices.Interfaces;
 
 namespace Translators.ServiceManagers
 {
@@ -10,169 +8,151 @@ namespace Translators.ServiceManagers
     {
         public static void Initialize()
         {
-            ClientProvider clientProvider = new ClientProvider();
-            DuplexBookService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.BookService>(clientProvider);
-            DuplexChapterService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ChapterService>(clientProvider);
-            OldDuplexPageService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ObsoletePageService>(clientProvider);
-            DuplexPageService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.PageService>(clientProvider);
-            DuplexHealthService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.HealthService>(clientProvider);
-            DuplexAuthenticationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.AuthenticationService>(clientProvider);
-            OldDuplexAuthenticationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ObsoleteAuthenticationService>(clientProvider);
-            DuplexParagraphService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ParagraphService>(clientProvider);
-            DuplexApplicationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ApplicationService>(clientProvider);
+            //ClientProvider clientProvider = new ClientProvider();
+            //DuplexBookService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.BookService>(clientProvider);
+            //DuplexChapterService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ChapterService>(clientProvider);
+            //OldDuplexPageService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ObsoletePageService>(clientProvider);
+            //DuplexPageService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.PageService>(clientProvider);
+            //DuplexHealthService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.HealthService>(clientProvider);
+            //DuplexAuthenticationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.AuthenticationService>(clientProvider);
+            //OldDuplexAuthenticationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ObsoleteAuthenticationService>(clientProvider);
+            //DuplexParagraphService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ParagraphService>(clientProvider);
+            //DuplexApplicationService = clientProvider.RegisterServerService<TranslatorsServices.ServerServices.ApplicationService>(clientProvider);
 
-            clientProvider.OnSendRequestToServer = async (serviceName, methodName, parameters) =>
-            {
-                if (IsForce)
-                {
-                    return ("", false);
-                }
-                (bool Success, string Result) = await ClientConnectionManager.TakeData(ClientConnectionManager.GetUrl(serviceName, methodName), parameters);
-                if (Success)
-                {
-                    return (Result, true);
-                }
-                return ("", false);
-            };
+            //clientProvider.OnSendRequestToServer = async (serviceName, methodName, parameters) =>
+            //{
+            //    if (IsForce)
+            //    {
+            //        return ("", false);
+            //    }
+            //    (bool Success, string Result) = await ClientConnectionManager.TakeData(ClientConnectionManager.GetUrl(serviceName, methodName), parameters);
+            //    if (Success)
+            //    {
+            //        return (Result, true);
+            //    }
+            //    return ("", false);
+            //};
 
-            clientProvider.OnGetResponseFromServer = async (serviceName, methodName, parameters, result) =>
-            {
-                _ = ClientConnectionManager.SaveLocal(ClientConnectionManager.GetUrl(serviceName, methodName), parameters, result);
-            };
+            //clientProvider.OnGetResponseFromServer = async (serviceName, methodName, parameters, result) =>
+            //{
+            //    _ = ClientConnectionManager.SaveLocal(ClientConnectionManager.GetUrl(serviceName, methodName), parameters, result);
+            //};
 
-            clientProvider.ConnectAsyncAutoReconnect(ServiceAddress, (isConnected) =>
-            {
+            //clientProvider.ConnectAsyncAutoReconnect(ServiceAddress, (isConnected) =>
+            //{
 
-            });
+            //});
         }
 
         public static string ServiceAddress { get; set; } = "http://api.noorpod.ir";//"http://localhost:9341"; "http://api.noorpod.ir"; "http://192.168.55.22:9341";
         static TranslatorNoCacheHttpClient NoCacheHttpClient { get; set; } = new TranslatorNoCacheHttpClient();
         static TranslatorHttpClient CacheHttpClient { get; set; } = new TranslatorHttpClient();
 
-        static IBookServiceAsync DuplexBookService { get; set; }
-        static IChapterServiceAsync DuplexChapterService { get; set; }
-        static IObsoletePageServiceAsync OldDuplexPageService { get; set; }
-        static IPageServiceAsync DuplexPageService { get; set; }
-        static IHealthService DuplexHealthService { get; set; }
-        static IAuthenticationServiceAsync DuplexAuthenticationService { get; set; }
-        static IObsoleteAuthenticationServiceAsync OldDuplexAuthenticationService { get; set; }
-        static IApplicationServiceAsync DuplexApplicationService { get; set; }
-        static IParagraphServiceAsync DuplexParagraphService { get; set; }
-        static IUserReadingServiceAsync DuplexUserReadingService { get; set; }
-
         public static bool IsAdmin { get; set; }
-        public static bool IsDuplexProtocol { get; set; }
         static bool IsForce { get; set; }
         public static ParagraphBaseModel[] ParagraphsForLink { get; set; }
-        public static IBookServiceAsync GetBookService(bool isForce)
+        public static BookClient GetBookService(bool isForce)
         {
             IsForce = isForce;
-            if (IsDuplexProtocol)
-                return DuplexBookService;
             if (isForce)
-                return new TranslatorsServices.HttpServices.BookService(ServiceAddress, NoCacheHttpClient);
+                return new BookClient(ServiceAddress, NoCacheHttpClient);
             else
-                return new TranslatorsServices.HttpServices.BookService(ServiceAddress, CacheHttpClient);
+                return new BookClient(ServiceAddress, CacheHttpClient);
         }
 
-        public static IChapterServiceAsync GetChapterService(bool isForce)
+        public static ChapterClient GetChapterService(bool isForce)
         {
             IsForce = isForce;
-            if (IsDuplexProtocol)
-                return DuplexChapterService;
             if (isForce)
-                return new TranslatorsServices.HttpServices.ChapterService(ServiceAddress, NoCacheHttpClient);
+                return new ChapterClient(ServiceAddress, NoCacheHttpClient);
             else
-                return new TranslatorsServices.HttpServices.ChapterService(ServiceAddress, CacheHttpClient);
+                return new ChapterClient(ServiceAddress, CacheHttpClient);
         }
 
-        public static IObsoletePageServiceAsync GetOldPageService(bool isForce)
+        public static ObsoletePageClient GetOldPageService(bool isForce)
         {
             IsForce = isForce;
-            if (IsDuplexProtocol)
-                return OldDuplexPageService;
             if (isForce)
-                return new TranslatorsServices.HttpServices.ObsoletePageService(ServiceAddress, NoCacheHttpClient);
+                return new ObsoletePageClient(ServiceAddress, NoCacheHttpClient);
             else
-                return new TranslatorsServices.HttpServices.ObsoletePageService(ServiceAddress, CacheHttpClient);
+                return new ObsoletePageClient(ServiceAddress, CacheHttpClient);
         }
 
-        public static IPageServiceAsync GetPageService(bool isForce)
+        public static PageClient GetPageService(bool isForce)
         {
             IsForce = isForce;
-            if (IsDuplexProtocol)
-                return DuplexPageService;
             if (isForce)
-                return new TranslatorsServices.HttpServices.PageService(ServiceAddress, NoCacheHttpClient);
+                return new PageClient(ServiceAddress, NoCacheHttpClient);
             else
-                return new TranslatorsServices.HttpServices.PageService(ServiceAddress, CacheHttpClient);
+                return new PageClient(ServiceAddress, CacheHttpClient);
         }
 
-        public static IHealthService GetHealthService(bool isForce)
+        public static HealthClient GetHealthService(bool isForce)
         {
             IsForce = isForce;
-            if (IsDuplexProtocol)
-                return DuplexHealthService;
             if (isForce)
-                return new TranslatorsServices.HttpServices.HealthService(ServiceAddress, NoCacheHttpClient);
+                return new HealthClient(ServiceAddress, NoCacheHttpClient);
             else
-                return new TranslatorsServices.HttpServices.HealthService(ServiceAddress, CacheHttpClient);
+                return new HealthClient(ServiceAddress, CacheHttpClient);
         }
 
-        public static IObsoleteAuthenticationServiceAsync GetOldAuthenticationService(bool isForce)
+        public static StorageClient GetStorageService(bool isForce)
         {
             IsForce = isForce;
-            if (IsDuplexProtocol)
-                return OldDuplexAuthenticationService;
             if (isForce)
-                return new TranslatorsServices.HttpServices.ObsoleteAuthenticationService(ServiceAddress, NoCacheHttpClient);
+                return new StorageClient(ServiceAddress, NoCacheHttpClient);
             else
-                return new TranslatorsServices.HttpServices.ObsoleteAuthenticationService(ServiceAddress, CacheHttpClient);
+                return new StorageClient(ServiceAddress, CacheHttpClient);
         }
 
-        public static IAuthenticationServiceAsync GetAuthenticationService(bool isForce)
+
+        //public static ObsoleteAuthenticationClient GetOldAuthenticationService(bool isForce)
+        //{
+        //    IsForce = isForce;
+        //    if (IsDuplexProtocol)
+        //        return OldDuplexAuthenticationService;
+        //    if (isForce)
+        //        return new TranslatorsServices.HttpServices.ObsoleteAuthenticationService(ServiceAddress, NoCacheHttpClient);
+        //    else
+        //        return new TranslatorsServices.HttpServices.ObsoleteAuthenticationService(ServiceAddress, CacheHttpClient);
+        //}
+
+        //public static IAuthenticationServiceAsync GetAuthenticationService(bool isForce)
+        //{
+        //    IsForce = isForce;
+        //    if (IsDuplexProtocol)
+        //        return DuplexAuthenticationService;
+        //    if (isForce)
+        //        return new TranslatorsServices.HttpServices.AuthenticationService(ServiceAddress, NoCacheHttpClient);
+        //    else
+        //        return new TranslatorsServices.HttpServices.AuthenticationService(ServiceAddress, CacheHttpClient);
+        //}
+
+        public static ApplicationClient GetApplicationService(bool isForce)
         {
             IsForce = isForce;
-            if (IsDuplexProtocol)
-                return DuplexAuthenticationService;
             if (isForce)
-                return new TranslatorsServices.HttpServices.AuthenticationService(ServiceAddress, NoCacheHttpClient);
+                return new ApplicationClient(ServiceAddress, NoCacheHttpClient);
             else
-                return new TranslatorsServices.HttpServices.AuthenticationService(ServiceAddress, CacheHttpClient);
+                return new ApplicationClient(ServiceAddress, CacheHttpClient);
         }
 
-        public static IApplicationServiceAsync GetApplicationService(bool isForce)
+        public static ParagraphClient GetParagraphService(bool isForce)
         {
             IsForce = isForce;
-            if (IsDuplexProtocol)
-                return DuplexApplicationService;
             if (isForce)
-                return new TranslatorsServices.HttpServices.ApplicationService(ServiceAddress, NoCacheHttpClient);
+                return new ParagraphClient(ServiceAddress, NoCacheHttpClient);
             else
-                return new TranslatorsServices.HttpServices.ApplicationService(ServiceAddress, CacheHttpClient);
+                return new ParagraphClient(ServiceAddress, CacheHttpClient);
         }
 
-        public static IParagraphServiceAsync GetParagraphService(bool isForce)
+        public static UserReadingClient GetUserReadingService(bool isForce)
         {
             IsForce = isForce;
-            if (IsDuplexProtocol)
-                return DuplexParagraphService;
             if (isForce)
-                return new TranslatorsServices.HttpServices.ParagraphService(ServiceAddress, NoCacheHttpClient);
+                return new UserReadingClient(ServiceAddress, NoCacheHttpClient);
             else
-                return new TranslatorsServices.HttpServices.ParagraphService(ServiceAddress, CacheHttpClient);
-        }
-
-        public static IUserReadingServiceAsync GetUserReadingService(bool isForce)
-        {
-            IsForce = isForce;
-            if (IsDuplexProtocol)
-                return DuplexUserReadingService;
-            if (isForce)
-                return new TranslatorsServices.HttpServices.UserReadingService(ServiceAddress, NoCacheHttpClient);
-            else
-                return new TranslatorsServices.HttpServices.UserReadingService(ServiceAddress, CacheHttpClient);
+                return new UserReadingClient(ServiceAddress, CacheHttpClient);
         }
 
         public static Func<string> GetVersion { get; set; }
@@ -183,7 +163,7 @@ namespace Translators.ServiceManagers
             try
             {
                 int.TryParse(GetCurrentBuildNumber(), out int version);
-                GetHealthService(true).AddLog(new Contracts.Common.LogContract()
+                GetHealthService(true).AddLogAsync(new LogContract
                 {
                     LogTrace = error,
                     DeviceDescription = GetVersion(),

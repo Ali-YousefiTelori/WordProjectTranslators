@@ -1,5 +1,4 @@
-﻿using SignalGo.Shared.DataTypes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Translators.Contracts.Common.DataTypes;
 
 namespace Translators.Contracts.Common.Authentications
@@ -11,7 +10,7 @@ namespace Translators.Contracts.Common.Authentications
         public string LoginCode { get; set; }
         public List<PermissionType> Permissions { get; set; }
 
-        [HttpKey(Perfix = "; path=/ ;SameSite=None;Secure;HttpOnly")]
+        //[HttpKey(Perfix = "; path=/ ;SameSite=None;Secure;HttpOnly")]
         public string Key { get; set; }
     }
 }

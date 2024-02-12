@@ -1,11 +1,4 @@
-﻿using SignalGo.Shared.DataTypes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Translators.Contracts.Common
+﻿namespace Translators.Contracts.Common
 {
     public class ValidationContract
     {
@@ -15,9 +8,9 @@ namespace Translators.Contracts.Common
             return Message;
         }
 
-        public static implicit operator ValidationContract(BaseValidationRuleInfoAttribute baseValidationRuleInfo)
-        {
-            return (ValidationContract)BaseValidationRuleInfoAttribute.GetErrorValue(baseValidationRuleInfo);
-        }
+        //public static implicit operator ValidationContract(BaseValidationRuleInfoAttribute baseValidationRuleInfo)
+        //{
+        //    return (ValidationContract)BaseValidationRuleInfoAttribute.GetErrorValue(baseValidationRuleInfo);
+        //}
     }
 }

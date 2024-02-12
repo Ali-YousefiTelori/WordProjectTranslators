@@ -1,8 +1,8 @@
 using CodeReviewer.Engine;
-using EasyMicroservices.TranslatorsMicroservice.Contracts.Common;
-using EasyMicroservices.TranslatorsMicroservice.Database.Entities;
-using EasyMicroservices.TranslatorsMicroservice.WebApi.Controllers;
 using EasyMicroservices.Tests;
+using Translators.Contracts.Common;
+using Translators.Database.Entities;
+using Translators.Services;
 
 namespace EasyMicroservices.TranslatorsMicroservice.Tests
 {
@@ -16,7 +16,7 @@ namespace EasyMicroservices.TranslatorsMicroservice.Tests
                 //typeof(CompileTimeClassesMappers),
                 typeof(CategoryEntity),
                 typeof(CategoryContract),
-                typeof(CategoryController));
+                typeof(ChapterController));
         }
     }
 }

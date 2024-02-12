@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Translators.Contracts.Common;
-using Translators.Contracts.Responses.Pages;
+﻿using EasyMicroservices.ServiceContracts;
+using TranslatorApp.GeneratedServices;
 using Translators.Helpers;
 using Translators.Logics;
 using Translators.Models;
@@ -151,14 +147,14 @@ namespace Translators.ViewModels.Pages
 
         async Task<MessageContract<PageResponseContract>> FetchPage(bool isForce, long pageNumber, long bookId)
         {
-            var pageResult = await TranslatorService.GetPageService(isForce).GetPageAsync(new Contracts.Requests.Pages.PageRequest()
+            var pageResult = await TranslatorService.GetPageService(isForce).GetPageAsync(new TranslatorApp.GeneratedServices.PageRequest
             {
-                 PageNumber = pageNumber,
-                 BookId = bookId,
+                PageNumber = pageNumber,
+                BookId = bookId,
             });
             if (pageResult.IsSuccess && pageNumber == CatalogStartPageNumber && bookId == BookId)
                 Player.Page = pageResult.Result;
-            return pageResult;
+            return pageResult.ToContract<PageResponseContract>();
         }
 
         private async Task SwipeLeft()
@@ -240,7 +236,9 @@ namespace Translators.ViewModels.Pages
                 try
                 {
                     IsLoading = true;
-                    verseResult = await TranslatorService.GetOldPageService(false).GetPageNumberByVerseNumberAsync(number, CatalogId);
+                    verseResult = (await TranslatorService.GetOldPageService(false)
+                        .GetPageNumberByVerseNumberAsync(number, CatalogId))
+                        .ToContract<long>();
                 }
                 finally
                 {

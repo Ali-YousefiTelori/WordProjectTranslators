@@ -19,8 +19,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\Translators.Shared\Translators.Shared.csproj" />
-  </ItemGroup>
-
 </Project>

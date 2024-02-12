@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Translators.Contracts.Common;
+using TranslatorApp.GeneratedServices;
 using Translators.Helpers;
 using Translators.Models.Interfaces;
 

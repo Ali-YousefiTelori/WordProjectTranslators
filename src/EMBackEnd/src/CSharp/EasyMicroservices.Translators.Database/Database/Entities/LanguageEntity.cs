@@ -1,12 +1,11 @@
-﻿using EasyMicroservices.TranslatorsMicroservice.Database.Schemas;
-using EasyMicroservices.Cores.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Translators.Schemas;
 
-namespace EasyMicroservices.TranslatorsMicroservice.Database.Entities
+namespace Translators.Database.Entities
 {
-    public class LanguageEntity : LanguageSchema, IIdSchema<long>
+    public class LanguageEntity : LanguageSchema
     {
-        public long Id { get; set; }
-        public ICollection<ContentEntity> Translators { get; set; }
+        public List<ValueEntity> Values { get; set; }
+        public List<AudioEntity> Audios { get; set; }
     }
 }

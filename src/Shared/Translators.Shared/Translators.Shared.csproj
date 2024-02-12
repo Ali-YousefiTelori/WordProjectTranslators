@@ -1,34 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net7.0</TargetFrameworks>
     <LangVersion>Latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Translators.Domain\Translators.Domain.csproj" />
     <PackageReference Include="BinaryGo">
       <Version>0.1.0.6</Version>
     </PackageReference>
     <PackageReference Include="EasyMicroservices.Compression" Version="0.0.0.1" />
     <PackageReference Include="EasyMicroservices.FileManager" Version="0.0.0.3" />
-    <PackageReference Include="EasyMicroservices.Serialization.BinaryGo" Version="0.0.0.1" />
+    <PackageReference Include="EasyMicroservices.Serialization.BinaryGo" Version="0.0.0.9" />
+    <PackageReference Include="EasyMicroservices.ServiceContracts" Version="0.0.0.21" />
+    <PackageReference Include="EasyMicroservices.Serialization.Newtonsoft.Json"  Version="0.0.0.9"/>
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Logics\" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="EasyMicroservices.Serialization.Newtonsoft.Json">
-      <Version>0.0.0.1</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="EasyMicroservices.Serialization.Newtonsoft.Json">
-      <Version>0.0.0.1</Version>
-    </PackageReference>
+  <ItemGroup>
+    <ProjectReference Include="..\Translators.Domain\Translators.Domain.csproj" />
   </ItemGroup>
 
 </Project>

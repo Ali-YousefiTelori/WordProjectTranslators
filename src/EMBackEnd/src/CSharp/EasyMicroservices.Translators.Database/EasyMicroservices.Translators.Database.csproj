@@ -13,10 +13,11 @@
   <ItemGroup>
 	  <PackageReference Include="EasyMicroservices.Configuration" Version="*" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.14" />
+    <PackageReference Include="EasyMicroservices.Cores.AspEntityFrameworkCoreApi" Version="0.0.1.2" />
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\EasyMicroservices.TranslatorsMicroservice.Domain\EasyMicroservices.TranslatorsMicroservice.Domain.csproj" />
+    <ProjectReference Include="..\..\..\..\Shared\Translators.Domain\Translators.Domain.csproj" />
   </ItemGroup>
   
 

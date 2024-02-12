@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EasyMicroservices.ServiceContracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Translators.Contracts.Common;
+using TranslatorApp.GeneratedServices;
 using Translators.Converters;
 using Translators.Helpers;
 using Translators.Models;
@@ -172,10 +173,10 @@ namespace Translators.ViewModels.Pages
                                 if (result.IsSuccess)
                                     await PageHelper.PushPage(0, 0, result.Result, PageType.ParagraphResult, this);
                                 else
-                                    await AlertContract(result);
+                                    await AlertContract(result.ToContract());
                             }
                             else
-                                await AlertContract(groupResult);
+                                await AlertContract(groupResult.ToContract());
                         }
                         finally
                         {

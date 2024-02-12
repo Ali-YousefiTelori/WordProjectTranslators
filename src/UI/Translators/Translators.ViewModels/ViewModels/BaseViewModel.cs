@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyMicroservices.ServiceContracts;
+using System;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
 using Translators.Helpers;
@@ -58,7 +59,6 @@ namespace Translators.ViewModels
             {
                 _UseDuplexProtocol = value;
                 OnPropertyChanged(nameof(UseDuplexProtocol));
-                TranslatorService.IsDuplexProtocol = value;
                 ApplicationSettingData.Current.Save();
             }
         }

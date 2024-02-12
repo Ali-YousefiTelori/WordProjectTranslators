@@ -29,17 +29,17 @@ namespace Translators.Engines.OfflineDownloaders
 
                 foreach (var catalogGroup in catalogGroups)
                 {
-                    await ClientConnectionManager.SaveLocal("chapter/FilterChapters",
-                        new SignalGo.Shared.Models.ParameterInfo[] { new SignalGo.Shared.Models.ParameterInfo() { Name = "bookId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(catalogGroup.Key) } },
-                        JsonConvert.SerializeObject(ToMessageContract(catalogGroup)));
+                    //await ClientConnectionManager.SaveLocal("chapter/FilterChapters",
+                    //    new SignalGo.Shared.Models.ParameterInfo[] { new SignalGo.Shared.Models.ParameterInfo() { Name = "bookId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(catalogGroup.Key) } },
+                    //    JsonConvert.SerializeObject(ToMessageContract(catalogGroup)));
                     AddProgress();
                 }
 
                 foreach (var catalog in result)
                 {
-                    await ClientConnectionManager.SaveLocal("chapter/GetChapters",
-                        new SignalGo.Shared.Models.ParameterInfo[] { new SignalGo.Shared.Models.ParameterInfo() { Name = "chapterId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(catalog.Id) } },
-                        JsonConvert.SerializeObject(ToMessageContract(catalog)));
+                    //await ClientConnectionManager.SaveLocal("chapter/GetChapters",
+                    //    new SignalGo.Shared.Models.ParameterInfo[] { new SignalGo.Shared.Models.ParameterInfo() { Name = "chapterId", Value = SignalGo.Client.ClientSerializationHelper.SerializeObject(catalog.Id) } },
+                    //    JsonConvert.SerializeObject(ToMessageContract(catalog)));
                     AddProgress();
                 }
             }

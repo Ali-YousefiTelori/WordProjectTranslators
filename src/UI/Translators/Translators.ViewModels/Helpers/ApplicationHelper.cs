@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Translators.Contracts.Common.DataTypes;
+using TranslatorApp.GeneratedServices;
 using Translators.Models.Interfaces;
 using Translators.ServiceManagers;
 
