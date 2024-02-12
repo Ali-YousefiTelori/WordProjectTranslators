@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Translators.Contracts.Common;
 using Translators.Database.Contexts;
 
 namespace Translators.Logics
@@ -121,7 +120,10 @@ namespace Translators.Logics
 
         public async Task<MessageContract<TContract>> Find(Func<IQueryable<TEntity>, IQueryable<TEntity>> getQuery = null)
         {
-            return await FindFromDatabase(getQuery);
+            var result = await FindFromDatabase(getQuery);
+            if (result is null)
+                return FailedReasonType.NotFound;
+            return result;
         }
     }
 
