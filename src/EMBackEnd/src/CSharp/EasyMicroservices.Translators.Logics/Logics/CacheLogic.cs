@@ -78,29 +78,17 @@ namespace Translators.Logics
             return catalog;
         }
 
-        public async Task<List<CatalogContract>> GetCatalogsByBookId(long bookId)
+        public async Task<long[]> GetCatalogsByPageNumber(long bookId, long pageNumber)
         {
             using var context = _serviceProvider.GetService<TranslatorContext>();
-            var bookEntity = await context.Books
-                .Include(x => x.Catalogs)
-                .FirstOrDefaultAsync(x => x.Id == bookId);
-            var catalogs = bookEntity.Catalogs.Select(x => x.Map<CatalogContract>()).ToList();
-            foreach (var catalog in catalogs)
-            {
-                var names = await context.Values
-                                .Include(x => x.Translator)
-                                .Include(x => x.TranslatorName)
-                                .Where(x => x.CatalogNameId == catalog.Id)
-                                .ToListAsync();
-                catalog.Names = names.Select(x => x.Map<ValueContract>()).ToList();
-                catalog.BookNames = (await GetBook(catalog.BookId)).Names;
-            }
-
-            //    catalog.Value.Pages = Pages.Select(x => x.Value).Where(x => x.CatalogId == catalog.Key).ToList();
-            return catalogs;
+            var pages = await context.Pages
+                .Include(x => x.Catalog)
+                .Where(x => x.Number == pageNumber && x.Catalog.BookId == bookId)
+                .ToListAsync();
+            return pages.Select(x => x.CatalogId).Distinct().ToArray();
         }
 
-        public async Task<List<CatalogContract>> GetCatalogsByBookIds(long[] catalogIds)
+        public async Task<List<CatalogContract>> GetCatalogsByCatalogIds(long[] catalogIds)
         {
             using var context = _serviceProvider.GetService<TranslatorContext>();
             var bookEntity = await context.Catalogs.Where(x => catalogIds.Contains(x.Id)).ToListAsync();
@@ -138,6 +126,7 @@ namespace Translators.Logics
                 .ThenInclude(x => x.Language)
                 .Include(x => x.Paragraphs)
                 .ThenInclude(x => x.Audios)
+                .Include(x => x.Audios)
                 .Where(x => x.Number == pageNumber && catalogs.Contains(x.CatalogId))
                 .ToListAsync();
             var pages = pageEntity.Select(x => x.Map<PageContract>()).ToList();

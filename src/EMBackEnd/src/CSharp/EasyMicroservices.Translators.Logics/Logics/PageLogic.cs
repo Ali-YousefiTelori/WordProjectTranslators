@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Translators.Contracts.Common;
-using Translators.Contracts.Common.Files;
-using Translators.Contracts.Common.Paragraphs;
 using Translators.Contracts.Responses.Pages;
 using Translators.Database.Entities;
 
@@ -45,12 +43,12 @@ namespace Translators.Logics
         {
             var cacheLogic = _appUnitOfWork.GetCacheLogic();
             var book = await cacheLogic.GetBook(bookId);
-            var catalog = await cacheLogic.GetCatalogsByBookId(bookId);
-            var pages = await cacheLogic.GetPages(pageNumber, catalog.Select(c => c.Id).ToArray());
+            var catalogIds = await cacheLogic.GetCatalogsByPageNumber(bookId, pageNumber);
+            var pages = await cacheLogic.GetPages(pageNumber, catalogIds);
 
-            var catalogIds = pages.SelectMany(x => x.Paragraphs).GroupBy(x => x.CatalogId)
-                .Select(x => x.Key).ToArray();
-            var catalogs = await cacheLogic.GetCatalogsByBookIds(catalogIds);
+            //var catalogIds = pages.SelectMany(x => x.Paragraphs).GroupBy(x => x.CatalogId)
+            //    .Select(x => x.Key).ToArray();
+            var catalogs = await cacheLogic.GetCatalogsByCatalogIds(catalogIds);
             var category = await cacheLogic.GetCategoryByBookId(bookId);
 
             string catalogName = $"{category.Names.GetPersianValue()} / ";
@@ -101,8 +99,8 @@ namespace Translators.Logics
             {
                 CatalogName = pagesResult.Result.CatalogName,
                 Languages = languages.MapResultToList<LanguageContract>(),
-                Paragraphs = pagesResult.Result.Pages.First().Paragraphs.MapToList<ParagraphContract>(),
-                AudioFiles = pagesResult.Result.Pages.First().AudioFiles.MapToList<AudioFileContract>()
+                Paragraphs = pagesResult.Result.Pages.SelectMany(x => x.Paragraphs).MapToList<ParagraphContract>(),
+                AudioFiles = pagesResult.Result.Pages.SelectMany(x => x.AudioFiles).MapToList<AudioFileContract>()
             };
             return result;
         }
